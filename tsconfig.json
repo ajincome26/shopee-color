@@ -9,6 +9,7 @@
     "paths": {
       "~/*": ["src/*"]
     },
+    "allowSyntheticDefaultImports": true,
 
     /* Bundler mode */
     "moduleResolution": "Node",

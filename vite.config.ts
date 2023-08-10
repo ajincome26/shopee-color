@@ -8,6 +8,7 @@ export default defineConfig({
   server: {
     port: 3000
   },
+  // Mặc định source map là false
   css: {
     devSourcemap: true
   },
