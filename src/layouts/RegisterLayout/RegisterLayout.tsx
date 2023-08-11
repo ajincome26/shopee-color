@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router-dom'
+import { Footer } from '~/components/Footer'
+import { RegisterHeader } from '~/components/RegisterHeader'
 
 const RegisterLayout = () => {
   return (
     <div>
-      RegisterLayout
+      <RegisterHeader />
       <Outlet />
+      <Footer />
     </div>
   )
 }
