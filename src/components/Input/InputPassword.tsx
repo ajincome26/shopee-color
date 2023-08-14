@@ -1,22 +1,14 @@
 import { useState } from 'react'
-import Input from './Input'
-import { icons } from '~/utils'
-import { UseFormRegister } from 'react-hook-form'
-import { FormRegister } from '~/types/formRegister.type'
+import Input, { InputProps } from './Input'
+import type { FieldValues } from 'react-hook-form'
+import icons from '~/utils/icons'
 
 const { AiOutlineEye, AiOutlineEyeInvisible } = icons
 
-interface Props {
-  type?: React.HTMLInputTypeAttribute
-  name: string
-  placeholder: string
-  register: UseFormRegister<FormRegister>
-}
-
-const InputPassword = ({ name, ...props }: Props) => {
+const InputPassword = <TFieldValues extends FieldValues = FieldValues>(props: InputProps<TFieldValues>) => {
   const [togglePassword, setTogglePassword] = useState(false)
   return (
-    <Input name={name} type={togglePassword ? 'text' : 'password'} {...props}>
+    <Input type={togglePassword ? 'text' : 'password'} {...props}>
       {togglePassword ? (
         <AiOutlineEyeInvisible onClick={() => setTogglePassword((prev) => !prev)} />
       ) : (

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { dataFooter } from '~/utils'
+import dataFooter from '~/utils/dataFooter'
 
 const { footerTakeCare, footerAboutShopee, footerPay, footerExpress, footerSocial, footerApp } = dataFooter
 

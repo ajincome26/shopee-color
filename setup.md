@@ -267,3 +267,95 @@ import { BrowserRouter } from 'react-router-dom'
   <App />
 </BrowserRouter>
 ```
+
+### Custom class .container
+
+- Document:
+  https://tailwindcss.com/docs/plugins,
+  https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
+- container đã có sẵn khi cài tailwindcss, ta muốn _xóa_ nó và _config lại_ :
+- File **tailwind.config.js** :
+
+```js
+/* eslint-disable @typescript-eslint/no-var-requires */
+const plugin = require('tailwindcss/plugin')
+
+corePlugins: {
+  container: false
+},
+plugins: [
+  plugin(function ({ addComponents }) {
+    addComponents({
+      '.container': {
+        width: '100%',
+        maxWidth: '80rem',
+        margin: '0 auto',
+        padding: '0 1rem'
+      }
+    })
+  })
+]
+```
+
+### Yup và cách xuất ra interface hoặc type
+
+-Document: https://github.com/jquense/yup#typescript-integration
+
+- File **schema.ts** :
+
+```ts
+import * as yup from 'yup'
+
+export const registerSchema = yup
+  .object({
+    email: yup
+      .string()
+    password: yup
+      .string()
+  })
+  .required()
+export const loginSchema = yup.omit(['cpassword'])
+export type RegisterSchema = yup.InferType<typeof registerSchema>
+export type LoginSchema = yup.InferType<typeof loginSchema>
+```
+
+### Set up Tanstack Query vs Axios
+
+```bash
+npm i @tanstack/react-query @tanstack/react-query-devtools
+npm i @tanstack/eslint-plugin-query -D
+```
+
+- File **main.ts(index.ts)**:
+
+```ts
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false // disable việc fetch lại api khi focus tab window
+    }
+  }
+})
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <QueryClientProvider client={queryClient}>
+    <App />
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
+)
+```
+
+- File **instance.ts** :
+
+```ts
+import axios from 'axios'
+const instance = axios.create({
+  baseURL: 'https://api-ecom.duthanhduoc.com/',
+  headers: {
+    'Content-Type': 'application/json' // Vì ta giao tiếp theo kiểu json
+  }
+})
+export default instance
+```

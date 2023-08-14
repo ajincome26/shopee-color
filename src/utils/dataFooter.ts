@@ -1,5 +1,5 @@
 import { DataFooter } from '~/types/dataFooter.type'
-import { icons } from '~/utils'
+import icons from './icons'
 const { BsFacebook, AiFillInstagram, AiFillTwitterCircle } = icons
 
 const footerTakeCare: Omit<DataFooter, 'icon' | 'link'>[] = [
