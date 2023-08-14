@@ -5,7 +5,7 @@ interface Props {
 
 const Label = ({ htmlFor, children }: Props) => {
   return (
-    <label className='font-semibold cursor-pointer' htmlFor={htmlFor}>
+    <label className='my-3 font-semibold cursor-pointer text-secondary' htmlFor={htmlFor}>
       {children}
     </label>
   )

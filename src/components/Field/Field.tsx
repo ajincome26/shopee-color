@@ -3,7 +3,7 @@ interface Props {
 }
 
 const Field = ({ children }: Props) => {
-  return <div className='flex flex-col gap-3'>{children}</div>
+  return <div className='flex flex-col items-start'>{children}</div>
 }
 
 export default Field

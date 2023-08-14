@@ -1,4 +1,4 @@
-import DataFooter from '~/types'
+import { DataFooter } from '~/types/dataFooter.type'
 import { icons } from '~/utils'
 const { BsFacebook, AiFillInstagram, AiFillTwitterCircle } = icons
 

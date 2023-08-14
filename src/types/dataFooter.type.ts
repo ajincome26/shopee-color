@@ -1,6 +1,6 @@
 import { IconType } from 'react-icons/lib'
 
-export default interface DataFooter {
+export interface DataFooter {
   id: number
   text: string
   icon: IconType

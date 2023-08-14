@@ -30,7 +30,7 @@ const RegisterHeader = () => {
               ></path>
             </svg>
           </Link>
-          <div className='ml-5 text-xl font-medium lg:text-2xl'>Đăng Ký</div>
+          <div className='ml-5 text-2xl font-medium text-secondary'>Đăng Ký</div>
         </nav>
       </div>
     </header>
