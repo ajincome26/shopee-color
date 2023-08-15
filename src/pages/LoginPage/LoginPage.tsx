@@ -1,23 +1,52 @@
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '~/components/Button'
 import { Field } from '~/components/Field'
 import { Input, InputPassword } from '~/components/Input'
 import { Label } from '~/components/Label'
 import { LoginSchema, loginSchema } from '~/utils/schema'
+import { useMutation } from '@tanstack/react-query'
+import { loginAccount } from '~/apis/auth.api'
+import { toast } from 'react-toastify'
+import { isAxiosUnprocessableEntityError } from '~/utils/utils'
+import { Response } from '~/types/utils.type'
 
 type FormLogin = LoginSchema
 
 const LoginPage = () => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<FormLogin>({ resolver: yupResolver(loginSchema) })
 
+  const loginMutation = useMutation({
+    mutationFn: (body: FormLogin) => loginAccount(body)
+  })
+
   const handleLogin = (data: FormLogin) => {
-    console.log('🚀 ~ file: RegisterPage.tsx:44 ~ handleLogin ~ data:', data)
+    loginMutation.mutate(data, {
+      onSuccess: () => {
+        navigate('/')
+        toast.success('Đăng nhập thành công')
+      },
+      onError: (error) => {
+        if (isAxiosUnprocessableEntityError<Response<FormLogin>>(error)) {
+          const formError = error.response?.data.data
+          if (formError) {
+            Object.keys(formError).forEach((key) =>
+              setError(key as keyof FormLogin, {
+                message: formError[key as keyof FormLogin],
+                type: 'Server'
+              })
+            )
+          }
+        }
+      }
+    })
   }
 
   return (
@@ -40,6 +69,7 @@ const LoginPage = () => {
             errorMessage={errors.password?.message}
           />
         </Field>
+
         <Button type='submit' className='my-4'>
           Đăng nhập
         </Button>

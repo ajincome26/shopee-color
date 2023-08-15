@@ -299,7 +299,9 @@ plugins: [
 
 ### Yup và cách xuất ra interface hoặc type
 
--Document: https://github.com/jquense/yup#typescript-integration
+-Document:
+https://github.com/jquense/yup#objectomitkeys-string-schema,
+https://github.com/jquense/yup,
 
 - File **schema.ts** :
 
