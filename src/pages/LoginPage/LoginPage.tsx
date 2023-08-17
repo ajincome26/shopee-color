@@ -16,6 +16,7 @@ type FormLogin = LoginSchema
 
 const LoginPage = () => {
   const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,

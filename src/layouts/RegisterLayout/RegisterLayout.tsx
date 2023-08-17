@@ -4,11 +4,11 @@ import { RegisterHeader } from '~/components/RegisterHeader'
 
 const RegisterLayout = () => {
   return (
-    <div>
+    <>
       <RegisterHeader />
       <Outlet />
       <Footer />
-    </div>
+    </>
   )
 }
 

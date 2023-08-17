@@ -1,12 +1,24 @@
-import { BiSolidShoppingBags } from 'react-icons/bi'
-import { BsFacebook } from 'react-icons/bs'
-import { AiFillInstagram, AiFillTwitterCircle, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
-
-export default {
-  BiSolidShoppingBags,
-  BsFacebook,
+import { BiSolidShoppingBags, BiLogoFacebookCircle } from 'react-icons/bi'
+import {
   AiFillInstagram,
   AiFillTwitterCircle,
   AiOutlineEye,
-  AiOutlineEyeInvisible
+  AiOutlineEyeInvisible,
+  AiOutlineShoppingCart
+} from 'react-icons/ai'
+import { TbWorld } from 'react-icons/tb'
+import { PiCaretDownBold } from 'react-icons/pi'
+import { HiOutlineSearch } from 'react-icons/hi'
+
+export default {
+  BiSolidShoppingBags,
+  BiLogoFacebookCircle,
+  AiFillInstagram,
+  AiFillTwitterCircle,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  TbWorld,
+  PiCaretDownBold,
+  HiOutlineSearch,
+  AiOutlineShoppingCart
 }

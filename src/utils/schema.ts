@@ -23,3 +23,6 @@ export const loginSchema = registerSchema.omit(['cpassword'])
 
 export type RegisterSchema = yup.InferType<typeof registerSchema>
 export type LoginSchema = yup.InferType<typeof loginSchema>
+export type SearchSchema = {
+  searchValue: string
+}

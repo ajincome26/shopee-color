@@ -1,6 +1,6 @@
 import { DataFooter } from '~/types/dataFooter.type'
 import icons from './icons'
-const { BsFacebook, AiFillInstagram, AiFillTwitterCircle } = icons
+const { BiLogoFacebookCircle, AiFillInstagram, AiFillTwitterCircle } = icons
 
 const footerTakeCare: Omit<DataFooter, 'icon' | 'link'>[] = [
   {
@@ -166,7 +166,7 @@ const footerSocial: DataFooter[] = [
   {
     id: 1,
     text: 'Facebook',
-    icon: BsFacebook,
+    icon: BiLogoFacebookCircle,
     link: 'https://www.facebook.com/ajincome.7'
   },
   {

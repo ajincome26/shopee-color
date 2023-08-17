@@ -1,13 +1,12 @@
 import { InputHTMLAttributes } from 'react'
-import type { FieldValues, FieldPath, UseFormRegister, RegisterOptions } from 'react-hook-form'
+import type { FieldValues, FieldPath, UseFormRegister } from 'react-hook-form'
 
 export interface InputProps<TFieldValues extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
   type?: React.HTMLInputTypeAttribute
   placeholder: string
   name: FieldPath<TFieldValues>
-  children?: JSX.Element | JSX.Element[]
+  children?: React.ReactNode
   errorMessage?: string
-  rules?: RegisterOptions
   register: UseFormRegister<TFieldValues>
 }
 
@@ -16,7 +15,6 @@ const Input = <TFieldValues extends FieldValues = FieldValues>({
   name,
   children,
   errorMessage,
-  rules,
   register,
   ...props
 }: InputProps<TFieldValues>) => {
@@ -25,9 +23,9 @@ const Input = <TFieldValues extends FieldValues = FieldValues>({
       <input
         id={name}
         type={type || 'text'}
-        {...register(name, rules)}
+        {...register(name)}
         {...props}
-        className={`mb-[6px] border border-transparent rounded-lg py-3 bg-grayField hover:border-primary focus:border-primary transition w-full focus:bg-white  ${
+        className={`mb-[6px] border border-transparent rounded-lg py-3 bg-grayField hover:border-primary focus:border-primary transition w-full focus:bg-white ${
           children ? 'pl-4 pr-10' : 'px-4'
         }`}
         autoComplete='on'

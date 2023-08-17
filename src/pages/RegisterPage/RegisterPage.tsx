@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { registerSchema, RegisterSchema } from '~/utils/schema'
 import { registerAccount } from '~/apis/auth.api'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Label } from '~/components/Label'
 import { Input, InputPassword } from '~/components/Input'
 import { Field } from '~/components/Field'
@@ -16,10 +16,10 @@ import { toast } from 'react-toastify'
 export type FormRegister = RegisterSchema
 
 const RegisterPage = () => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
-    reset,
     setError,
     formState: { errors }
   } = useForm<FormRegister>({
@@ -36,12 +36,8 @@ const RegisterPage = () => {
     const payload = omit(data, ['cpassword'])
     registerMutation.mutate(payload, {
       onSuccess: () => {
+        navigate('/')
         toast.success('Đăng ký tài khoản thành công')
-        reset({
-          email: '',
-          password: '',
-          cpassword: ''
-        })
       },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<Response<Omit<FormRegister, 'cpassword'>>>(error)) {
