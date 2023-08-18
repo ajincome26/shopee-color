@@ -1,10 +1,13 @@
 import icons from '~/utils/icons'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
+import { useAuth } from '~/contexts/auth.context'
 import { SearchSchema } from '~/utils/schema'
+import { Popover } from '../Popover'
+import { logoutAccount } from '~/apis/auth.api'
 import { Link } from 'react-router-dom'
 import { InputSearch } from '../Input'
 import { Button } from '../Button'
-import { Popover } from '../Popover'
 
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutlineSearch, AiOutlineShoppingCart } =
   icons
@@ -12,13 +15,25 @@ const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutli
 type FormSearch = SearchSchema
 
 const MainHeader = () => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth()
   const { register, handleSubmit } = useForm<FormSearch>()
+
+  const logoutMutation = useMutation({
+    mutationFn: logoutAccount,
+    onSuccess: () => {
+      setIsLoggedIn(false)
+    }
+  })
+
+  const handleLogout = () => {
+    logoutMutation.mutate()
+  }
 
   const handleSearch = () => {}
   return (
     <div className='w-full min-h-[120px] bg-gradient-to-b from-cyan-500 to-blue-400 text-white fixed py-3 top-0'>
       <div className='container'>
-        <div className='flex items-center justify-end text-sm md:justify-between'>
+        <div className='flex items-center justify-end text-sm leading-6 md:justify-between'>
           <div className='items-center hidden gap-2 cursor-pointer md:flex lg:gap-3'>
             <Link to='https://play.google.com/store/apps'>
               <span className='transition hover:text-gray'>Tải ứng dụng</span>
@@ -50,40 +65,48 @@ const MainHeader = () => {
               <PiCaretDownBold />
             </Popover>
 
-            <div className='flex items-center gap-2 cursor-pointer lg:gap-3'>
-              <Link to='/register' className='transition hover:text-gray'>
-                Đăng ký
-              </Link>
-              <div className='h-[18px] w-[1px] bg-grayField'></div>
-              <Link to='/login' className='transition hover:text-gray'>
-                Đăng nhập
-              </Link>
-            </div>
-
-            <Popover
-              className='flex flex-col w-40 bg-white rounded-sm shadow-lg text-secondary'
-              placement='bottom-end'
-              popover={
-                <>
-                  <Link to='/user/profile' className='px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>
-                    Tài khoản của tôi
-                  </Link>
-                  <Link to='/' className='px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>
-                    Đơn mua
-                  </Link>
-                  <Link to='/' className='px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>
-                    Đăng xuất
-                  </Link>
-                </>
-              }
-            >
-              <div className='flex items-center gap-2 cursor-pointer'>
-                <div className='w-6 h-6 overflow-hidden rounded-full'>
-                  <img src='https://source.unsplash.com/random' alt='avatar' className='object-cover w-full h-full' />
+            {isLoggedIn ? (
+              <Popover
+                className='flex flex-col w-40 bg-white rounded-sm shadow-lg text-secondary'
+                placement='bottom-end'
+                popover={
+                  <>
+                    <Link
+                      to='/user/profile'
+                      className='w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
+                    >
+                      Tài khoản của tôi
+                    </Link>
+                    <Link to='/' className='w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>
+                      Đơn mua
+                    </Link>
+                    <button
+                      className='flex items-start w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
+                      onClick={handleLogout}
+                    >
+                      Đăng xuất
+                    </button>
+                  </>
+                }
+              >
+                <div className='flex items-center gap-2 cursor-pointer'>
+                  <div className='w-6 h-6 overflow-hidden rounded-full'>
+                    <img src='https://source.unsplash.com/random' alt='avatar' className='object-cover w-full h-full' />
+                  </div>
+                  <span className='transition hover:text-gray'>cristiano</span>
                 </div>
-                <span className='transition hover:text-gray'>cristiano</span>
+              </Popover>
+            ) : (
+              <div className='flex items-center gap-2 cursor-pointer lg:gap-3'>
+                <Link to='/register' className='transition hover:text-gray'>
+                  Đăng ký
+                </Link>
+                <div className='h-[18px] w-[1px] bg-grayField'></div>
+                <Link to='/login' className='transition hover:text-gray'>
+                  Đăng nhập
+                </Link>
               </div>
-            </Popover>
+            )}
           </div>
         </div>
 
@@ -115,35 +138,48 @@ const MainHeader = () => {
             </Button>
           </form>
           <Popover
-            className='flex items-center justify-center max-w-[400px] bg-white rounded-sm shadow-lg'
+            className='flex items-center justify-center w-[400px] min-h-[270px] bg-white rounded-sm shadow-lg'
             placement='bottom-end'
             popover={
               <>
-                <div className='text-sm text-secondary'>
-                  <h3 className='p-3 text-base'>Sản phẩm mới thêm</h3>
-                  <div className='pb-3'>
-                    <div className='flex items-start gap-3 p-3 hover:bg-slate-50'>
-                      <div className='shadow-md w-9 h-9 shrink-0'>
-                        <img src='https://source.unsplash.com/random' alt='' className='object-cover w-full h-full' />
+                {isLoggedIn ? (
+                  <div className='text-sm text-secondary'>
+                    <h3 className='p-3 text-base'>Sản phẩm mới thêm</h3>
+                    <div className='pb-3'>
+                      <div className='flex items-start gap-3 p-3 hover:bg-slate-50'>
+                        <div className='shadow-md w-9 h-9 shrink-0'>
+                          <img src='https://source.unsplash.com/random' alt='' className='object-cover w-full h-full' />
+                        </div>
+                        <p className='truncate-1'>Set 20 bút gel HAPPI viết gel bút abcdascmsacksac lámlcmsac</p>
+                        <div className='text-primary'>14.500</div>
                       </div>
-                      <p className='truncate-1'>Set 20 bút gel HAPPI viết gel bút abcdascmsacksac lámlcmsac</p>
-                      <div className='text-primary'>14.500</div>
+                      <div className='flex items-start gap-3 p-3 hover:bg-slate-50'>
+                        <div className='shadow-md w-9 h-9 shrink-0'>
+                          <img src='https://source.unsplash.com/random' alt='' className='object-cover w-full h-full' />
+                        </div>
+                        <p className='truncate-1'>Set 20 bút gel HAPPI viết gel bút abcdascmsacksac lámlcmsac</p>
+                        <div className='text-primary'>14.500</div>
+                      </div>
                     </div>
-                    <div className='flex items-start gap-3 p-3 hover:bg-slate-50'>
-                      <div className='shadow-md w-9 h-9 shrink-0'>
-                        <img src='https://source.unsplash.com/random' alt='' className='object-cover w-full h-full' />
-                      </div>
-                      <p className='truncate-1'>Set 20 bút gel HAPPI viết gel bút abcdascmsacksac lámlcmsac</p>
-                      <div className='text-primary'>14.500</div>
+                    <div className='flex items-center justify-between p-3'>
+                      <div className='text-slate-400'>180 Thêm Hàng Vào Giỏ</div>
+                      <Button to='/cart' className='right-0 flex px-4 py-2 md:w-auto md:mx-0'>
+                        Xem Giỏ Hàng
+                      </Button>
                     </div>
                   </div>
-                  <div className='flex items-center justify-between p-3'>
-                    <div className='text-slate-400'>180 Thêm Hàng Vào Giỏ</div>
-                    <Button to='/cart' className='right-0 flex px-4 py-2 md:w-auto md:mx-0'>
-                      Xem Giỏ Hàng
-                    </Button>
+                ) : (
+                  <div className='flex flex-col'>
+                    <div className='rounded-full w-36 h-36'>
+                      <img
+                        src='https://img.freepik.com/premium-vector/shopping-cart-with-cross-mark-wireless-paymant-icon-shopping-bag-failure-paymant-sign-online-shopping-vector_662353-912.jpg?w=740'
+                        alt='cart-empty'
+                        className='object-cover w-full h-full'
+                      />
+                    </div>
+                    <span className='text-slate-400'>Chưa có sản phẩm</span>
                   </div>
-                </div>
+                )}
               </>
             }
           >

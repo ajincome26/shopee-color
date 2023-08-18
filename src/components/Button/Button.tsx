@@ -7,9 +7,10 @@ interface Props {
   isLoading?: boolean
   to?: string
   className?: string
+  onClick?: () => void
 }
 
-const Button = ({ type, children, isLoading, to, className }: Props) => {
+const Button = ({ type, children, isLoading, to, className, onClick }: Props) => {
   if (to && typeof to === 'string') {
     return (
       <Link to={to || ''}>
@@ -29,6 +30,7 @@ const Button = ({ type, children, isLoading, to, className }: Props) => {
   return (
     <button
       type={type || 'button'}
+      onClick={onClick}
       className={`${className} block px-6 py-3 font-medium text-white transition duration-300 ease-linear bg-auto rounded-md md:w-56 md:mx-auto bg-gradient-to-br hover:opacity-90 from-third to-fourth hover:bg-gradient-to-tl focus:ring-4 focus:outline-none focus:ring-teal-300`}
     >
       {isLoading ? (

@@ -10,12 +10,14 @@ import { Field } from '~/components/Field'
 import { Button } from '~/components/Button'
 import { omit } from 'lodash'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
-import { Response } from '~/types/utils.type'
+import { ResponseError } from '~/types/utils.type'
 import { toast } from 'react-toastify'
+import { useAuth } from '~/contexts/auth.context'
 
 export type FormRegister = RegisterSchema
 
 const RegisterPage = () => {
+  const { setIsLoggedIn } = useAuth()
   const navigate = useNavigate()
   const {
     register,
@@ -36,11 +38,12 @@ const RegisterPage = () => {
     const payload = omit(data, ['cpassword'])
     registerMutation.mutate(payload, {
       onSuccess: () => {
+        setIsLoggedIn(true)
         navigate('/')
         toast.success('Đăng ký tài khoản thành công')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntityError<Response<Omit<FormRegister, 'cpassword'>>>(error)) {
+        if (isAxiosUnprocessableEntityError<ResponseError<Omit<FormRegister, 'cpassword'>>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) =>

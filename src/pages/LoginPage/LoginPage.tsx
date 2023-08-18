@@ -10,12 +10,14 @@ import { useMutation } from '@tanstack/react-query'
 import { loginAccount } from '~/apis/auth.api'
 import { toast } from 'react-toastify'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
-import { Response } from '~/types/utils.type'
+import { ResponseError } from '~/types/utils.type'
+import { useAuth } from '~/contexts/auth.context'
 
 type FormLogin = LoginSchema
 
 const LoginPage = () => {
   const navigate = useNavigate()
+  const { setIsLoggedIn } = useAuth()
 
   const {
     register,
@@ -31,11 +33,12 @@ const LoginPage = () => {
   const handleLogin = (data: FormLogin) => {
     loginMutation.mutate(data, {
       onSuccess: () => {
+        setIsLoggedIn(true)
         navigate('/')
         toast.success('Đăng nhập thành công')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntityError<Response<FormLogin>>(error)) {
+        if (isAxiosUnprocessableEntityError<ResponseError<FormLogin>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) =>

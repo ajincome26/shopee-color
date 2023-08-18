@@ -1,4 +1,5 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
+import { useAuth } from './contexts/auth.context'
 import { CartLayout } from './layouts/CartLayout'
 import { MainLayout } from './layouts/MainLayout'
 import { RegisterLayout } from './layouts/RegisterLayout'
@@ -8,25 +9,19 @@ import { ProductList } from './pages/ProductList'
 import { Profile } from './pages/Profile'
 import { RegisterPage } from './pages/RegisterPage'
 
-const isLoggedIn = false
-
-export function ProtectedRoute() {
-  return isLoggedIn ? <Outlet /> : <Navigate to='/login' />
-}
-
-export function RejectedRouteLogin() {
-  return !isLoggedIn ? <Outlet /> : <Navigate to='/' />
-}
-
 const useRoute = () => {
+  const { isLoggedIn } = useAuth()
+
+  function ProtectedRoute() {
+    return isLoggedIn ? <Outlet /> : <Navigate to='/login' />
+  }
+  function RejectedRoute() {
+    return !isLoggedIn ? <Outlet /> : <Navigate to='/' />
+  }
+
   const element = useRoutes([
     {
-      // Nếu ProtectedRoute là cha của MainLayout và ProductList (path: '/') thì khi 'isLoggedIn = false', nó sẽ to='/login' tìm và thấy không có thằng nào match với to='/'. => Lỗi
-      element: <MainLayout />,
-      children: [{ index: true, path: '/', element: <ProductList /> }]
-    },
-    {
-      element: <RejectedRouteLogin />,
+      element: <RejectedRoute />,
       children: [
         {
           // Muốn vào được đây thì phải chưa đăng nhập, không sẽ trở về Home
@@ -67,10 +62,14 @@ const useRoute = () => {
           element: <CartLayout />
         }
       ]
+    },
+    {
+      // Nếu ProtectedRoute là cha của MainLayout và ProductList (path: '/') thì khi 'isLoggedIn = false', nó sẽ to='/login' tìm và thấy không có thằng nào match với to='/'. => Lỗi
+      element: <MainLayout />,
+      children: [{ index: true, path: '/', element: <ProductList /> }]
     }
   ])
   return element
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export default useRoute
