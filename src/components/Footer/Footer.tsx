@@ -5,7 +5,7 @@ const { footerTakeCare, footerAboutShopee, footerPay, footerExpress, footerSocia
 
 const Footer = () => {
   return (
-    <div className='bg-[#f5f5f5] text-secondary py-4'>
+    <div className='py-4 bg-grayField text-secondary'>
       <footer className='container'>
         <div className='grid grid-cols-1 gap-5 py-8 text-center md:grid-cols-3 lg:grid-cols-5'>
           <div>

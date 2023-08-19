@@ -1,12 +1,13 @@
 import { Link, useMatch } from 'react-router-dom'
+import { path } from '~/constants/path'
 
 const RegisterHeader = () => {
-  const matchLogin = useMatch('/login')
+  const matchLogin = useMatch(path.LOGIN)
   return (
     <header className='py-5'>
       <div className='container'>
         <nav className='flex items-end'>
-          <Link to='/'>
+          <Link to={path.HOME}>
             <svg
               className='h-8 fill-primary lg:h-11'
               viewBox='0 0 296 84'

@@ -1,13 +1,18 @@
 import React, { createContext, useContext, useState } from 'react'
-import { getAccessToken } from '~/utils/auth'
+import { User } from '~/types/user.type'
+import { getAccessToken, getUserInfoFromStorage } from '~/utils/auth'
 
 interface AuthProviderType {
   isLoggedIn: boolean
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+  userInfo: User | null
+  setUserInfo: React.Dispatch<React.SetStateAction<User | null>>
 }
 const initialContext: AuthProviderType = {
   isLoggedIn: Boolean(getAccessToken()),
-  setIsLoggedIn: () => null
+  setIsLoggedIn: () => null,
+  userInfo: getUserInfoFromStorage(),
+  setUserInfo: () => null
 }
 
 const AuthContext = createContext<AuthProviderType>(initialContext)
@@ -18,7 +23,10 @@ const useAuth = () => {
 }
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(initialContext.isLoggedIn)
-  return <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>{children}</AuthContext.Provider>
+  const [userInfo, setUserInfo] = useState(initialContext.userInfo)
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userInfo, setUserInfo }}>{children}</AuthContext.Provider>
+  )
 }
 
 // eslint-disable-next-line react-refresh/only-export-components

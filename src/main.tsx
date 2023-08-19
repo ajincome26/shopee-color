@@ -4,8 +4,8 @@ import App from './App'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
-import './styles/index.scss'
 import { AuthProvider } from './contexts/auth.context'
+import './styles/index.scss'
 
 // Create a client
 const queryClient = new QueryClient({

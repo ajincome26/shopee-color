@@ -8,6 +8,8 @@ import { logoutAccount } from '~/apis/auth.api'
 import { Link } from 'react-router-dom'
 import { InputSearch } from '../Input'
 import { Button } from '../Button'
+import { toast } from 'react-toastify'
+import { path } from '~/constants/path'
 
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutlineSearch, AiOutlineShoppingCart } =
   icons
@@ -15,13 +17,15 @@ const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutli
 type FormSearch = SearchSchema
 
 const MainHeader = () => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth()
+  const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useAuth()
   const { register, handleSubmit } = useForm<FormSearch>()
 
   const logoutMutation = useMutation({
     mutationFn: logoutAccount,
     onSuccess: () => {
       setIsLoggedIn(false)
+      setUserInfo(null)
+      toast.success('Đăng xuất thành công')
     }
   })
 
@@ -31,7 +35,7 @@ const MainHeader = () => {
 
   const handleSearch = () => {}
   return (
-    <div className='w-full min-h-[120px] bg-gradient-to-b from-cyan-500 to-blue-400 text-white fixed py-3 top-0'>
+    <div className='w-full min-h-[120px] bg-gradient-to-b from-cyan-500 to-blue-400 text-white py-3 top-0'>
       <div className='container'>
         <div className='flex items-center justify-end text-sm leading-6 md:justify-between'>
           <div className='items-center hidden gap-2 cursor-pointer md:flex lg:gap-3'>
@@ -72,12 +76,15 @@ const MainHeader = () => {
                 popover={
                   <>
                     <Link
-                      to='/user/profile'
+                      to={path.PROFILE}
                       className='w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
                     >
                       Tài khoản của tôi
                     </Link>
-                    <Link to='/' className='w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>
+                    <Link
+                      to={path.HOME}
+                      className='w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
+                    >
                       Đơn mua
                     </Link>
                     <button
@@ -91,18 +98,22 @@ const MainHeader = () => {
               >
                 <div className='flex items-center gap-2 cursor-pointer'>
                   <div className='w-6 h-6 overflow-hidden rounded-full'>
-                    <img src='https://source.unsplash.com/random' alt='avatar' className='object-cover w-full h-full' />
+                    <img
+                      src='https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg'
+                      alt='avatar'
+                      className='object-cover w-full h-full'
+                    />
                   </div>
-                  <span className='transition hover:text-gray'>cristiano</span>
+                  <span className='transition hover:text-gray'>{userInfo?.email}</span>
                 </div>
               </Popover>
             ) : (
               <div className='flex items-center gap-2 cursor-pointer lg:gap-3'>
-                <Link to='/register' className='transition hover:text-gray'>
+                <Link to={path.REGISTER} className='transition hover:text-gray'>
                   Đăng ký
                 </Link>
                 <div className='h-[18px] w-[1px] bg-grayField'></div>
-                <Link to='/login' className='transition hover:text-gray'>
+                <Link to={path.LOGIN} className='transition hover:text-gray'>
                   Đăng nhập
                 </Link>
               </div>
@@ -132,7 +143,12 @@ const MainHeader = () => {
             </svg>
           </Link>
           <form onSubmit={handleSubmit(handleSearch)} className='relative w-full'>
-            <InputSearch name='searchValue' placeholder='iPhone 14 Pro Max' register={register} />
+            <InputSearch
+              className='px-4 py-3 text-grayDark placeholder:uppercase bg-grayField hover:border-white focus:border-white focus:bg-white'
+              name='searchValue'
+              placeholder='iPhone 14 Pro Max'
+              register={register}
+            />
             <Button type='submit' className='absolute px-[14px] py-[10px] top-[4px] right-[4px] md:w-auto'>
               <HiOutlineSearch />
             </Button>
@@ -163,7 +179,7 @@ const MainHeader = () => {
                     </div>
                     <div className='flex items-center justify-between p-3'>
                       <div className='text-slate-400'>180 Thêm Hàng Vào Giỏ</div>
-                      <Button to='/cart' className='right-0 flex px-4 py-2 md:w-auto md:mx-0'>
+                      <Button to={path.CART} className='right-0 flex px-4 py-2 md:w-auto md:mx-0'>
                         Xem Giỏ Hàng
                       </Button>
                     </div>

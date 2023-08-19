@@ -12,12 +12,13 @@ import { toast } from 'react-toastify'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 import { ResponseError } from '~/types/utils.type'
 import { useAuth } from '~/contexts/auth.context'
+import { path } from '~/constants/path'
 
 type FormLogin = LoginSchema
 
 const LoginPage = () => {
   const navigate = useNavigate()
-  const { setIsLoggedIn } = useAuth()
+  const { setIsLoggedIn, setUserInfo } = useAuth()
 
   const {
     register,
@@ -32,8 +33,9 @@ const LoginPage = () => {
 
   const handleLogin = (data: FormLogin) => {
     loginMutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsLoggedIn(true)
+        setUserInfo(data.data.data.user)
         navigate('/')
         toast.success('Đăng nhập thành công')
       },
@@ -74,13 +76,13 @@ const LoginPage = () => {
           />
         </Field>
 
-        <Button type='submit' className='my-4'>
+        <Button type='submit' className='px-6 py-3 my-4' isLoading={loginMutation.isLoading}>
           Đăng nhập
         </Button>
 
         <div className='text-center'>
           Bạn chưa có tài khoản?
-          <Link to='/register' className='ml-2 font-medium transition text-primary hover:text-third'>
+          <Link to={path.REGISTER} className='ml-2 font-medium transition text-primary hover:text-third'>
             Đăng ký
           </Link>
         </div>

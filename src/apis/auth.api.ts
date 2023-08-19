@@ -1,12 +1,13 @@
 import { AuthResponse } from '~/types/auth.type'
 import instance from '~/utils/instance'
+import { path } from '~/constants/path'
 
 export const registerAccount = (body: { email: string; password: string }) =>
-  instance.post<AuthResponse>('register', body)
+  instance.post<AuthResponse>(path.REGISTER, body)
 
-export const loginAccount = (body: { email: string; password: string }) => instance.post<AuthResponse>('login', body)
+export const loginAccount = (body: { email: string; password: string }) => instance.post<AuthResponse>(path.LOGIN, body)
 
-export const logoutAccount = () => instance.post('logout')
+export const logoutAccount = () => instance.post(path.LOGOUT)
 
 // export const addStudent = (student: Omit<Student, 'id'>) => instance.post<Student>('students', student)
 

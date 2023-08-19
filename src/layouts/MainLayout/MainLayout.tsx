@@ -4,11 +4,11 @@ import { MainHeader } from '~/components/MainHeader'
 
 const MainLayout = () => {
   return (
-    <div className='pt-[120px]'>
+    <>
       <MainHeader />
       <Outlet />
       <Footer />
-    </div>
+    </>
   )
 }
 

@@ -1,22 +1,25 @@
-import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import { useAuth } from './contexts/auth.context'
-import { CartLayout } from './layouts/CartLayout'
-import { MainLayout } from './layouts/MainLayout'
-import { RegisterLayout } from './layouts/RegisterLayout'
 import { UserLayout } from './layouts/UserLayout'
-import { LoginPage } from './pages/LoginPage'
-import { ProductList } from './pages/ProductList'
-import { Profile } from './pages/Profile'
+import { useAuth } from './contexts/auth.context'
 import { RegisterPage } from './pages/RegisterPage'
+import { RegisterLayout } from './layouts/RegisterLayout'
+import { Profile } from './pages/Profile'
+import { ProductList } from './pages/ProductList'
+import { path } from './constants/path'
+import { Navigate, Outlet, useRoutes } from 'react-router-dom'
+import { MainLayout } from './layouts/MainLayout'
+import { LoginPage } from './pages/LoginPage'
+import { CartLayout } from './layouts/CartLayout'
+
+const { HOME, LOGIN, REGISTER, PROFILE, CART } = path
 
 const useRoute = () => {
   const { isLoggedIn } = useAuth()
 
   function ProtectedRoute() {
-    return isLoggedIn ? <Outlet /> : <Navigate to='/login' />
+    return isLoggedIn ? <Outlet /> : <Navigate to={LOGIN} />
   }
   function RejectedRoute() {
-    return !isLoggedIn ? <Outlet /> : <Navigate to='/' />
+    return !isLoggedIn ? <Outlet /> : <Navigate to={HOME} />
   }
 
   const element = useRoutes([
@@ -28,11 +31,11 @@ const useRoute = () => {
           element: <RegisterLayout />,
           children: [
             {
-              path: '/register',
+              path: REGISTER,
               element: <RegisterPage />
             },
             {
-              path: '/login',
+              path: LOGIN,
               element: <LoginPage />
             }
           ]
@@ -50,7 +53,7 @@ const useRoute = () => {
               element: <UserLayout />,
               children: [
                 {
-                  path: '/user/profile',
+                  path: PROFILE,
                   element: <Profile />
                 }
               ]
@@ -58,7 +61,7 @@ const useRoute = () => {
           ]
         },
         {
-          path: '/cart',
+          path: CART,
           element: <CartLayout />
         }
       ]
@@ -66,7 +69,7 @@ const useRoute = () => {
     {
       // Nếu ProtectedRoute là cha của MainLayout và ProductList (path: '/') thì khi 'isLoggedIn = false', nó sẽ to='/login' tìm và thấy không có thằng nào match với to='/'. => Lỗi
       element: <MainLayout />,
-      children: [{ index: true, path: '/', element: <ProductList /> }]
+      children: [{ index: true, path: HOME, element: <ProductList /> }]
     }
   ])
   return element

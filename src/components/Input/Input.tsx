@@ -2,10 +2,7 @@ import { InputHTMLAttributes } from 'react'
 import type { FieldValues, FieldPath, UseFormRegister } from 'react-hook-form'
 
 export interface InputProps<TFieldValues extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
-  type?: React.HTMLInputTypeAttribute
-  placeholder: string
   name: FieldPath<TFieldValues>
-  children?: React.ReactNode
   errorMessage?: string
   register: UseFormRegister<TFieldValues>
 }

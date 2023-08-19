@@ -13,11 +13,12 @@ import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 import { ResponseError } from '~/types/utils.type'
 import { toast } from 'react-toastify'
 import { useAuth } from '~/contexts/auth.context'
+import { path } from '~/constants/path'
 
 export type FormRegister = RegisterSchema
 
 const RegisterPage = () => {
-  const { setIsLoggedIn } = useAuth()
+  const { setIsLoggedIn, setUserInfo } = useAuth()
   const navigate = useNavigate()
   const {
     register,
@@ -37,8 +38,9 @@ const RegisterPage = () => {
   const handleSignUp = (data: FormRegister) => {
     const payload = omit(data, ['cpassword'])
     registerMutation.mutate(payload, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsLoggedIn(true)
+        setUserInfo(data.data.data.user)
         navigate('/')
         toast.success('Đăng ký tài khoản thành công')
       },
@@ -88,13 +90,13 @@ const RegisterPage = () => {
           />
         </Field>
 
-        <Button type='submit' className='my-4'>
+        <Button type='submit' className='px-6 py-3 my-4' isLoading={registerMutation.isLoading}>
           Đăng ký
         </Button>
 
         <div className='text-center'>
           Bạn đã có tài khoản?
-          <Link to='/login' className='ml-2 font-medium transition text-primary hover:text-third'>
+          <Link to={path.LOGIN} className='ml-2 font-medium transition text-primary hover:text-third'>
             Đăng nhập
           </Link>
         </div>

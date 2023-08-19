@@ -1,12 +1,14 @@
 import axios, { AxiosError, HttpStatusCode } from 'axios'
 import { toast } from 'react-toastify'
+import { path } from '~/constants/path'
+import { clearLocalStorage, getAccessToken, getUserInfoFromStorage, setAccessToken, setUserInfoToStorage } from './auth'
 import { AuthResponse } from '~/types/auth.type'
-import { clearAccessToken, getAccessToken, setAccessToken } from './auth'
 
 let accessToken = getAccessToken()
+let userInfo = getUserInfoFromStorage()
 
 const instance = axios.create({
-  baseURL: 'https://api-ecom.duthanhduoc.com/',
+  baseURL: 'https://api-ecom.duthanhduoc.com',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -26,11 +28,13 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     const { url } = response.config
-    if (url === 'register' || url === 'login') {
-      accessToken = (response.data as AuthResponse).data?.access_token // Lưu vào RAM
-      setAccessToken(accessToken) // Lấy từ RAM thay vì gọi getAccessToken() để lấy từ Storage
-    } else if (url === 'logout') {
-      ;(accessToken = ''), clearAccessToken()
+    if (url === path.REGISTER || url === path.LOGIN) {
+      accessToken = (response.data as AuthResponse).data.access_token // Lưu vào RAM
+      userInfo = (response.data as AuthResponse).data.user
+      setAccessToken(accessToken)
+      setUserInfoToStorage(userInfo)
+    } else if (url === path.LOGOUT) {
+      ;(accessToken = ''), (userInfo = null), clearLocalStorage()
     }
     return response
   },
