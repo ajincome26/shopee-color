@@ -57,6 +57,7 @@ const MainHeader = () => {
           <div className='flex items-center justify-end gap-3 lg:gap-5'>
             <Popover
               className='flex flex-col w-40 bg-white rounded-sm shadow-lg text-secondary'
+              hoverClass='hover:text-gray'
               popover={
                 <>
                   <span className='px-3 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>Tiếng Việt</span>
@@ -72,6 +73,7 @@ const MainHeader = () => {
             {isLoggedIn ? (
               <Popover
                 className='flex flex-col w-40 bg-white rounded-sm shadow-lg text-secondary'
+                hoverClass='hover:text-gray'
                 placement='bottom-end'
                 popover={
                   <>

@@ -21,6 +21,9 @@ export default {
         'overlay-30': 'rgba(0,0,0,0.3)',
         'overlay-60': 'rgba(0,0,0,0.6)',
         'overlay-80': 'rgba(0,0,0,0.8)'
+      },
+      scale: {
+        101: '1.01'
       }
     }
   },

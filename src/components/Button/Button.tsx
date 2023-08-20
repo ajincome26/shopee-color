@@ -14,7 +14,7 @@ const Button = ({ type, children, isLoading, to, className }: ButtonProps) => {
         <button
           type={type || 'button'}
           disabled={isLoading}
-          className={`${className} flex items-center justify-center font-medium text-white transition duration-300 ease-linear bg-auto rounded-md md:w-56 md:mx-auto bg-gradient-to-br hover:opacity-90 from-third to-fourth hover:bg-gradient-to-tl focus:ring-4 focus:outline-none focus:ring-teal-300 text-base`}
+          className={`${className} flex items-center justify-center font-medium text-white transition duration-300 ease-linear bg-auto rounded-md bg-gradient-to-br hover:opacity-90 from-third to-fourth hover:bg-gradient-to-tl focus:ring-4 focus:outline-none focus:ring-teal-300 text-base`}
         >
           {isLoading ? (
             <RotatingLines strokeColor='white' strokeWidth='5' animationDuration='0.5' width='25' visible={true} />
@@ -29,7 +29,7 @@ const Button = ({ type, children, isLoading, to, className }: ButtonProps) => {
     <button
       type={type || 'button'}
       disabled={isLoading}
-      className={`${className} flex items-center justify-center font-medium text-white transition duration-300 ease-linear bg-auto rounded-md md:w-56 md:mx-auto bg-gradient-to-br hover:opacity-90 from-third to-fourth hover:bg-gradient-to-tl focus:ring-4 focus:outline-none focus:ring-teal-300 text-base`}
+      className={`${className} flex items-center justify-center font-medium text-white transition duration-300 ease-linear bg-auto rounded-md bg-gradient-to-br hover:opacity-90 from-third to-fourth hover:bg-gradient-to-tl focus:ring-4 focus:outline-none focus:ring-teal-300 text-base`}
     >
       {isLoading ? (
         <RotatingLines strokeColor='white' strokeWidth='5' animationDuration='0.5' width='24' visible={true} />

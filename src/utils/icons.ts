@@ -9,7 +9,7 @@ import {
   AiOutlineStar
 } from 'react-icons/ai'
 import { TbWorld } from 'react-icons/tb'
-import { PiCaretDownBold } from 'react-icons/pi'
+import { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi'
 import { HiOutlineSearch } from 'react-icons/hi'
 import { BsListUl } from 'react-icons/bs'
 import { LiaFilterSolid } from 'react-icons/lia'
@@ -28,5 +28,7 @@ export default {
   BsListUl,
   LiaFilterSolid,
   AiFillStar,
-  AiOutlineStar
+  AiOutlineStar,
+  PiCaretLeftBold,
+  PiCaretRightBold
 }

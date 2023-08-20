@@ -19,9 +19,19 @@ interface PopoverProps {
   className?: string
   as?: ElementType
   placement?: Placement
+  hoverClass?: string
+  isFloatingArrow?: boolean
 }
 
-const Popover = ({ children, popover, className, as: Element = 'div', placement }: PopoverProps) => {
+const Popover = ({
+  children,
+  popover,
+  className,
+  as: Element = 'div',
+  placement,
+  hoverClass,
+  isFloatingArrow = true
+}: PopoverProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const arrowRef = useRef(null)
   const { refs, context, x, y, strategy, middlewareData } = useFloating({
@@ -45,7 +55,8 @@ const Popover = ({ children, popover, className, as: Element = 'div', placement 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover])
   return (
     <Element
-      className='flex items-center gap-1 transition cursor-pointer lg:gap-2 hover:text-gray'
+      // className='flex items-center gap-1 transition cursor-pointer lg:gap-2'
+      className={`${hoverClass} flex items-center gap-1 transition cursor-pointer lg:gap-2`}
       ref={refs.setReference}
       {...getReferenceProps()}
     >
@@ -68,15 +79,18 @@ const Popover = ({ children, popover, className, as: Element = 'div', placement 
               exit={{ opacity: 0, transform: 'scale(0)' }}
               transition={{ duration: 0.3 }}
             >
-              <FloatingArrow
-                style={{
-                  transform: 'translateY(-3%)'
-                }}
-                ref={arrowRef}
-                context={context}
-                fill='white'
-                tipRadius={1}
-              />
+              {isFloatingArrow ? (
+                <FloatingArrow
+                  style={{
+                    transform: 'translateY(-3%)'
+                  }}
+                  ref={arrowRef}
+                  context={context}
+                  fill='white'
+                  tipRadius={1}
+                />
+              ) : null}
+
               {popover}
             </motion.div>
           )}
