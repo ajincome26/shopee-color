@@ -6,7 +6,8 @@ import {
   AiOutlineEyeInvisible,
   AiOutlineShoppingCart,
   AiFillStar,
-  AiOutlineStar
+  AiOutlineStar,
+  AiFillCaretRight
 } from 'react-icons/ai'
 import { TbWorld } from 'react-icons/tb'
 import { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi'
@@ -30,5 +31,6 @@ export default {
   AiFillStar,
   AiOutlineStar,
   PiCaretLeftBold,
-  PiCaretRightBold
+  PiCaretRightBold,
+  AiFillCaretRight
 }

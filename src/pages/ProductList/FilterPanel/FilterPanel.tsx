@@ -1,10 +1,12 @@
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import { Button } from '~/components/Button'
 import { InputSearch } from '~/components/Input'
+import { path } from '~/constants/path'
 import icons from '~/utils/icons'
 import { handleStar } from '~/utils/utils'
 
-const { BsListUl, LiaFilterSolid } = icons
+const { BsListUl, LiaFilterSolid, AiFillCaretRight } = icons
 
 interface PriceValue {
   minValue: string
@@ -25,9 +27,12 @@ const FilterPanel = ({ className }: Props) => {
         <h2>Tất cả danh mục</h2>
       </div>
       <div className='flex flex-col gap-4 p-4'>
-        <span>Điện thoại</span>
-        <span>Đồng hồ</span>
-        <span>Áo thun</span>
+        <Link to={path.HOME} className='relative flex items-center gap-2 font-medium text-third'>
+          <AiFillCaretRight className='absolute -left-5' />
+          Điện thoại
+        </Link>
+        <Link to={path.HOME}>Đồng hồ</Link>
+        <Link to={path.HOME}>Áo thun</Link>
       </div>
       <div className='flex items-center gap-3 pb-4 mt-3 font-semibold border-b border-b-grayBox'>
         <LiaFilterSolid />
@@ -53,26 +58,32 @@ const FilterPanel = ({ className }: Props) => {
               register={register}
             />
           </div>
-          <Button type='submit' className='w-full py-2 mt-4'>
+          <Button type='submit' className='w-full py-2 mt-4 text-sm uppercase'>
             Áp dụng
           </Button>
         </form>
       </div>
       <div className='flex flex-col gap-3 py-4 border-b md:px-4 border-b-grayBox'>
         <h3>Đánh giá</h3>
-        <div className='flex flex-col gap-1 px-5 text-sm lg:text-base lg:gap-2 lg:px-5 md:px-0'>
-          {Array(5)
+        <div className='flex flex-col gap-1 px-5 text-sm lg:text-base lg:px-5 md:px-0'>
+          <div className='flex items-center gap-1 mb-2 transition cursor-pointer lg:gap-2 hover:opacity-80'>
+            {handleStar(5)}
+          </div>
+          {Array(4)
             .fill(0)
             .map((_, index) => (
               <div
                 key={index}
                 className='flex items-center gap-1 mb-1 transition cursor-pointer lg:gap-2 hover:opacity-80'
               >
-                {handleStar(5 - index)}
+                {handleStar(4 - index)}
+                trở lên
               </div>
             ))}
         </div>
-        <Button type='submit' className='w-full py-2 md:mx-0'>
+      </div>
+      <div className='md:px-4'>
+        <Button type='submit' className='w-full py-2 my-4 text-sm uppercase'>
           Xóa tất cả
         </Button>
       </div>

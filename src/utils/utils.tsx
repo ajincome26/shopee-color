@@ -17,9 +17,9 @@ export const handleStar = (stars: number | string, size?: number) => {
   const starsAmount = Math.round(+stars)
   for (let i = 1; i <= 5; i++) {
     if (starsAmount >= i) {
-      starsArray.push(<AiFillStar color='#0891b2' key={i} size={size} />)
+      starsArray.push(<AiFillStar color='#0891b2' key={i} size={size || 16} />)
     } else {
-      starsArray.push(<AiOutlineStar color='#0891b2' key={i} size={size} />)
+      starsArray.push(<AiOutlineStar color='#0891b2' key={i} size={size || 16} />)
     }
   }
   return starsArray

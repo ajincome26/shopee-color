@@ -146,7 +146,7 @@ const MainHeader = () => {
           </Link>
           <form onSubmit={handleSubmit(handleSearch)} className='relative w-full'>
             <InputSearch
-              className='px-4 py-3 text-grayDark placeholder:uppercase bg-grayField hover:border-white focus:border-white focus:bg-white'
+              className='py-3 pl-4 pr-16 text-grayDark placeholder:uppercase bg-grayField hover:border-white focus:border-white focus:bg-white'
               name='searchValue'
               placeholder='iPhone 14 Pro Max'
               register={register}

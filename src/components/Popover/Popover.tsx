@@ -55,7 +55,6 @@ const Popover = ({
   const { getReferenceProps, getFloatingProps } = useInteractions([hover])
   return (
     <Element
-      // className='flex items-center gap-1 transition cursor-pointer lg:gap-2'
       className={`${hoverClass} flex items-center gap-1 transition cursor-pointer lg:gap-2`}
       ref={refs.setReference}
       {...getReferenceProps()}

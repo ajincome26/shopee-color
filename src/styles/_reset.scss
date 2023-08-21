@@ -36,6 +36,15 @@ select {
   font: inherit;
   outline: none;
 }
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+select option {
+  background-color: #e0e7f0;
+  width: 100%;
+}
 p,
 h1,
 h2,

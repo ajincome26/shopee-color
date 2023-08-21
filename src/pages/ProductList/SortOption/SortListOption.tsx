@@ -1,6 +1,5 @@
 // import { useMutation, useQuery } from '@tanstack/react-query'
 // import { getProducts } from '~/apis/auth.api'
-import { Popover } from '~/components/Popover'
 // import { useQueryString } from '~/hooks/useQueryString'
 import icons from '~/utils/icons'
 import { ProductItem } from './ProductItem'
@@ -23,16 +22,16 @@ const SortListOption = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      <div className='flex items-center flex-wrap sm:flex-col sm:items-start lg:items-center lg:flex-row lg:justify-between bg-[#dde0e5] mt-3 text-secondary'>
+      <div className='flex items-center flex-wrap sm:flex-col sm:items-start lg:items-center lg:flex-row lg:justify-between bg-[#dde0e5] py-3 text-secondary'>
         <div className='flex flex-col lg:items-center lg:flex-row'>
           <div className='px-3 pt-3 lg:pt-0'>Sắp xếp theo</div>
 
           <div className='flex flex-wrap items-center gap-2 p-3'>
             <button className='h-10 px-4 py-2 text-white rounded-md bg-primary'>Mới nhất</button>
-            <button className='h-10 px-4 py-2 bg-white rounded-md'>Phổ biến</button>
-            <button className='h-10 px-4 py-2 bg-white rounded-md'>Bán chạy</button>
-            <Popover
-              className='flex flex-col w-48 bg-white rounded-sm shadow-lg'
+            <button className='h-10 px-4 py-2 bg-white rounded-md hover:bg-opacity-80'>Phổ biến</button>
+            <button className='h-10 px-4 py-2 bg-white rounded-md hover:bg-opacity-80'>Bán chạy</button>
+            {/* <Popover
+              className='flex flex-col w-48 bg-white rounded-md shadow-lg'
               hoverClass='hover:bg-opacity-80 bg-white rounded-md'
               isFloatingArrow={false}
               placement='bottom-end'
@@ -50,11 +49,25 @@ const SortListOption = ({ className }: Props) => {
                 </>
               }
             >
-              <div className='flex items-center justify-between w-48 h-10 px-4 py-2 md:w-32 xl:w-48'>
+              <div className='flex items-center justify-between w-48 h-10 px-4 py-2 md:grow xl:grow-0 xl:w-48'>
                 <span>Giá</span>
                 <PiCaretDownBold />
               </div>
-            </Popover>
+            </Popover> */}
+            <div className='relative'>
+              <select
+                name='price'
+                value=''
+                className='flex items-center justify-between w-48 h-10 px-4 py-2 bg-white rounded-md outline-none cursor-pointer md:grow xl:grow-0 xl:w-48 hover:bg-opacity-80'
+              >
+                <option value='optionTitle'>Giá</option>
+                <option value='tdc'>Giá: Thấp đến cao</option>
+                <option value='cdt'>Giá: Cao đến thấp</option>
+              </select>
+              <div className='absolute top-1/2 right-4 translate-y-[-50%] cursor-pointer'>
+                <PiCaretDownBold />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -64,7 +77,7 @@ const SortListOption = ({ className }: Props) => {
             <span>/3</span>
           </div>
           <div className='flex items-center shadow-lg'>
-            <button className='flex items-center justify-center w-8 h-8 bg-grayBox' disabled>
+            <button className='flex items-center justify-center w-8 h-8 cursor-not-allowed bg-grayBox'>
               <PiCaretLeftBold />
             </button>
             <button className='flex items-center justify-center w-8 h-8 bg-white hover:opacity-80'>
@@ -73,7 +86,7 @@ const SortListOption = ({ className }: Props) => {
           </div>
         </div>
       </div>
-      <div className='grid grid-cols-1 gap-3 my-4 md:grid-cols-3 xl:grid-cols-4 lg:grid-cols-5 text-secondary'>
+      <div className='grid grid-cols-1 min-[412px]:grid-cols-2 gap-3 pb-4 mt-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 text-secondary'>
         <ProductItem />
         <ProductItem />
         <ProductItem />
