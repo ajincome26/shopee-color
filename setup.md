@@ -252,6 +252,26 @@ export default {
 npm i prettier-plugin-tailwindcss
 ```
 
+=> Cài thêm package hỗ trợ truncate:
+
+```bash
+@tailwindcss/line-clamp
+```
+
+File **tailwind.config.js**:
+
+```ts
+module.exports = {
+  // ...
+  plugins: [
+    // ...
+    require('@tailwindcss/line-clamp')
+  ]
+}
+```
+
+Used : _line-clamp-n_
+
 ### Cấu hình React Router
 
 ```bash

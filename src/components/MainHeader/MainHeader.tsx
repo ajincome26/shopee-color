@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/auth.context'
 import { SearchSchema } from '~/utils/schema'
 import { Popover } from '../Popover'
-import { logoutAccount } from '~/apis/auth.api'
 import { Link } from 'react-router-dom'
 import { InputSearch } from '../Input'
 import { Button } from '../Button'
 import { toast } from 'react-toastify'
 import { path } from '~/constants/path'
+import authApi from '~/apis/auth.api'
 
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutlineSearch, AiOutlineShoppingCart } =
   icons
@@ -21,7 +21,7 @@ const MainHeader = () => {
   const { register, handleSubmit } = useForm<FormSearch>()
 
   const logoutMutation = useMutation({
-    mutationFn: logoutAccount,
+    mutationFn: authApi.logoutAccount,
     onSuccess: () => {
       setIsLoggedIn(false)
       setUserInfo(null)
@@ -168,14 +168,14 @@ const MainHeader = () => {
                         <div className='shadow-md w-9 h-9 shrink-0'>
                           <img src='https://source.unsplash.com/random' alt='' className='object-cover w-full h-full' />
                         </div>
-                        <p className='truncate-1'>Set 20 bút gel HAPPI viết gel bút abcdascmsacksac lámlcmsac</p>
+                        <p className='line-clamp-1'>Set 20 bút gel HAPPI viết gel bút abcdascmsacksac lámlcmsac</p>
                         <div className='text-primary'>14.500</div>
                       </div>
                       <div className='flex items-start gap-3 p-3 hover:bg-slate-50'>
                         <div className='shadow-md w-9 h-9 shrink-0'>
                           <img src='https://source.unsplash.com/random' alt='' className='object-cover w-full h-full' />
                         </div>
-                        <p className='truncate-1'>Set 20 bút gel HAPPI viết gel bút abcdascmsacksac lámlcmsac</p>
+                        <p className='line-clamp-1'>Set 20 bút gel HAPPI viết gel bút abcdascmsacksac lámlcmsac</p>
                         <div className='text-primary'>14.500</div>
                       </div>
                     </div>

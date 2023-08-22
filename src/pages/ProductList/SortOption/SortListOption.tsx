@@ -1,6 +1,6 @@
-// import { useMutation, useQuery } from '@tanstack/react-query'
-// import { getProducts } from '~/apis/auth.api'
-// import { useQueryString } from '~/hooks/useQueryString'
+import { useQuery } from '@tanstack/react-query'
+import productApi from '~/apis/product.api'
+import { useQueryParams } from '~/hooks/useQueryParams'
 import icons from '~/utils/icons'
 import { ProductItem } from './ProductItem'
 
@@ -12,13 +12,12 @@ interface Props {
 }
 
 const SortListOption = ({ className }: Props) => {
-  // const queryString: { page?: string } = useQueryString()
-  // const page = Number(queryString.page) || 1
+  const queryParams = useQueryParams()
 
-  // const productsQuery = useQuery({
-  //   queryKey: ['products', page],
-  //   queryFn: () => getProducts(page, LIMIT)
-  // })
+  const productsQuery = useQuery({
+    queryKey: ['products', queryParams],
+    queryFn: () => productApi.getProducts(queryParams)
+  })
 
   return (
     <div className={className}>
@@ -59,10 +58,11 @@ const SortListOption = ({ className }: Props) => {
                 name='price'
                 value=''
                 className='flex items-center justify-between w-48 h-10 px-4 py-2 bg-white rounded-md outline-none cursor-pointer md:grow xl:grow-0 xl:w-48 hover:bg-opacity-80'
+                onChange={() => {}}
               >
                 <option value='optionTitle'>Giá</option>
-                <option value='tdc'>Giá: Thấp đến cao</option>
-                <option value='cdt'>Giá: Cao đến thấp</option>
+                <option value='asc'>Giá: Thấp đến cao</option>
+                <option value='desc'>Giá: Cao đến thấp</option>
               </select>
               <div className='absolute top-1/2 right-4 translate-y-[-50%] cursor-pointer'>
                 <PiCaretDownBold />
@@ -87,11 +87,7 @@ const SortListOption = ({ className }: Props) => {
         </div>
       </div>
       <div className='grid grid-cols-1 min-[412px]:grid-cols-2 gap-3 pb-4 mt-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 text-secondary'>
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
+        {productsQuery.data?.data.data.products.map((item) => <ProductItem key={item._id} product={item} />)}
       </div>
     </div>
   )

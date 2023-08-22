@@ -7,12 +7,12 @@ import { Input, InputPassword } from '~/components/Input'
 import { Label } from '~/components/Label'
 import { LoginSchema, loginSchema } from '~/utils/schema'
 import { useMutation } from '@tanstack/react-query'
-import { loginAccount } from '~/apis/auth.api'
 import { toast } from 'react-toastify'
 import { isAxiosUnprocessableEntityError } from '~/utils/utils'
 import { ResponseError } from '~/types/utils.type'
 import { useAuth } from '~/contexts/auth.context'
 import { path } from '~/constants/path'
+import authApi from '~/apis/auth.api'
 
 type FormLogin = LoginSchema
 
@@ -28,7 +28,7 @@ const LoginPage = () => {
   } = useForm<FormLogin>({ resolver: yupResolver(loginSchema) })
 
   const loginMutation = useMutation({
-    mutationFn: (body: FormLogin) => loginAccount(body)
+    mutationFn: (body: FormLogin) => authApi.loginAccount(body)
   })
 
   const handleLogin = (data: FormLogin) => {

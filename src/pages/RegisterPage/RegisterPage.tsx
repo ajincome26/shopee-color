@@ -2,7 +2,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { registerSchema, RegisterSchema } from '~/utils/schema'
-import { registerAccount } from '~/apis/auth.api'
 import { Link, useNavigate } from 'react-router-dom'
 import { Label } from '~/components/Label'
 import { Input, InputPassword } from '~/components/Input'
@@ -14,6 +13,7 @@ import { ResponseError } from '~/types/utils.type'
 import { toast } from 'react-toastify'
 import { useAuth } from '~/contexts/auth.context'
 import { path } from '~/constants/path'
+import authApi from '~/apis/auth.api'
 
 export type FormRegister = RegisterSchema
 
@@ -31,7 +31,7 @@ const RegisterPage = () => {
 
   const registerMutation = useMutation({
     mutationFn: (body: Omit<FormRegister, 'cpassword'>) => {
-      return registerAccount(body)
+      return authApi.registerAccount(body)
     }
   })
 
