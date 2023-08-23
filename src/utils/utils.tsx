@@ -1,7 +1,6 @@
 import { AxiosError, HttpStatusCode, isAxiosError } from 'axios'
 import React from 'react'
 import icons from './icons'
-import { v1 } from 'uuid'
 
 const { AiOutlineStar, AiFillStar } = icons
 
@@ -13,7 +12,20 @@ export function isAxiosUnprocessableEntityError<TFormError>(error: unknown): err
   return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
 }
 
-export const handleStar = (stars: number | string, size?: number) => {
+// Format Number Used Intl
+const formatCurrency = (currency: number) => {
+  return Intl.NumberFormat('de-DE', {}).format(currency)
+}
+// replace handleDotPrice
+const formatNumberToSocialStyle = (value: number) => {
+  return Intl.NumberFormat('en', { notation: 'compact', maximumSignificantDigits: 2 })
+    .format(value)
+    .replace('.', ',')
+    .toLowerCase()
+}
+// replace handleSold
+
+const handleStar = (stars: number, size?: number) => {
   const starsArray: React.ReactNode[] = []
   const starsAmount = +stars
   for (let i = 1; i <= 5; i++) {
@@ -25,46 +37,71 @@ export const handleStar = (stars: number | string, size?: number) => {
   }
   return starsArray
 }
-export const handleStarProduct = (stars: number | string, size?: number) => {
+const handleRating = (rating: number, size?: number) => {
   const starsArray: React.ReactNode[] = []
-  const starsAmount = Math.floor(+stars)
+  const starsAmount = Math.floor(+rating)
   for (let i = 1; i <= 5; i++) {
     if (starsAmount >= i) {
       starsArray.push(<AiFillStar color='#0891b2' key={i} size={size || 16} />)
     } else {
-      starsArray.push(
-        <div className='relative' key={i}>
-          <div className='relative z-10 w-1/2 overflow-hidden'>
-            <AiFillStar color='#0891b2' size={size || 16} />
+      if (i - rating < 1) {
+        starsArray.push(
+          <div className='relative' key={i}>
+            <div
+              className={`relative z-10 overflow-hidden`}
+              style={{
+                width: `${(rating - starsAmount) * 100}%`
+              }}
+            >
+              <AiFillStar color='#0891b2' size={size || 16} />
+            </div>
+            <div className='absolute top-0 right-0'>
+              <AiOutlineStar color='#d3d6d6' size={size || 16} />
+            </div>
           </div>
-          <div className='absolute top-0 right-0'>
-            <AiOutlineStar color='#d3d6d6' size={size || 16} />
-          </div>
-        </div>
-      )
+        )
+      } else {
+        starsArray.push(<AiOutlineStar color='#d3d6d6' key={i} size={size || 16} />)
+      }
     }
   }
-  starsArray.fill(<AiOutlineStar color='#d3d6d6' key={v1()} size={size || 16} />, starsAmount + 1)
   return starsArray
 }
-
-export const handleDotPrice = (price: number) => {
+const handleDotPrice = (price: number) => {
   if (price > 9999 && price < 1000000) {
     return `${Math.floor(price / 1000)}.${price % 1000 === 0 ? '000' : price % 1000}`
+  } else if (price >= 1000000 && price < 1000000000) {
+    const priceToString = String(price)
+    return `${Math.floor(price / 1000000)}.${
+      Number(priceToString.slice(0, priceToString.length - 3)) % 1000 === 0
+        ? '000'
+        : Number(priceToString.slice(0, priceToString.length - 3)) % 1000
+    }.${priceToString.slice(-3)}`
   }
-  // else if (price >= 100000 && price < 999999) {
-  //   return `${Math.floor(price/100000)}`
-  // }
   return price
 }
-
-export const handleSold = (sold: number) => {
+const handleSold = (sold: number) => {
   if (sold > 999 && sold < 1000000) {
-    // return `${sold/1000}.${sold%1000 === 0 ? 'k' : Math.round(sold%1000)}`
+    return `${Math.floor(sold / 1000)}${String(sold).slice(-3).slice(0, 1) === '0' ? '' : ','}${
+      String(sold).slice(-3).slice(0, 1) === '0' ? '' : String(sold).slice(-3).slice(0, 1)
+    }k`
   }
+  return sold
+}
+const handleDiscount = (beforePrice: number, price: number) => {
+  if (beforePrice < price) {
+    return Math.round(((price - beforePrice) / beforePrice) * 100)
+  }
+  const percent = ((beforePrice - price) / beforePrice) * 100
+  return Math.round(percent)
 }
 
-export const handleDiscount = (beforePrice: number, price: number) => {
-  const percent = ((beforePrice - price) / price) * 100
-  return Math.round(percent)
+export {
+  handleStar,
+  handleRating,
+  handleDotPrice,
+  handleSold,
+  handleDiscount,
+  formatCurrency,
+  formatNumberToSocialStyle
 }

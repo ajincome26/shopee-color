@@ -1,17 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import productApi from '~/apis/product.api'
+import { Pagination } from '~/components/Pagination'
 import { useQueryParams } from '~/hooks/useQueryParams'
 import icons from '~/utils/icons'
 import { ProductItem } from './ProductItem'
 
 const { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } = icons
 
-// const LIMIT = 20
 interface Props {
   className?: string
 }
 
 const SortListOption = ({ className }: Props) => {
+  const [currentPage, setCurrentPage] = useState(1)
   const queryParams = useQueryParams()
 
   const productsQuery = useQuery({
@@ -89,6 +91,7 @@ const SortListOption = ({ className }: Props) => {
       <div className='grid grid-cols-1 min-[412px]:grid-cols-2 gap-3 pb-4 mt-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 text-secondary'>
         {productsQuery.data?.data.data.products.map((item) => <ProductItem key={item._id} product={item} />)}
       </div>
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={20} />
     </div>
   )
 }

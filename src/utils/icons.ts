@@ -12,7 +12,7 @@ import {
 import { TbWorld } from 'react-icons/tb'
 import { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi'
 import { HiOutlineSearch } from 'react-icons/hi'
-import { BsListUl } from 'react-icons/bs'
+import { BsListUl, BsThreeDots } from 'react-icons/bs'
 import { LiaFilterSolid } from 'react-icons/lia'
 
 export default {
@@ -32,5 +32,6 @@ export default {
   AiOutlineStar,
   PiCaretLeftBold,
   PiCaretRightBold,
-  AiFillCaretRight
+  AiFillCaretRight,
+  BsThreeDots
 }
