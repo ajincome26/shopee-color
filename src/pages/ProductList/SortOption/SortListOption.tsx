@@ -1,26 +1,52 @@
-import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
-import productApi from '~/apis/product.api'
-import { Pagination } from '~/components/Pagination'
-import { useQueryParams } from '~/hooks/useQueryParams'
+import classNames from 'classnames'
+import { omit } from 'lodash'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
+import { path } from '~/constants/path'
+import { order as orderConst, sortBy } from '~/constants/product'
+import { ProductListParams } from '~/types/product.type'
 import icons from '~/utils/icons'
-import { ProductItem } from './ProductItem'
+import { QueryParamsConfig } from '../ProductList'
 
 const { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } = icons
 
 interface Props {
   className?: string
+  queryParamsConfig: QueryParamsConfig
+  pageSize: number
 }
 
-const SortListOption = ({ className }: Props) => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const queryParams = useQueryParams()
+const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
+  const navigate = useNavigate()
+  const page = Number(queryParamsConfig.page)
+  const { sort_by = sortBy.CREATED_AT, order = '' } = queryParamsConfig
 
-  const productsQuery = useQuery({
-    queryKey: ['products', queryParams],
-    queryFn: () => productApi.getProducts(queryParams)
-  })
-
+  const isActiveSortBy = (sortByValue: Exclude<ProductListParams['sort_by'], undefined>) => {
+    return sortByValue === sort_by
+  }
+  const handleNavigateSortBy = (sortByValue: Exclude<ProductListParams['sort_by'], undefined>) => {
+    return navigate({
+      pathname: path.HOME,
+      search: createSearchParams(
+        omit(
+          {
+            ...queryParamsConfig,
+            sort_by: sortByValue
+          },
+          'order'
+        )
+      ).toString()
+    })
+  }
+  const handleNavigatePrice = (orderValue: Exclude<ProductListParams['order'], undefined>) => {
+    return navigate({
+      pathname: path.HOME,
+      search: createSearchParams({
+        ...queryParamsConfig,
+        sort_by: sortBy.PRICE,
+        order: orderValue
+      }).toString()
+    })
+  }
   return (
     <div className={className}>
       <div className='flex items-center flex-wrap sm:flex-col sm:items-start lg:items-center lg:flex-row lg:justify-between bg-[#dde0e5] py-3 text-secondary'>
@@ -28,46 +54,54 @@ const SortListOption = ({ className }: Props) => {
           <div className='px-3 pt-3 lg:pt-0'>Sắp xếp theo</div>
 
           <div className='flex flex-wrap items-center gap-2 p-3'>
-            <button className='h-10 px-4 py-2 text-white rounded-md bg-primary'>Mới nhất</button>
-            <button className='h-10 px-4 py-2 bg-white rounded-md hover:bg-opacity-80'>Phổ biến</button>
-            <button className='h-10 px-4 py-2 bg-white rounded-md hover:bg-opacity-80'>Bán chạy</button>
-            {/* <Popover
-              className='flex flex-col w-48 bg-white rounded-md shadow-lg'
-              hoverClass='hover:bg-opacity-80 bg-white rounded-md'
-              isFloatingArrow={false}
-              placement='bottom-end'
-              popover={
-                <>
-                  <div className='w-full px-4 py-2 text-sm cursor-pointer hover:text-primary hover:bg-slate-50'>
-                    Giá
-                  </div>
-                  <div className='w-full px-4 py-2 text-sm cursor-pointer hover:text-primary hover:bg-slate-50'>
-                    Giá: Thấp đến cao
-                  </div>
-                  <div className='w-full px-4 py-2 text-sm cursor-pointer hover:text-primary hover:bg-slate-50'>
-                    Giá: Cao đến thấp
-                  </div>
-                </>
-              }
+            <button
+              className={classNames('h-10 px-4 py-2 rounded-md hover:bg-opacity-80', {
+                'bg-primary text-white': isActiveSortBy('createdAt'),
+                'bg-white': !isActiveSortBy('createdAt')
+              })}
+              onClick={() => navigate('/')}
             >
-              <div className='flex items-center justify-between w-48 h-10 px-4 py-2 md:grow xl:grow-0 xl:w-48'>
-                <span>Giá</span>
-                <PiCaretDownBold />
-              </div>
-            </Popover> */}
+              Mới nhất
+            </button>
+            <button
+              className={classNames('h-10 px-4 py-2 rounded-md hover:bg-opacity-80', {
+                'bg-primary text-white': isActiveSortBy('view'),
+                'bg-white': !isActiveSortBy('view')
+              })}
+              onClick={() => handleNavigateSortBy('view')}
+            >
+              Phổ biến
+            </button>
+            <button
+              className={classNames('h-10 px-4 py-2 rounded-md hover:bg-opacity-80', {
+                'bg-primary text-white': isActiveSortBy('sold'),
+                'bg-white': !isActiveSortBy('sold')
+              })}
+              onClick={() => handleNavigateSortBy('sold')}
+            >
+              Bán chạy
+            </button>
             <div className='relative'>
               <select
-                name='price'
-                value=''
-                className='flex items-center justify-between w-48 h-10 px-4 py-2 bg-white rounded-md outline-none cursor-pointer md:grow xl:grow-0 xl:w-48 hover:bg-opacity-80'
-                onChange={() => {}}
+                className={classNames(
+                  'flex items-center justify-between w-48 h-10 px-4 py-2 rounded-md outline-none cursor-pointer md:grow xl:grow-0 xl:w-48 hover:bg-opacity-80',
+                  { 'bg-primary text-white': isActiveSortBy('price'), 'bg-white': !isActiveSortBy('price') }
+                )}
+                value={order}
+                onChange={(e) => handleNavigatePrice(e.target.value as Exclude<ProductListParams['order'], undefined>)}
               >
-                <option value='optionTitle'>Giá</option>
-                <option value='asc'>Giá: Thấp đến cao</option>
-                <option value='desc'>Giá: Cao đến thấp</option>
+                <option value='' className='bg-white text-secondary'>
+                  Giá
+                </option>
+                <option value={orderConst.ASC} className='bg-white text-secondary'>
+                  Giá: Thấp đến cao
+                </option>
+                <option value={orderConst.DESC} className='bg-white text-secondary'>
+                  Giá: Cao đến thấp
+                </option>
               </select>
               <div className='absolute top-1/2 right-4 translate-y-[-50%] cursor-pointer'>
-                <PiCaretDownBold />
+                <PiCaretDownBold color={order === '' ? '' : 'white'} />
               </div>
             </div>
           </div>
@@ -75,23 +109,49 @@ const SortListOption = ({ className }: Props) => {
 
         <div className='flex flex-wrap items-center gap-3 px-3'>
           <div className='inline-block'>
-            <span className='text-primary'>1</span>
-            <span>/3</span>
+            <span className='text-primary'>{page}</span>
+            <span>/{pageSize}</span>
           </div>
           <div className='flex items-center shadow-lg'>
-            <button className='flex items-center justify-center w-8 h-8 cursor-not-allowed bg-grayBox'>
-              <PiCaretLeftBold />
-            </button>
-            <button className='flex items-center justify-center w-8 h-8 bg-white hover:opacity-80'>
-              <PiCaretRightBold />
-            </button>
+            {page === 1 ? (
+              <span className='flex items-center justify-center w-8 h-8 cursor-not-allowed bg-grayBox'>
+                <PiCaretLeftBold />
+              </span>
+            ) : (
+              <Link
+                to={{
+                  pathname: path.HOME,
+                  search: createSearchParams({
+                    ...queryParamsConfig,
+                    page: (page - 1).toString()
+                  }).toString()
+                }}
+                className='flex items-center justify-center w-8 h-8 bg-white hover:opacity-80'
+              >
+                <PiCaretLeftBold />
+              </Link>
+            )}
+            {page === pageSize ? (
+              <span className='flex items-center justify-center w-8 h-8 cursor-not-allowed bg-grayBox'>
+                <PiCaretRightBold />
+              </span>
+            ) : (
+              <Link
+                to={{
+                  pathname: path.HOME,
+                  search: createSearchParams({
+                    ...queryParamsConfig,
+                    page: (page + 1).toString()
+                  }).toString()
+                }}
+                className='flex items-center justify-center w-8 h-8 bg-white hover:opacity-80'
+              >
+                <PiCaretRightBold />
+              </Link>
+            )}
           </div>
         </div>
       </div>
-      <div className='grid grid-cols-1 min-[412px]:grid-cols-2 gap-3 pb-4 mt-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 text-secondary'>
-        {productsQuery.data?.data.data.products.map((item) => <ProductItem key={item._id} product={item} />)}
-      </div>
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={20} />
     </div>
   )
 }

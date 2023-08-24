@@ -1,30 +1,28 @@
 import classNames from 'classnames'
-import { Link } from 'react-router-dom'
+import { createSearchParams, Link } from 'react-router-dom'
+import { path } from '~/constants/path'
+import { QueryParamsConfig } from '~/pages/ProductList/ProductList'
 import icons from '~/utils/icons'
 
 interface Props {
-  currentPage: number
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+  queryParamsConfig: QueryParamsConfig
   pageSize: number
 }
 
 const { PiCaretLeftBold, PiCaretRightBold, BsThreeDots } = icons
 const RANGE = 2
 
-const Pagination = ({ currentPage, setCurrentPage, pageSize }: Props) => {
+const Pagination = ({ queryParamsConfig, pageSize }: Props) => {
+  const page = Number(queryParamsConfig.page)
   let dotAfter = false
   let dotBefore = false
   const renderDotAfter = (index: number) => {
     if (dotAfter === false) {
       dotAfter = true
       return (
-        <Link
-          to='/'
-          key={index}
-          className='flex items-center justify-center h-8 px-3 leading-tight bg-white cursor-default text-secondary'
-        >
+        <span key={index} className='flex items-center justify-center h-8 px-3 leading-tight bg-white text-secondary'>
           <BsThreeDots />
-        </Link>
+        </span>
       )
     }
     return null
@@ -33,51 +31,64 @@ const Pagination = ({ currentPage, setCurrentPage, pageSize }: Props) => {
     if (dotBefore === false) {
       dotBefore = true
       return (
-        <Link
-          to='/'
-          key={index}
-          className='flex items-center justify-center h-8 px-3 leading-tight bg-white cursor-default text-secondary'
-        >
+        <span key={index} className='flex items-center justify-center h-8 px-3 leading-tight bg-white text-secondary'>
           <BsThreeDots />
-        </Link>
+        </span>
       )
     }
     return null
   }
   return (
-    <div className='flex flex-wrap items-center justify-center gap-1 mb-4'>
-      <Link
-        to='/'
-        className='flex items-center justify-center h-8 px-3 leading-tight bg-white border-[2px] rounded-l-lg border-secondary text-secondary hover:bg-slate-50 hover:text-third'
-      >
-        <PiCaretLeftBold />
-      </Link>
+    <div className='flex flex-wrap items-center justify-center gap-1 pb-6'>
+      {page === 1 ? (
+        <span className='flex items-center justify-center h-8 px-3 leading-tight bg-white border-[2px] rounded-l-lg border-secondary text-secondary opacity-80'>
+          <PiCaretLeftBold />
+        </span>
+      ) : (
+        <Link
+          to={{
+            pathname: path.HOME,
+            search: createSearchParams({
+              ...queryParamsConfig,
+              page: (page - 1).toString()
+            }).toString()
+          }}
+          className='flex items-center justify-center h-8 px-3 leading-tight bg-white border-[2px] rounded-l-lg border-secondary text-secondary hover:bg-slate-50 hover:text-third'
+        >
+          <PiCaretLeftBold />
+        </Link>
+      )}
 
       {Array(pageSize)
         .fill(0)
         .map((_, index) => {
           const pageNumber = index + 1
-          if (currentPage <= RANGE * 2 + 1 && pageNumber > currentPage + RANGE && pageNumber <= pageSize - RANGE) {
+          if (page <= RANGE * 2 + 1 && pageNumber > page + RANGE && pageNumber <= pageSize - RANGE) {
             return renderDotAfter(index)
-          } else if (currentPage > RANGE * 2 + 1 && currentPage < pageSize - RANGE * 2) {
-            if (pageNumber > RANGE && pageNumber < currentPage - RANGE) {
+          } else if (page > RANGE * 2 + 1 && page < pageSize - RANGE * 2) {
+            if (pageNumber > RANGE && pageNumber < page - RANGE) {
               return renderDotBefore(index)
-            } else if (pageNumber > currentPage + RANGE && pageNumber <= pageSize - RANGE) {
+            } else if (pageNumber > page + RANGE && pageNumber <= pageSize - RANGE) {
               return renderDotAfter(index)
             }
-          } else if (pageNumber > RANGE && pageNumber < currentPage - RANGE && pageNumber < pageSize - RANGE) {
+          } else if (pageNumber > RANGE && pageNumber < page - RANGE && pageNumber < pageSize - RANGE) {
             return renderDotBefore(index)
           }
           return (
             <Link
-              to={`/`}
+              to={{
+                pathname: path.HOME,
+                search: createSearchParams({
+                  ...queryParamsConfig,
+                  page: pageNumber.toString()
+                }).toString()
+              }}
               key={index}
-              onClick={() => setCurrentPage(pageNumber)}
               className={classNames(
                 'flex items-center justify-center h-8 px-3 leading-tight bg-white border-[2px] text-secondary hover:bg-slate-50 hover:text-third',
                 {
-                  'border-third': pageNumber === currentPage,
-                  'border-transparent': pageNumber !== currentPage
+                  'border-third': pageNumber === page,
+                  'border-transparent': pageNumber !== page
                 }
               )}
             >
@@ -86,12 +97,24 @@ const Pagination = ({ currentPage, setCurrentPage, pageSize }: Props) => {
           )
         })}
 
-      <Link
-        to='/'
-        className='flex items-center justify-center h-8 px-3 leading-tight bg-white border-[2px] rounded-r-lg border-secondary text-secondary hover:bg-slate-50 hover:text-third'
-      >
-        <PiCaretRightBold />
-      </Link>
+      {page === pageSize ? (
+        <span className='flex items-center justify-center h-8 px-3 leading-tight bg-white border-[2px] rounded-r-lg border-secondary text-secondary opacity-80'>
+          <PiCaretRightBold />
+        </span>
+      ) : (
+        <Link
+          to={{
+            pathname: path.HOME,
+            search: createSearchParams({
+              ...queryParamsConfig,
+              page: (page + 1).toString()
+            }).toString()
+          }}
+          className='flex items-center justify-center h-8 px-3 leading-tight bg-white border-[2px] rounded-r-lg border-secondary text-secondary hover:bg-slate-50 hover:text-third'
+        >
+          <PiCaretRightBold />
+        </Link>
+      )}
     </div>
   )
 }
