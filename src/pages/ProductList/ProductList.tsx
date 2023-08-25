@@ -23,7 +23,7 @@ const ProductList = () => {
   const queryParamsConfig: QueryParamsConfig = omitBy(
     {
       page: page || '1',
-      limit: limit || '5',
+      limit: limit || '10',
       order: order,
       sort_by: sort_by,
       category: category,

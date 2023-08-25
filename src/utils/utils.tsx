@@ -4,12 +4,13 @@ import icons from './icons'
 
 const { AiOutlineStar, AiFillStar } = icons
 
-// export function isAxiosError<T = any, D = any>(payload: any): payload is AxiosError<T, D>;
-// export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
-//   return axios.isAxiosError(error)
-// }
 export function isAxiosUnprocessableEntityError<TFormError>(error: unknown): error is AxiosError<TFormError> {
   return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
+}
+
+// Cú pháp '-?' sẽ loại bỏ undefined của key optional
+export type NoUndefinedField<T> = {
+  [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
 }
 
 // Format Number Used Intl

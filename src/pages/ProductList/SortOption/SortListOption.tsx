@@ -59,7 +59,7 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
                 'bg-primary text-white': isActiveSortBy('createdAt'),
                 'bg-white': !isActiveSortBy('createdAt')
               })}
-              onClick={() => navigate('/')}
+              onClick={() => handleNavigateSortBy('createdAt')}
             >
               Mới nhất
             </button>
