@@ -37,6 +37,7 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
       ).toString()
     })
   }
+
   const handleNavigatePrice = (orderValue: Exclude<ProductListParams['order'], undefined>) => {
     return navigate({
       pathname: path.HOME,
@@ -47,6 +48,7 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
       }).toString()
     })
   }
+
   return (
     <div className={className}>
       <div className='flex items-center flex-wrap sm:flex-col sm:items-start lg:items-center lg:flex-row lg:justify-between bg-[#dde0e5] py-3 text-secondary'>

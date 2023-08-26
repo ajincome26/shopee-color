@@ -252,25 +252,7 @@ export default {
 npm i prettier-plugin-tailwindcss
 ```
 
-=> Cài thêm package hỗ trợ truncate:
-
-```bash
-@tailwindcss/line-clamp
-```
-
-File **tailwind.config.js**:
-
-```ts
-module.exports = {
-  // ...
-  plugins: [
-    // ...
-    require('@tailwindcss/line-clamp')
-  ]
-}
-```
-
-Used : _line-clamp-n_
+=> Hỗ trợ truncate: _line-clamp-n_
 
 ### Cấu hình React Router
 
@@ -286,6 +268,13 @@ import { BrowserRouter } from 'react-router-dom'
 <BrowserRouter>
   <App />
 </BrowserRouter>
+```
+
+### Một số thư viện cần thiết khác
+
+```bash
+npm i sass react-toastify react-icons lodash @floating-ui/react framer-motion uuid react-hook-form yup @hookform/resolvers classnames
+npm i -D @types/lodash react-loader-spinner @types/uuid
 ```
 
 ### Custom class .container

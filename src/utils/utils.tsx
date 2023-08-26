@@ -1,6 +1,7 @@
 import { AxiosError, HttpStatusCode, isAxiosError } from 'axios'
 import React from 'react'
 import icons from './icons'
+import { v4 } from 'uuid'
 
 const { AiOutlineStar, AiFillStar } = icons
 
@@ -31,11 +32,12 @@ const handleStar = (stars: number, size?: number) => {
   const starsAmount = +stars
   for (let i = 1; i <= 5; i++) {
     if (starsAmount >= i) {
-      starsArray.push(<AiFillStar color='#0891b2' key={i} size={size || 16} />)
+      starsArray.push(<AiFillStar key={v4()} color='#0891b2' size={size || 16} />)
     } else {
-      starsArray.push(<AiOutlineStar color='#0891b2' key={i} size={size || 16} />)
+      starsArray.push(<AiOutlineStar key={v4()} color='#0891b2' size={size || 16} />)
     }
   }
+  console.log('Array', starsArray)
   return starsArray
 }
 const handleRating = (rating: number, size?: number) => {

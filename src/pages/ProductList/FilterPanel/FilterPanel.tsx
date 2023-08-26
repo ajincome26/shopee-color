@@ -8,10 +8,12 @@ import { priceSchema, PriceSchema } from '~/utils/schema'
 import { path } from '~/constants/path'
 import { ObjectSchema } from 'yup'
 import { InputNumber } from '~/components/Input'
-import { handleStar, NoUndefinedField } from '~/utils/utils'
+import { NoUndefinedField } from '~/utils/utils'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { Category } from '~/types/category.type'
 import { Button } from '~/components/Button'
+import { FilterRating } from './FilterRating'
+import { omit } from 'lodash'
 
 const { BsListUl, LiaFilterSolid, AiFillCaretRight } = icons
 
@@ -48,6 +50,20 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
         price_min: data.minValue,
         price_max: data.maxValue
       }).toString()
+    })
+  }
+
+  const handleRemoveAll = () => {
+    navigate({
+      pathname: path.HOME,
+      search: createSearchParams(
+        omit(
+          {
+            ...queryParamsConfig
+          },
+          ['category', 'price_min', 'price_max', 'rating_filter']
+        )
+      ).toString()
     })
   }
 
@@ -147,36 +163,16 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
             />
           </div>
           <div className='h-5 mt-1 text-sm text-red-500'>{errors.minValue?.message}</div>
-          <Button type='submit' className='w-full py-2 mt-2 text-sm uppercase'>
+          <Button type='submit' className='w-full py-2 mt-1 text-sm uppercase'>
             Áp dụng
           </Button>
         </form>
       </div>
 
-      <div className='flex flex-col gap-3 py-4 border-b md:px-4 border-b-grayBox'>
-        <h3>Đánh giá</h3>
-        <div className='flex flex-col gap-1 px-5 text-sm lg:text-base lg:px-5 md:px-0'>
-          <div className='flex items-center gap-1 mb-2 transition cursor-pointer lg:gap-2 hover:opacity-80'>
-            {handleStar(5)}
-          </div>
-          {Array(4)
-            .fill(0)
-            .map((_, index) => (
-              <div
-                key={index}
-                className='flex items-center gap-1 mb-1 transition cursor-pointer lg:gap-2 hover:opacity-80'
-              >
-                {handleStar(4 - index)}
-                trở lên
-              </div>
-            ))}
-        </div>
-      </div>
+      <FilterRating queryParamsConfig={queryParamsConfig} />
 
-      <div className='md:px-4'>
-        <Button type='submit' className='w-full py-2 my-4 text-sm uppercase'>
-          Xóa tất cả
-        </Button>
+      <div className='md:px-4' onClick={handleRemoveAll}>
+        <Button className='w-full py-2 my-4 text-sm uppercase'>Xóa tất cả</Button>
       </div>
     </div>
   )

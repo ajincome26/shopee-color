@@ -31,7 +31,7 @@ const ProductItem = ({ product }: ProductProps) => {
             ₫{formatCurrency(price)}
           </span>
         </div>
-        <div className='flex items-center md:justify-between gap-4 mt-2'>
+        <div className='flex items-center gap-4 mt-2 md:justify-between'>
           <div className='flex items-center gap-[2px]'>{handleRating(rating, 12)}</div>
           <span className='text-sm md:text-xs xl:text-sm'>Đã bán {formatNumberToSocialStyle(sold)}</span>
         </div>
