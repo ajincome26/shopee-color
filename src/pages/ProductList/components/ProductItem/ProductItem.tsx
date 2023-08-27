@@ -7,10 +7,10 @@ interface ProductProps {
 }
 
 const ProductItem = ({ product }: ProductProps) => {
-  const { image, name, price_before_discount, price, sold, rating } = product
+  const { _id, image, name, price_before_discount, price, sold, rating } = product
   return (
     <Link
-      to='/item'
+      to={`/${_id}`}
       className='transition duration-200 ease-linear bg-white cursor-pointer hover:shadow-xl hover:-translate-y-[2px]'
     >
       <div className='relative w-full min-[412px]:h-48 h-60'>

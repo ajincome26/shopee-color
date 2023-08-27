@@ -65,7 +65,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className='mb-3 font-semibold uppercase'>Theo dõi chúng tôi trên</h3>
+            <h3 className='mb-3 font-semibold uppercase md:text-start'>Theo dõi chúng tôi trên</h3>
             <div className='flex items-center justify-center gap-3 md:items-start md:flex-col'>
               {footerSocial.map(({ id, text, icon: Icon, link }) => (
                 <Link to={link} key={id} className='flex items-center gap-2'>

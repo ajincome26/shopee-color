@@ -273,8 +273,8 @@ import { BrowserRouter } from 'react-router-dom'
 ### Một số thư viện cần thiết khác
 
 ```bash
-npm i sass react-toastify react-icons lodash @floating-ui/react framer-motion uuid react-hook-form yup @hookform/resolvers classnames
-npm i -D @types/lodash react-loader-spinner @types/uuid
+npm i sass react-toastify react-icons lodash @floating-ui/react framer-motion uuid react-hook-form yup @hookform/resolvers classnames dompurify
+npm i -D @types/lodash react-loader-spinner @types/uuid @types/dompurify
 ```
 
 ### Custom class .container

@@ -1,11 +1,11 @@
+import icons from '~/utils/icons'
 import classNames from 'classnames'
-import { omit } from 'lodash'
-import { createSearchParams, Link, useNavigate } from 'react-router-dom'
+import { QueryParamsConfig } from '../../ProductList'
+import { ProductListParams } from '~/types/product.type'
 import { path } from '~/constants/path'
 import { order as orderConst, sortBy } from '~/constants/product'
-import { ProductListParams } from '~/types/product.type'
-import icons from '~/utils/icons'
-import { QueryParamsConfig } from '../ProductList'
+import { omit } from 'lodash'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 
 const { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } = icons
 
@@ -37,7 +37,6 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
       ).toString()
     })
   }
-
   const handleNavigatePrice = (orderValue: Exclude<ProductListParams['order'], undefined>) => {
     return navigate({
       pathname: path.HOME,

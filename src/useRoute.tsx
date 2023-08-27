@@ -9,8 +9,9 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { MainLayout } from './layouts/MainLayout'
 import { LoginPage } from './pages/LoginPage'
 import { CartLayout } from './layouts/CartLayout'
+import { ProductDetail } from './pages/ProductDetail'
 
-const { HOME, LOGIN, REGISTER, PROFILE, CART } = path
+const { HOME, LOGIN, REGISTER, PROFILE, CART, PRODUCT_DETAIL } = path
 
 const useRoute = () => {
   const { isLoggedIn } = useAuth()
@@ -66,13 +67,17 @@ const useRoute = () => {
         }
       ]
     },
+    // Authen không ảnh hưởng
     {
-      // Nếu ProtectedRoute là cha của MainLayout và ProductList (path: '/') thì khi 'isLoggedIn = false', nó sẽ to='/login' tìm và thấy không có thằng nào match với to='/'. => Lỗi
       element: <MainLayout />,
-      children: [{ index: true, path: HOME, element: <ProductList /> }]
+      children: [
+        { index: true, path: HOME, element: <ProductList /> },
+        { index: true, path: PRODUCT_DETAIL, element: <ProductDetail /> }
+      ]
     }
   ])
   return element
 }
 
+// Nếu ProtectedRoute là cha của MainLayout và ProductList (path: '/') thì khi 'isLoggedIn = false', nó sẽ to='/login' tìm và thấy không có thằng nào match với to='/'. => Lỗi
 export default useRoute

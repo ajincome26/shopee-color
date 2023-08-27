@@ -37,7 +37,6 @@ const handleStar = (stars: number, size?: number) => {
       starsArray.push(<AiOutlineStar key={v4()} color='#0891b2' size={size || 16} />)
     }
   }
-  console.log('Array', starsArray)
   return starsArray
 }
 const handleRating = (rating: number, size?: number) => {

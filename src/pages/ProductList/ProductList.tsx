@@ -1,16 +1,16 @@
 import productApi from '~/apis/product.api'
+import categoryApi from '~/apis/category.api'
 import { useQueryParams } from '~/hooks/useQueryParams'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { SortListOption } from './SortOption'
+import { SortListOption } from './components/SortOption'
 import { ProductListParams } from '~/types/product.type'
-import { ProductItem } from './SortOption/ProductItem'
+import { ProductItem } from './components/ProductItem'
+import { path } from '~/constants/path'
 import { Pagination } from '~/components/Pagination'
 import { omitBy, isUndefined } from 'lodash'
-import { FilterPanel } from './FilterPanel'
-import categoryApi from '~/apis/category.api'
+import { FilterPanel } from './components/FilterPanel'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import { path } from '~/constants/path'
 
 export type QueryParamsConfig = {
   [key in keyof ProductListParams]: string
