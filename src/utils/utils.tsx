@@ -2,6 +2,7 @@ import { AxiosError, HttpStatusCode, isAxiosError } from 'axios'
 import React from 'react'
 import icons from './icons'
 import { v4 } from 'uuid'
+import slugify from 'slugify'
 
 const { AiOutlineStar, AiFillStar } = icons
 
@@ -12,6 +13,13 @@ export function isAxiosUnprocessableEntityError<TFormError>(error: unknown): err
 // Cú pháp '-?' sẽ loại bỏ undefined của key optional
 export type NoUndefinedField<T> = {
   [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
+}
+
+export const generateNameId = (name: string, id: string) => {
+  return `/${slugify(name, { lower: true, strict: true, locale: 'en' })}-i-${id}`
+}
+export const getIdFromNameId = (nameId: string) => {
+  return nameId.split('-i-').slice(-1)[0]
 }
 
 // Format Number Used Intl

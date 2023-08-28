@@ -1,6 +1,6 @@
 import { Product } from '~/types/product.type'
 import { Link } from 'react-router-dom'
-import { formatCurrency, formatNumberToSocialStyle, handleDiscount, handleRating } from '~/utils/utils'
+import { formatCurrency, formatNumberToSocialStyle, generateNameId, handleDiscount, handleRating } from '~/utils/utils'
 
 interface ProductProps {
   product: Product
@@ -10,7 +10,7 @@ const ProductItem = ({ product }: ProductProps) => {
   const { _id, image, name, price_before_discount, price, sold, rating } = product
   return (
     <Link
-      to={`/${_id}`}
+      to={generateNameId(name, _id)}
       className='transition duration-200 ease-linear bg-white cursor-pointer hover:shadow-xl hover:-translate-y-[2px]'
     >
       <div className='relative w-full min-[412px]:h-48 h-60'>

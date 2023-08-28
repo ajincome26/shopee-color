@@ -3,13 +3,14 @@ import { createSearchParams, Link, useParams } from 'react-router-dom'
 import productApi from '~/apis/product.api'
 import { Popover } from '~/components/Popover'
 import icons from '~/utils/icons'
-import { formatCurrency, formatNumberToSocialStyle, handleDiscount, handleRating } from '~/utils/utils'
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, handleDiscount, handleRating } from '~/utils/utils'
 import sellerImage from '../../assets/hot-price-100.png'
 import freeshiping from '../../assets/free-shipping-64.png'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { path } from '~/constants/path'
 import DOMPurify from 'dompurify'
 import classNames from 'classnames'
+import { ProductItem } from '../ProductList/components/ProductItem'
 
 const {
   PiCaretRightBold,
@@ -23,21 +24,31 @@ const {
 } = icons
 
 const ProductDetail = () => {
-  const { id } = useParams()
+  const imageRef = useRef<HTMLImageElement>(null)
+  const { nameId } = useParams()
   const [toggleHeart, setToggleHeart] = useState(false)
   const [indexImages, setIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
 
+  const id = getIdFromNameId(nameId as string)
   const { data } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProduct(id as string),
     keepPreviousData: true
   })
+  const { data: products } = useQuery({
+    queryKey: ['productsCategory', data?.data.data.category._id],
+    queryFn: () => productApi.getProductsWithCategory(data?.data.data.category._id as string),
+    keepPreviousData: true
+  })
   const currentImages = useMemo(() => (data ? data.data.data.images.slice(...indexImages) : []), [data, indexImages])
   useEffect(() => {
-    if (data && data.data.data.images.length > 0) {
-      setActiveImage(data.data.data.images[0])
+    if (currentImages && currentImages.length > 0) {
+      setActiveImage(currentImages[0])
     }
+  }, [currentImages])
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [data])
 
   const next = () => {
@@ -45,6 +56,23 @@ const ProductDetail = () => {
   }
   const prev = () => {
     if (data && indexImages[0] > 0) setIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
+  }
+  const handleZoom = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const image = imageRef.current as HTMLImageElement
+    const { naturalWidth, naturalHeight } = image
+    const { width, height } = e.currentTarget.getBoundingClientRect()
+    const { offsetX, offsetY } = e.nativeEvent
+
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
+    image.style.maxWidth = 'unset'
+    const top = offsetY * (1 - naturalHeight / height)
+    const left = offsetX * (1 - naturalWidth / width)
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+  }
+  const handleLeave = () => {
+    imageRef.current?.removeAttribute('style')
   }
   if (!data) return null
   const { name, rating, price, price_before_discount, category, view, sold, quantity, description } = data.data.data
@@ -71,20 +99,30 @@ const ProductDetail = () => {
           </div>
 
           <div className='flex gap-5 p-4 mb-5 bg-white rounded-sm'>
-            <div className='flex flex-col justify-between shadow-md basis-2/5'>
-              <div className='w-full h-[450px] shadow-md'>
-                <img src={activeImage} alt='image' className='object-contain w-full h-full' />
+            <div className='flex flex-col justify-between overflow-hidden shadow-md basis-2/5'>
+              <div
+                className='w-full h-[450px] shadow-md overflow-hidden cursor-zoom-in'
+                onMouseMove={handleZoom}
+                onMouseLeave={handleLeave}
+              >
+                <img
+                  src={activeImage}
+                  alt='image'
+                  className='relative object-contain w-full h-full pointer-events-none'
+                  ref={imageRef}
+                />
               </div>
-              <div className='relative flex items-center w-full h-full gap-2 p-3'>
-                <div className='absolute px-1 py-3 cursor-pointer left-3 bg-overlay-30' onClick={prev}>
+              <div className='relative flex items-center w-full h-[115px] gap-2 py-3'>
+                <div className='absolute left-0 px-1 py-3 cursor-pointer bg-overlay-30' onClick={prev}>
                   <PiCaretLeftBold color='white' />
                 </div>
                 {currentImages.map((url, index) => {
                   return (
                     <div
                       key={index}
-                      className={classNames('w-full h-full border-[2px] border-transparent', {
-                        'border-primary': activeImage === url
+                      className={classNames('w-full h-full border-[2px]', {
+                        'border-primary': activeImage === url,
+                        'border-transparent': activeImage !== url
                       })}
                       onMouseEnter={() => setActiveImage(url)}
                     >
@@ -92,7 +130,7 @@ const ProductDetail = () => {
                     </div>
                   )
                 })}
-                <div className='absolute px-1 py-3 cursor-pointer right-3 bg-overlay-30' onClick={next}>
+                <div className='absolute right-0 px-1 py-3 cursor-pointer bg-overlay-30' onClick={next}>
                   <PiCaretRightBold color='white' />
                 </div>
               </div>
@@ -217,6 +255,16 @@ const ProductDetail = () => {
                 __html: DOMPurify.sanitize(description)
               }}
             />
+          </div>
+
+          <div className='mt-5 text-secondary'>
+            <h2 className='text-[20px] mb-4'>Sản phẩm liên quan</h2>
+            <div className='grid grid-cols-6 gap-3'>
+              {products &&
+                products.data.data.products
+                  .filter((product) => product._id !== data.data.data._id)
+                  .map((product) => <ProductItem key={product._id} product={product} />)}
+            </div>
           </div>
         </div>
       </div>
