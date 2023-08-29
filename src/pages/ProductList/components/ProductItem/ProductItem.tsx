@@ -15,7 +15,7 @@ const ProductItem = ({ product }: ProductProps) => {
     >
       <div className='relative w-full min-[412px]:h-48 h-60'>
         <img src={image} alt={name} className='object-cover w-full h-full' />
-        <div className='absolute right-0 top-0 w-0 h-0 border-fourth border-x-[25px] border-t-[40px] border-b-[15px] border-b-transparent'></div>
+        <div className='absolute right-0 top-0 w-0 h-0 border-overlay-fourth-70 border-x-[25px] border-t-[40px] border-b-[15px] border-b-transparent'></div>
         <div className='absolute top-[6px] right-0 flex flex-col text-xs w-[50px] justify-center items-center'>
           <span className='font-semibold text-secondary'>{handleDiscount(price_before_discount, price)}%</span>
           <span className='tracking-wider text-white'>{price_before_discount < price ? 'TĂNG' : 'GIẢM'}</span>

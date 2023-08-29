@@ -7,8 +7,6 @@ const productApi = {
     instance.get<ResponseSuccess<ProductList>>('/products', {
       params
     }),
-  getProduct: (id: string) => instance.get<ResponseSuccess<Product>>(`/products/${id}`),
-  getProductsWithCategory: (categoryId: string) =>
-    instance.get<ResponseSuccess<ProductList>>(`/products?category=${categoryId}`)
+  getProduct: (id: string) => instance.get<ResponseSuccess<Product>>(`/products/${id}`)
 }
 export default productApi

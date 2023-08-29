@@ -2,15 +2,19 @@ import icons from '~/utils/icons'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/auth.context'
-import { SearchSchema } from '~/utils/schema'
+import { searchSchema, SearchSchema } from '~/utils/schema'
 import { Popover } from '../Popover'
-import { Link } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { InputSearch } from '../Input'
 import { Button } from '../Button'
 import { toast } from 'react-toastify'
 import { path } from '~/constants/path'
 import authApi from '~/apis/auth.api'
 import { CartBox } from '../CartBox'
+import useQueryConfig from '~/hooks/useQueryConfig'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { omit } from 'lodash'
+import { useEffect } from 'react'
 
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutlineSearch, AiOutlineShoppingCart } =
   icons
@@ -18,8 +22,15 @@ const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutli
 type FormSearch = SearchSchema
 
 const MainHeader = () => {
+  const navigate = useNavigate()
+  const queryParamsConfig = useQueryConfig()
   const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useAuth()
-  const { register, handleSubmit } = useForm<FormSearch>()
+  const { register, handleSubmit, reset } = useForm<FormSearch>({
+    defaultValues: {
+      searchValue: ''
+    },
+    resolver: yupResolver(searchSchema)
+  })
 
   const logoutMutation = useMutation({
     mutationFn: authApi.logoutAccount,
@@ -34,7 +45,29 @@ const MainHeader = () => {
     logoutMutation.mutate()
   }
 
-  const handleSearch = () => {}
+  const handleSearch = (data: FormSearch) => {
+    const config = queryParamsConfig.order
+      ? omit(
+          {
+            ...queryParamsConfig,
+            name: data.searchValue
+          },
+          ['order', 'sort_by']
+        )
+      : {
+          ...queryParamsConfig,
+          name: data.searchValue
+        }
+    navigate({
+      pathname: path.HOME,
+      search: createSearchParams(config).toString()
+    })
+  }
+
+  useEffect(() => {
+    if (!queryParamsConfig.name) reset({ searchValue: '' })
+  }, [queryParamsConfig.name, reset])
+
   return (
     <div className='w-full min-h-[120px] bg-gradient-to-b from-cyan-500 to-blue-400 text-white py-3 top-0'>
       <div className='container'>

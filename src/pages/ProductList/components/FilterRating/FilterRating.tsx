@@ -1,7 +1,7 @@
-import { QueryParamsConfig } from '../../ProductList'
 import { path } from '~/constants/path'
 import { handleStar } from '~/utils/utils'
 import { createSearchParams, useNavigate } from 'react-router-dom'
+import { QueryParamsConfig } from '~/hooks/useQueryConfig'
 
 interface Props {
   queryParamsConfig: QueryParamsConfig

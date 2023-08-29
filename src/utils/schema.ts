@@ -33,18 +33,17 @@ export const schema = yup
       name: 'price-not-allowed',
       message: 'Khoảng giá không hợp lệ',
       test: handleTest
-    })
+    }),
+    searchValue: yup.string().required().trim()
   })
   .required()
 
-export const registerSchema = schema.omit(['minValue', 'maxValue'])
-export const loginSchema = schema.omit(['cpassword', 'minValue', 'maxValue'])
+export const registerSchema = schema.omit(['minValue', 'maxValue', 'searchValue'])
+export const loginSchema = schema.omit(['cpassword', 'minValue', 'maxValue', 'searchValue'])
 export const priceSchema = schema.pick(['minValue', 'maxValue'])
+export const searchSchema = schema.pick(['searchValue'])
 
 export type RegisterSchema = yup.InferType<typeof registerSchema>
 export type LoginSchema = yup.InferType<typeof loginSchema>
 export type PriceSchema = yup.InferType<typeof priceSchema>
-
-export type SearchSchema = {
-  searchValue: string
-}
+export type SearchSchema = yup.InferType<typeof searchSchema>

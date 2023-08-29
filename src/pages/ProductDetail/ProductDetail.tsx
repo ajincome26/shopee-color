@@ -11,6 +11,7 @@ import { path } from '~/constants/path'
 import DOMPurify from 'dompurify'
 import classNames from 'classnames'
 import { ProductItem } from '../ProductList/components/ProductItem'
+import { ProductListParams } from '~/types/product.type'
 
 const {
   PiCaretRightBold,
@@ -36,12 +37,17 @@ const ProductDetail = () => {
     queryFn: () => productApi.getProduct(id as string),
     keepPreviousData: true
   })
+  const product = data?.data.data
+  const params: ProductListParams = { page: '1', limit: '13', category: product?.category._id }
   const { data: products } = useQuery({
-    queryKey: ['productsCategory', data?.data.data.category._id],
-    queryFn: () => productApi.getProductsWithCategory(data?.data.data.category._id as string),
+    queryKey: ['products', params],
+    queryFn: () => productApi.getProducts(params),
+    enabled: Boolean(product),
+    staleTime: 3 * 60 * 1000,
     keepPreviousData: true
   })
-  const currentImages = useMemo(() => (data ? data.data.data.images.slice(...indexImages) : []), [data, indexImages])
+
+  const currentImages = useMemo(() => (product ? product.images.slice(...indexImages) : []), [indexImages, product])
   useEffect(() => {
     if (currentImages && currentImages.length > 0) {
       setActiveImage(currentImages[0])
@@ -52,10 +58,10 @@ const ProductDetail = () => {
   }, [data])
 
   const next = () => {
-    if (data && indexImages[1] < data.data.data.images.length) setIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
+    if (product && indexImages[1] < product.images.length) setIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
   }
   const prev = () => {
-    if (data && indexImages[0] > 0) setIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
+    if (product && indexImages[0] > 0) setIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
   }
   const handleZoom = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const image = imageRef.current as HTMLImageElement
@@ -74,14 +80,14 @@ const ProductDetail = () => {
   const handleLeave = () => {
     imageRef.current?.removeAttribute('style')
   }
-  if (!data) return null
-  const { name, rating, price, price_before_discount, category, view, sold, quantity, description } = data.data.data
+  if (!product) return null
+  const { name, rating, price, price_before_discount, category, view, sold, quantity, description } = product
 
   return (
     data && (
       <div className='bg-gray'>
         <div className='container py-5'>
-          <div className='flex items-center gap-2 pb-4 text-sm text-third'>
+          <div className='flex flex-wrap items-center gap-2 pb-4 text-sm text-third'>
             <Link to={path.HOME}>Shopee Color</Link>
             <PiCaretRightBold />
             <Link
@@ -98,21 +104,21 @@ const ProductDetail = () => {
             <span className='text-grayDark'>{name}</span>
           </div>
 
-          <div className='flex gap-5 p-4 mb-5 bg-white rounded-sm'>
-            <div className='flex flex-col justify-between overflow-hidden shadow-md basis-2/5'>
+          <div className='gap-5 mb-5 bg-white rounded-sm md:items-start md:p-4 md:flex md:gap-1'>
+            <div className='flex flex-col overflow-hidden shadow-md lg:justify-between lg:basis-2/5 md:basis-21/50'>
               <div
-                className='w-full h-[450px] shadow-md overflow-hidden cursor-zoom-in'
+                className='w-full lg:h-[450px] h-[330px] sm:h-[600px] shadow-md overflow-hidden cursor-zoom-in'
                 onMouseMove={handleZoom}
                 onMouseLeave={handleLeave}
               >
                 <img
                   src={activeImage}
                   alt='image'
-                  className='relative object-contain w-full h-full pointer-events-none'
+                  className='relative object-cover w-full h-full pointer-events-none'
                   ref={imageRef}
                 />
               </div>
-              <div className='relative flex items-center w-full h-[115px] gap-2 py-3'>
+              <div className='relative flex items-center w-full lg:h-[115px] h-[95px] flex-1 gap-2 py-3'>
                 <div className='absolute left-0 px-1 py-3 cursor-pointer bg-overlay-30' onClick={prev}>
                   <PiCaretLeftBold color='white' />
                 </div>
@@ -135,30 +141,34 @@ const ProductDetail = () => {
                 </div>
               </div>
             </div>
-            <div className='p-3 basis-3/5 text-secondary'>
-              <h1 className='text-2xl line-clamp-3'>{name}</h1>
-              <div className='flex items-center py-3'>
-                <div className='flex items-center gap-2 pr-4'>
-                  <span className='border-b border-third text-third'>{rating}</span>
-                  <div className='flex items-center gap-[2px]'>{handleRating(rating, 18)}</div>
+            <div className='p-2 sm:p-3 lg:basis-3/5 md:basis-29/50 text-secondary'>
+              <h1 className='text-xl lg:text-2xl line-clamp-3'>{name}</h1>
+              <div className='flex flex-col min-[412px]:flex-row min-[412px]:items-center flex-wrap gap-2 md:gap-4 py-3'>
+                <div className='flex items-center'>
+                  <div className='flex items-center gap-2 pr-4'>
+                    <span className='border-b border-third text-third'>{rating}</span>
+                    <div className='flex items-center gap-[2px]'>{handleRating(rating, 18)}</div>
+                  </div>
+                  <div className='flex items-center gap-2 px-4 mr-4 md:mr-0 border-x border-third'>
+                    <span className='font-medium border-b border-third'>{formatNumberToSocialStyle(sold)}</span>
+                    <span className='text-grayDark'>Đã bán</span>
+                  </div>
                 </div>
-                <div className='flex items-center gap-2 px-4 border-x border-third'>
-                  <span className='font-medium border-b border-third'>{formatNumberToSocialStyle(sold)}</span>
-                  <span className='text-grayDark'>Đã bán</span>
-                </div>
-                <div className='flex items-center gap-2 px-4'>
+                <div className='flex items-center gap-2'>
                   <span className='font-medium border-b border-third'>{formatNumberToSocialStyle(view)}</span>
                   <span className='text-grayDark'>Lượt xem</span>
                 </div>
               </div>
               <div className='flex flex-col gap-5 px-4 py-3 mt-2 bg-gray'>
-                <div className='flex items-center gap-8'>
-                  <div className='font-medium tracking-wider line-through opacity-75'>
-                    ₫{formatCurrency(price_before_discount)}
-                  </div>
-                  <div className='text-3xl'>
-                    <span className='mr-1'>₫</span>
-                    <span>{formatCurrency(price)}</span>
+                <div className='flex flex-wrap items-center gap-6 sm:gap-8 md:flex-col md:gap-3 md:items-start lg:flex-row lg:gap-8 lg:items-center 2xl:gap-12'>
+                  <div className='flex flex-wrap items-center gap-4 sm:gap-8 2xl:gap-10'>
+                    <div className='font-medium tracking-wider line-through opacity-75'>
+                      ₫{formatCurrency(price_before_discount)}
+                    </div>
+                    <div className='text-3xl'>
+                      <span className='mr-1'>₫</span>
+                      <span>{formatCurrency(price)}</span>
+                    </div>
                   </div>
                   <div className='px-3 py-1 text-sm text-white rounded bg-primary'>
                     <span className='mr-2'>{handleDiscount(price_before_discount, price)}%</span>
@@ -194,11 +204,11 @@ const ProductDetail = () => {
                   </div>
                 </div>
               </div>
-              <div className='flex flex-col gap-8 px-4 py-5'>
-                <div className='flex gap-5'>
-                  <span className='text-[17px] text-slate-600'>Vận chuyển</span>
+              <div className='flex flex-col gap-5 py-5 md:gap-8 md:px-4'>
+                <div className='flex flex-col gap-4 md:gap-5 sm:flex-row'>
+                  <span className='text-[17px] text-slate-600 shrink-0'>Vận chuyển</span>
                   <div className='flex gap-3'>
-                    <div className='w-6 h-6'>
+                    <div className='flex-shrink-0 w-6 h-6'>
                       <img src={freeshiping} alt='free-ship' className='object-cover w-full h-full' />
                     </div>
                     <div className='flex flex-col gap-2'>
@@ -207,29 +217,34 @@ const ProductDetail = () => {
                     </div>
                   </div>
                 </div>
-                <div className='flex items-center gap-[2.4rem]'>
-                  <span className='text-[17px] text-slate-600'>Số lượng</span>
-                  <div className='flex items-center gap-5'>
-                    <div className='flex items-center border border-grayBox'>
-                      <button className='h-full px-3 py-2 transition hover:bg-gray'>
-                        <RiSubtractLine />
-                      </button>
-                      <div className='px-6 py-2 leading-4 border-x border-grayBox'>1</div>
-                      <button className='px-3 py-2 transition hover:bg-gray'>
-                        <BiPlus />
-                      </button>
+                <div className='flex flex-col gap-3 md:gap-5 sm:flex-row sm:items-center sm:gap-8'>
+                  <div className='flex flex-col items-start gap-3 md:gap-[2.4rem] sm:flex-row xl:items-center'>
+                    <span className='text-[17px] shrink-0 text-slate-600'>Số lượng</span>
+                    <div className='flex items-center gap-4 2xl:gap-5 sm:flex-col sm:items-start xl:flex-row xl:items-center'>
+                      <div className='flex items-center border border-grayBox'>
+                        <button className='h-full px-3 py-2 transition hover:bg-gray'>
+                          <RiSubtractLine />
+                        </button>
+                        <div className='px-6 py-2 leading-4 border-x border-grayBox'>1</div>
+                        <button className='px-3 py-2 transition hover:bg-gray'>
+                          <BiPlus />
+                        </button>
+                      </div>
+                      <span className='text-sm text-slate-500'>{quantity} sản phẩm có sẵn</span>
                     </div>
-                    <span className='text-sm text-slate-500'>{quantity} sản phẩm có sẵn</span>
                   </div>
                 </div>
-                <div className='flex gap-5'>
-                  <button className='flex items-center gap-3 px-10 py-3 border bg-slate-100 text-primary border-grayBox'>
+                <div className='flex flex-col gap-5 sm:flex-row'>
+                  <button className='flex items-center justify-center gap-3 px-10 py-3 border bg-slate-100 text-primary border-grayBox'>
                     <FaCartPlus size={20} />
                     Thêm vào giỏ hàng
                   </button>
                   <button className='py-3 text-white transition px-7 bg-primary hover:opacity-80'>Mua ngay</button>
                 </div>
-                <div className='flex items-center gap-3 cursor-pointer' onClick={() => setToggleHeart((prev) => !prev)}>
+                <div
+                  className='flex items-center justify-center gap-3 cursor-pointer xl:justify-start'
+                  onClick={() => setToggleHeart((prev) => !prev)}
+                >
                   {toggleHeart ? (
                     <AiFillHeart size={24} color='#f14666' />
                   ) : (
@@ -259,7 +274,7 @@ const ProductDetail = () => {
 
           <div className='mt-5 text-secondary'>
             <h2 className='text-[20px] mb-4'>Sản phẩm liên quan</h2>
-            <div className='grid grid-cols-6 gap-3'>
+            <div className='grid gap-3 xl:gap-4 min-[412px]:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'>
               {products &&
                 products.data.data.products
                   .filter((product) => product._id !== data.data.data._id)

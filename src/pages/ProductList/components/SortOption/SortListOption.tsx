@@ -1,11 +1,11 @@
 import icons from '~/utils/icons'
 import classNames from 'classnames'
-import { QueryParamsConfig } from '../../ProductList'
 import { ProductListParams } from '~/types/product.type'
 import { path } from '~/constants/path'
 import { order as orderConst, sortBy } from '~/constants/product'
 import { omit } from 'lodash'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
+import { QueryParamsConfig } from '~/hooks/useQueryConfig'
 
 const { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } = icons
 

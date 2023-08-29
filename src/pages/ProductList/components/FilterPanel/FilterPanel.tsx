@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 import { useEffect } from 'react'
-import { QueryParamsConfig } from '../../ProductList'
 import { priceSchema, PriceSchema } from '~/utils/schema'
 import { path } from '~/constants/path'
 import { omit } from 'lodash'
@@ -14,6 +13,7 @@ import { FilterRating } from '../FilterRating'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { Category } from '~/types/category.type'
 import { Button } from '~/components/Button'
+import { QueryParamsConfig } from '~/hooks/useQueryConfig'
 
 const { BsListUl, LiaFilterSolid, AiFillCaretRight } = icons
 
