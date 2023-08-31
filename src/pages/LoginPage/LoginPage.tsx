@@ -37,7 +37,7 @@ const LoginPage = () => {
         setIsLoggedIn(true)
         setUserInfo(data.data.data.user)
         navigate('/')
-        toast.success('Đăng nhập thành công')
+        toast.success('Đăng nhập thành công', { autoClose: 1000 })
       },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<ResponseError<FormLogin>>(error)) {

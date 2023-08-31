@@ -42,7 +42,7 @@ const RegisterPage = () => {
         setIsLoggedIn(true)
         setUserInfo(data.data.data.user)
         navigate('/')
-        toast.success('Đăng ký tài khoản thành công')
+        toast.success('Đăng ký tài khoản thành công', { autoClose: 1000 })
       },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<ResponseError<Omit<FormRegister, 'cpassword'>>>(error)) {

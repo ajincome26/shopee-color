@@ -1,5 +1,5 @@
 import icons from '~/utils/icons'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/auth.context'
 import { searchSchema, SearchSchema } from '~/utils/schema'
@@ -15,6 +15,9 @@ import useQueryConfig from '~/hooks/useQueryConfig'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { omit } from 'lodash'
 import { useEffect } from 'react'
+import purchaseApi from '~/apis/purchase.api'
+import { purchaseStatus } from '~/constants/purchase'
+import { PurchaseListStatus } from '~/types/purchase.type'
 
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutlineSearch, AiOutlineShoppingCart } =
   icons
@@ -22,6 +25,7 @@ const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutli
 type FormSearch = SearchSchema
 
 const MainHeader = () => {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const queryParamsConfig = useQueryConfig()
   const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useAuth()
@@ -37,8 +41,14 @@ const MainHeader = () => {
     onSuccess: () => {
       setIsLoggedIn(false)
       setUserInfo(null)
-      toast.success('Đăng xuất thành công')
+      queryClient.removeQueries({ queryKey: ['purchases', { status: purchaseStatus.INCART }] })
+      toast.success('Đăng xuất thành công', { autoClose: 1000 })
     }
+  })
+  const { data: purchaseInCart } = useQuery({
+    queryKey: ['purchases', { status: purchaseStatus.INCART }],
+    queryFn: () => purchaseApi.getPurchaseList({ status: purchaseStatus.INCART as PurchaseListStatus }),
+    enabled: isLoggedIn
   })
 
   const handleLogout = () => {
@@ -197,7 +207,7 @@ const MainHeader = () => {
             popover={
               <>
                 {isLoggedIn ? (
-                  <CartBox />
+                  <CartBox data={purchaseInCart ? purchaseInCart.data.data : []} />
                 ) : (
                   <div className='flex flex-col'>
                     <div className='rounded-full w-36 h-36'>
@@ -215,8 +225,8 @@ const MainHeader = () => {
           >
             <div className='relative cursor-pointer'>
               <AiOutlineShoppingCart size={28} />
-              <div className='absolute flex items-center justify-center px-[6px] text-sm bg-white rounded-full -top-2 text-third -right-4'>
-                12
+              <div className='absolute flex items-center justify-center px-[6px] text-sm bg-white rounded-full -top-2 text-third -right-3'>
+                {purchaseInCart ? purchaseInCart.data.data.length : ''}
               </div>
             </div>
           </Popover>

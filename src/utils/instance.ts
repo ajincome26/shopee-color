@@ -43,7 +43,7 @@ instance.interceptors.response.use(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data: any = error.response?.data
       const message = data.message || error.message
-      toast.error(message)
+      toast.error(message, { autoClose: 2000 })
     }
     return Promise.reject(error)
   }

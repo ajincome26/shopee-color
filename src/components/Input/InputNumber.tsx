@@ -1,23 +1,30 @@
-import { forwardRef, InputHTMLAttributes } from 'react'
+import { forwardRef, InputHTMLAttributes, useState } from 'react'
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {}
 
-const InputNumber = forwardRef<HTMLInputElement, InputProps>(function InputNumberInner(
-  { className, onChange, ...rest },
+const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumberInner(
+  { className, onChange, value = '', ...rest },
   ref
 ) {
+  const [localValue, setLocalValue] = useState<string>(value as string)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    if ((/^\d+$/.test(value) || value === '') && onChange) onChange(e)
+    if (/^\d+$/.test(value) || value === '') {
+      // thực thi onChange callback từ bên ngoài truyền vào props
+      onChange && onChange(e)
+      // cập nhật localValue state
+      setLocalValue(value)
+    }
   }
 
   return (
     <input
-      {...rest}
+      value={value || localValue}
       className={`${className} w-full transition border border-transparent rounded-md placeholder:text-sm`}
       autoComplete='on'
       onChange={handleChange}
       ref={ref}
+      {...rest}
     />
   )
 })

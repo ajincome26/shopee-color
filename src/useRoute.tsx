@@ -72,7 +72,7 @@ const useRoute = () => {
       element: <MainLayout />,
       children: [
         { index: true, path: HOME, element: <ProductList /> },
-        { index: true, path: PRODUCT_DETAIL, element: <ProductDetail /> }
+        { path: PRODUCT_DETAIL, element: <ProductDetail /> }
       ]
     }
   ])

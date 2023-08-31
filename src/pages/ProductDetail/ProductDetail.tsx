@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createSearchParams, Link, useParams } from 'react-router-dom'
 import productApi from '~/apis/product.api'
 import { Popover } from '~/components/Popover'
@@ -12,17 +12,12 @@ import DOMPurify from 'dompurify'
 import classNames from 'classnames'
 import { ProductItem } from '../ProductList/components/ProductItem'
 import { ProductListParams } from '~/types/product.type'
+import { QuantityController } from '~/components/QuantityController'
+import purchaseApi from '~/apis/purchase.api'
+import { toast } from 'react-toastify'
+import { purchaseStatus } from '~/constants/purchase'
 
-const {
-  PiCaretRightBold,
-  PiCaretLeftBold,
-  AiOutlineQuestionCircle,
-  BiPlus,
-  RiSubtractLine,
-  FaCartPlus,
-  AiFillHeart,
-  AiOutlineHeart
-} = icons
+const { PiCaretRightBold, PiCaretLeftBold, AiOutlineQuestionCircle, FaCartPlus, AiFillHeart, AiOutlineHeart } = icons
 
 const ProductDetail = () => {
   const imageRef = useRef<HTMLImageElement>(null)
@@ -30,6 +25,8 @@ const ProductDetail = () => {
   const [toggleHeart, setToggleHeart] = useState(false)
   const [indexImages, setIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
+  const [buyCount, setBuyCount] = useState(1)
+  const queryClient = useQueryClient()
 
   const id = getIdFromNameId(nameId as string)
   const { data } = useQuery({
@@ -45,6 +42,9 @@ const ProductDetail = () => {
     enabled: Boolean(product),
     staleTime: 3 * 60 * 1000,
     keepPreviousData: true
+  })
+  const { mutate } = useMutation({
+    mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.addToCart(body)
   })
 
   const currentImages = useMemo(() => (product ? product.images.slice(...indexImages) : []), [indexImages, product])
@@ -80,6 +80,25 @@ const ProductDetail = () => {
   const handleLeave = () => {
     imageRef.current?.removeAttribute('style')
   }
+
+  const handleQuantity = (value: number) => {
+    setBuyCount(value)
+  }
+
+  const handleAddToCart = () => {
+    mutate(
+      { product_id: product?._id as string, buy_count: buyCount },
+      {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries({
+            queryKey: ['purchases', { status: purchaseStatus.INCART }]
+          })
+          toast.success(data.data.message, { autoClose: 1000 })
+        }
+      }
+    )
+  }
+
   if (!product) return null
   const { name, rating, price, price_before_discount, category, view, sold, quantity, description } = product
 
@@ -221,28 +240,29 @@ const ProductDetail = () => {
                   <div className='flex flex-col items-start gap-3 md:gap-[2.4rem] sm:flex-row xl:items-center'>
                     <span className='text-[17px] shrink-0 text-slate-600'>Số lượng</span>
                     <div className='flex items-center gap-4 2xl:gap-5 sm:flex-col sm:items-start xl:flex-row xl:items-center'>
-                      <div className='flex items-center border border-grayBox'>
-                        <button className='h-full px-3 py-2 transition hover:bg-gray'>
-                          <RiSubtractLine />
-                        </button>
-                        <div className='px-6 py-2 leading-4 border-x border-grayBox'>1</div>
-                        <button className='px-3 py-2 transition hover:bg-gray'>
-                          <BiPlus />
-                        </button>
-                      </div>
+                      <QuantityController
+                        max={quantity}
+                        value={buyCount}
+                        onIncrease={handleQuantity}
+                        onDecrease={handleQuantity}
+                        onType={handleQuantity}
+                      />
                       <span className='text-sm text-slate-500'>{quantity} sản phẩm có sẵn</span>
                     </div>
                   </div>
                 </div>
                 <div className='flex flex-col gap-5 sm:flex-row'>
-                  <button className='flex items-center justify-center gap-3 px-10 py-3 border bg-slate-100 text-primary border-grayBox'>
+                  <button
+                    className='flex items-center justify-center gap-3 px-10 py-3 border bg-slate-100 text-primary border-grayBox'
+                    onClick={handleAddToCart}
+                  >
                     <FaCartPlus size={20} />
                     Thêm vào giỏ hàng
                   </button>
                   <button className='py-3 text-white transition px-7 bg-primary hover:opacity-80'>Mua ngay</button>
                 </div>
                 <div
-                  className='flex items-center justify-center gap-3 cursor-pointer xl:justify-start'
+                  className='flex items-center justify-center gap-3 cursor-pointer xl:justify-start w-fit'
                   onClick={() => setToggleHeart((prev) => !prev)}
                 >
                   {toggleHeart ? (
