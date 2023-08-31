@@ -8,8 +8,8 @@ import { path } from './constants/path'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { MainLayout } from './layouts/MainLayout'
 import { LoginPage } from './pages/LoginPage'
-import { CartLayout } from './layouts/CartLayout'
 import { ProductDetail } from './pages/ProductDetail'
+import { Cart } from './pages/Cart'
 
 const { HOME, LOGIN, REGISTER, PROFILE, CART, PRODUCT_DETAIL } = path
 
@@ -51,6 +51,10 @@ const useRoute = () => {
           element: <MainLayout />,
           children: [
             {
+              path: CART,
+              element: <Cart />
+            },
+            {
               element: <UserLayout />,
               children: [
                 {
@@ -60,10 +64,6 @@ const useRoute = () => {
               ]
             }
           ]
-        },
-        {
-          path: CART,
-          element: <CartLayout />
         }
       ]
     },

@@ -43,8 +43,11 @@ const ProductDetail = () => {
     staleTime: 3 * 60 * 1000,
     keepPreviousData: true
   })
-  const { mutate } = useMutation({
+  const addToCartMutation = useMutation({
     mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.addToCart(body)
+  })
+  const buyNowMutation = useMutation({
+    mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.buyPurchase([body])
   })
 
   const currentImages = useMemo(() => (product ? product.images.slice(...indexImages) : []), [indexImages, product])
@@ -86,13 +89,24 @@ const ProductDetail = () => {
   }
 
   const handleAddToCart = () => {
-    mutate(
+    addToCartMutation.mutate(
       { product_id: product?._id as string, buy_count: buyCount },
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({
             queryKey: ['purchases', { status: purchaseStatus.INCART }]
           })
+          toast.success(data.data.message, { autoClose: 1000 })
+        }
+      }
+    )
+  }
+
+  const handleBuyNow = () => {
+    buyNowMutation.mutate(
+      { product_id: product?._id as string, buy_count: buyCount },
+      {
+        onSuccess: (data) => {
           toast.success(data.data.message, { autoClose: 1000 })
         }
       }
@@ -259,7 +273,12 @@ const ProductDetail = () => {
                     <FaCartPlus size={20} />
                     Thêm vào giỏ hàng
                   </button>
-                  <button className='py-3 text-white transition px-7 bg-primary hover:opacity-80'>Mua ngay</button>
+                  <button
+                    className='py-3 text-white transition px-7 bg-primary hover:opacity-80'
+                    onClick={handleBuyNow}
+                  >
+                    Mua ngay
+                  </button>
                 </div>
                 <div
                   className='flex items-center justify-center gap-3 cursor-pointer xl:justify-start w-fit'
