@@ -13,7 +13,7 @@ import {
   AiOutlineHeart
 } from 'react-icons/ai'
 import { TbWorld } from 'react-icons/tb'
-import { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi'
+import { PiCaretDownBold, PiCaretUpBold, PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi'
 import { HiOutlineSearch } from 'react-icons/hi'
 import { BsListUl, BsThreeDots } from 'react-icons/bs'
 import { LiaFilterSolid } from 'react-icons/lia'
@@ -35,6 +35,7 @@ export default {
   BiSolidShoppingBags,
   BiLogoFacebookCircle,
   PiCaretDownBold,
+  PiCaretUpBold,
   PiCaretLeftBold,
   PiCaretRightBold,
   TbWorld,

@@ -29,7 +29,7 @@ const QuantityController = ({ value = 1, max, onIncrease, onDecrease, onType, ..
   }
   return (
     <div className='flex items-center border border-grayBox'>
-      <button className='h-full px-3 py-2 transition border-r hover:bg-gray border-grayBox' onClick={handleDecrease}>
+      <button className='h-8 px-3 py-2 transition border-r hover:bg-gray border-grayBox' onClick={handleDecrease}>
         <RiSubtractLine />
       </button>
       <InputNumber
@@ -38,7 +38,7 @@ const QuantityController = ({ value = 1, max, onIncrease, onDecrease, onType, ..
         value={value}
         {...rest}
       />
-      <button className='px-3 py-2 transition border-l hover:bg-gray border-grayBox' onClick={handleIncrease}>
+      <button className='h-8 px-3 py-2 transition border-l hover:bg-gray border-grayBox' onClick={handleIncrease}>
         <BiPlus />
       </button>
     </div>

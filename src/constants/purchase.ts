@@ -1,4 +1,4 @@
-export const purchaseStatus = {
+export const purchasesStatus = {
   INCART: -1,
   ALL: 0,
   WAIT: 1,

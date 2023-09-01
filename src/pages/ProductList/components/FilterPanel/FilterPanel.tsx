@@ -130,7 +130,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
               render={({ field: { onChange, value, ref } }) => {
                 return (
                   <InputNumber
-                    className='px-2 py-1 text-sm bg-white placeholder:normal-case focus:border-secondary focus:border'
+                    className='w-full px-2 py-1 text-sm bg-white placeholder:normal-case focus:border-secondary focus:border'
                     placeholder='₫ Từ'
                     onChange={(e) => {
                       onChange(e)
@@ -149,7 +149,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
               render={({ field: { onChange, value, ref } }) => {
                 return (
                   <InputNumber
-                    className='px-2 py-1 text-sm bg-white placeholder:normal-case focus:border-secondary focus:border'
+                    className='w-full px-2 py-1 text-sm bg-white placeholder:normal-case focus:border-secondary focus:border'
                     placeholder='₫ Đến'
                     onChange={(e) => {
                       onChange(e)

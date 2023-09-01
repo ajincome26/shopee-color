@@ -31,6 +31,7 @@ const CartBox = ({ data }: Props) => {
       {data.slice(0, MAX_PURCHASES).map((item) => (
         <div
           key={item._id}
+          title={item.product.name}
           className='flex items-start gap-3 p-3 cursor-pointer hover:bg-slate-50'
           onClick={() => navigate(generateNameId(item.product.name, item.product._id))}
         >

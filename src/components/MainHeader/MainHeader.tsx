@@ -16,7 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { omit } from 'lodash'
 import { useEffect } from 'react'
 import purchaseApi from '~/apis/purchase.api'
-import { purchaseStatus } from '~/constants/purchase'
+import { purchasesStatus } from '~/constants/purchase'
 import { PurchaseListStatus } from '~/types/purchase.type'
 
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram, HiOutlineSearch, AiOutlineShoppingCart } =
@@ -41,14 +41,15 @@ const MainHeader = () => {
     onSuccess: () => {
       setIsLoggedIn(false)
       setUserInfo(null)
-      queryClient.removeQueries({ queryKey: ['purchases', { status: purchaseStatus.INCART }] })
+      queryClient.removeQueries({ queryKey: ['purchases', { status: purchasesStatus.INCART }] })
       toast.success('Đăng xuất thành công', { autoClose: 1000 })
     }
   })
   const { data: purchaseInCart } = useQuery({
-    queryKey: ['purchases', { status: purchaseStatus.INCART }],
-    queryFn: () => purchaseApi.getPurchaseList({ status: purchaseStatus.INCART as PurchaseListStatus }),
-    enabled: isLoggedIn
+    queryKey: ['purchases', { status: purchasesStatus.INCART }],
+    queryFn: () => purchaseApi.getPurchaseList({ status: purchasesStatus.INCART as PurchaseListStatus }),
+    enabled: isLoggedIn,
+    staleTime: 10000
   })
 
   const handleLogout = () => {

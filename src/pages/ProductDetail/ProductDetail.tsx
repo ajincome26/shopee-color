@@ -1,21 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createSearchParams, Link, useParams } from 'react-router-dom'
-import productApi from '~/apis/product.api'
-import { Popover } from '~/components/Popover'
-import icons from '~/utils/icons'
-import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, handleDiscount, handleRating } from '~/utils/utils'
 import sellerImage from '../../assets/hot-price-100.png'
+import purchaseApi from '~/apis/purchase.api'
+import productApi from '~/apis/product.api'
+import icons from '~/utils/icons'
 import freeshiping from '../../assets/free-shipping-64.png'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { path } from '~/constants/path'
 import DOMPurify from 'dompurify'
 import classNames from 'classnames'
-import { ProductItem } from '../ProductList/components/ProductItem'
-import { ProductListParams } from '~/types/product.type'
-import { QuantityController } from '~/components/QuantityController'
-import purchaseApi from '~/apis/purchase.api'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
-import { purchaseStatus } from '~/constants/purchase'
+import { QuantityController } from '~/components/QuantityController'
+import { purchasesStatus } from '~/constants/purchase'
+import { ProductListParams } from '~/types/product.type'
+import { ProductItem } from '../ProductList/components/ProductItem'
+import { Popover } from '~/components/Popover'
+import { path } from '~/constants/path'
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, handleDiscount, handleRating } from '~/utils/utils'
+import { createSearchParams, Link, useParams } from 'react-router-dom'
 
 const { PiCaretRightBold, PiCaretLeftBold, AiOutlineQuestionCircle, FaCartPlus, AiFillHeart, AiOutlineHeart } = icons
 
@@ -94,7 +94,7 @@ const ProductDetail = () => {
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({
-            queryKey: ['purchases', { status: purchaseStatus.INCART }]
+            queryKey: ['purchases', { status: purchasesStatus.INCART }]
           })
           toast.success(data.data.message, { autoClose: 1000 })
         }

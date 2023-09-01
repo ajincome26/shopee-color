@@ -11,12 +11,12 @@ const purchaseApi = {
     }),
   updatePurchase: (body: { product_id: string; buy_count: number }) =>
     instance.put<ResponseSuccess<Purchase>>('/purchases/update-purchase', body),
+  buyPurchase: (body: { product_id: string; buy_count: number }[]) =>
+    instance.post<ResponseSuccess<Purchase[]>>('/purchases/buy-products', body),
   deletePurchase: (purchaseIds: string[]) =>
     instance.delete<ResponseSuccess<{ deleted_count: number }>>('/purchases', {
       data: purchaseIds
-    }),
-  buyPurchase: (body: { product_id: string; buy_count: number }[]) =>
-    instance.post<ResponseSuccess<Purchase[]>>('/purchases/buy-products', body)
+    })
 }
 
 export default purchaseApi
