@@ -8,9 +8,11 @@ interface Props {
   onIncrease?: (value: number) => void
   onDecrease?: (value: number) => void
   onType?: (value: number) => void
+  onFocusOut?: (value: number) => void
+  disabled?: boolean
 }
 
-const QuantityController = ({ value = 1, max, onIncrease, onDecrease, onType, ...rest }: Props) => {
+const QuantityController = ({ value = 1, max, onIncrease, onDecrease, onType, onFocusOut, ...rest }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(e.target.value)
     if (max && _value > max) _value = max
@@ -27,6 +29,10 @@ const QuantityController = ({ value = 1, max, onIncrease, onDecrease, onType, ..
     if (_value < 1) _value = 1
     onDecrease && onDecrease(_value)
   }
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+    const _value = Number(e.target.value)
+    onFocusOut && onFocusOut(_value)
+  }
   return (
     <div className='flex items-center border border-grayBox'>
       <button className='h-8 px-3 py-2 transition border-r hover:bg-gray border-grayBox' onClick={handleDecrease}>
@@ -35,6 +41,7 @@ const QuantityController = ({ value = 1, max, onIncrease, onDecrease, onType, ..
       <InputNumber
         className='w-16 h-8 text-center rounded-none focus:border-primary'
         onChange={handleChange}
+        onBlur={handleBlur}
         value={value}
         {...rest}
       />

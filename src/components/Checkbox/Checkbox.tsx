@@ -4,10 +4,10 @@ import { BsCheck } from 'react-icons/bs'
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {}
 
-const Checkbox = ({ checked, onClick, children, ...rest }: Props) => {
+const Checkbox = ({ checked, children, ...rest }: Props) => {
   return (
     <label>
-      <input id='checkbox' type='checkbox' className='hidden' checked={checked} onClick={onClick} {...rest} />
+      <input id='checkbox' type='checkbox' className='hidden' checked={checked} {...rest} />
       <div className='flex items-center gap-x-2'>
         <div
           className={classNames(
