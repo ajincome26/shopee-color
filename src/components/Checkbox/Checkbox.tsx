@@ -7,7 +7,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {}
 const Checkbox = ({ checked, children, ...rest }: Props) => {
   return (
     <label>
-      <input id='checkbox' type='checkbox' className='hidden' checked={checked} {...rest} />
+      <input id='checkbox' type='checkbox' className='hidden' {...rest} />
       <div className='flex items-center gap-x-2'>
         <div
           className={classNames(

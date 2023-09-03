@@ -35,11 +35,16 @@ const Cart = () => {
     staleTime: 10000
   })
   const updatePurchaseMutation = useMutation({
-    mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.updatePurchase(body),
+    mutationFn: purchaseApi.updatePurchase,
     onSuccess: () => refetch()
   })
   const deletePurchaseMutation = useMutation({
-    mutationFn: (body: string[]) => purchaseApi.deletePurchase(body)
+    mutationFn: purchaseApi.deletePurchase,
+    onSuccess: () => refetch()
+  })
+  const buyPurchasesMutation = useMutation({
+    mutationFn: purchaseApi.buyPurchase,
+    onSuccess: () => refetch()
   })
   const purchaseInCart = data?.data.data
   purchaseInCart?.forEach((item) => purchaseIds.push(item._id))
@@ -96,34 +101,36 @@ const Cart = () => {
   }
   const handleDeletePurchase = (purchase_id: string) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: 'Bạn có chắc không?',
+      text: 'Bạn sẽ không thể hoàn tác điều này!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Xóa ngay',
+      cancelButtonText: 'Trở lại'
     }).then((result) => {
       if (result.isConfirmed) {
         deletePurchaseMutation.mutate([purchase_id], {
           onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['purchases', purchasesStatus.INCART] })
+            refetch()
             toast.success(data.data.message, { autoClose: 1000 })
           }
         })
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+        Swal.fire('Đã xóa', 'Sản phẩm đã được xóa', 'success')
       }
     })
   }
   const handleDeletePurchases = () => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: 'Bạn có chắc không?',
+      text: 'Bạn sẽ không thể hoàn tác điều này!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Xóa ngay',
+      cancelButtonText: 'Trở lại'
     }).then((result) => {
       if (result.isConfirmed) {
         deletePurchaseMutation.mutate(purchaseIds, {
@@ -132,9 +139,12 @@ const Cart = () => {
             toast.success(data.data.message, { autoClose: 1000 })
           }
         })
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+        Swal.fire('Đã xóa', 'Sản phẩm đã được xóa', 'success')
       }
     })
+  }
+  const handleBuyPurchase = () => {
+    // buyPurchasesMutation.mutate({})
   }
 
   if (!purchaseInCart) return null
