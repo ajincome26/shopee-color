@@ -2,7 +2,7 @@ import Swal from 'sweetalert2'
 import purchaseApi from '~/apis/purchase.api'
 import icons from '~/utils/icons'
 import delivery from '../../assets/free-delivery.png'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { QuantityController } from '~/components/QuantityController'
@@ -10,11 +10,12 @@ import { purchasesStatus } from '~/constants/purchase'
 import { Purchase, PurchaseListStatus } from '~/types/purchase.type'
 import { produce } from 'immer'
 import { Popover } from '~/components/Popover'
+import { path } from '~/constants/path'
 import { Link } from 'react-router-dom'
+import { keyBy } from 'lodash'
 import { formatCurrency, generateNameId, handleDiscount } from '~/utils/utils'
 import { Checkbox } from '~/components/Checkbox'
 import { Button } from '~/components/Button'
-import { keyBy } from 'lodash'
 
 const { PiCaretUpBold } = icons
 
@@ -24,10 +25,9 @@ interface ExtendedPurchase extends Purchase {
 }
 
 const Cart = () => {
-  const queryClient = useQueryClient()
   const [extendedPurchase, setExtendedPurchase] = useState<ExtendedPurchase[]>([])
   const isAllChecked = extendedPurchase.every((purchase) => purchase.checked === true)
-  const purchaseIds: string[] = []
+  const purchaseChecked = extendedPurchase.filter((purchase) => purchase.checked)
 
   const { data, refetch } = useQuery({
     queryKey: ['purchases', purchasesStatus.INCART],
@@ -47,7 +47,6 @@ const Cart = () => {
     onSuccess: () => refetch()
   })
   const purchaseInCart = data?.data.data
-  purchaseInCart?.forEach((item) => purchaseIds.push(item._id))
 
   useEffect(() => {
     setExtendedPurchase((prev) => {
@@ -113,15 +112,15 @@ const Cart = () => {
       if (result.isConfirmed) {
         deletePurchaseMutation.mutate([purchase_id], {
           onSuccess: (data) => {
-            refetch()
-            toast.success(data.data.message, { autoClose: 1000 })
+            Swal.fire('Đã xóa', data.data.message, 'success')
           }
         })
-        Swal.fire('Đã xóa', 'Sản phẩm đã được xóa', 'success')
       }
     })
   }
   const handleDeletePurchases = () => {
+    const purchaseIdsChecked: string[] = []
+    purchaseChecked.map((purchase) => purchaseIdsChecked.push(purchase._id))
     Swal.fire({
       title: 'Bạn có chắc không?',
       text: 'Bạn sẽ không thể hoàn tác điều này!',
@@ -133,23 +132,44 @@ const Cart = () => {
       cancelButtonText: 'Trở lại'
     }).then((result) => {
       if (result.isConfirmed) {
-        deletePurchaseMutation.mutate(purchaseIds, {
+        deletePurchaseMutation.mutate(purchaseIdsChecked, {
           onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['purchases', purchasesStatus.INCART] })
-            toast.success(data.data.message, { autoClose: 1000 })
+            Swal.fire('Đã xóa', data.data.message, 'success')
           }
         })
-        Swal.fire('Đã xóa', 'Sản phẩm đã được xóa', 'success')
       }
     })
   }
-  const handleBuyPurchase = () => {
-    // buyPurchasesMutation.mutate({})
+  const handleBuyPurchases = () => {
+    const purchaseBuyChecked: { product_id: string; buy_count: number }[] = []
+    purchaseChecked.map((purchase) =>
+      purchaseBuyChecked.push({ product_id: purchase.product._id, buy_count: purchase.buy_count })
+    )
+    if (purchaseChecked.length > 0) {
+      buyPurchasesMutation.mutate(purchaseBuyChecked, {
+        onSuccess: (data) => {
+          toast.success(data.data.message, { autoClose: 1000, position: 'top-center' })
+        }
+      })
+    }
+  }
+
+  const paymentAmount = (type: 'total' | 'payment' | 'save') => {
+    return purchaseChecked.reduce((result, current) => {
+      if (type === 'payment') {
+        result = result + current.price * current.buy_count
+      } else if (type === 'total') {
+        result = result + current.price_before_discount * current.buy_count
+      } else if (type === 'save') {
+        result = result + (current.price_before_discount - current.price) * current.buy_count
+      }
+      return result
+    }, 0)
   }
 
   if (!purchaseInCart) return null
 
-  return (
+  return purchaseInCart.length !== 0 ? (
     <div className='bg-gray'>
       <div className='container py-5'>
         <div className='overflow-auto '>
@@ -268,27 +288,27 @@ const Cart = () => {
 
           <div className='items-center gap-5 mt-4 lg:flex lg:mt-0'>
             <Popover
-              className='flex flex-col bg-white rounded-sm shadow-lg w-[470px] text-secondary p-6'
+              className='flex flex-col bg-white rounded-sm shadow-lg border border-gray w-[470px] text-secondary p-6'
               placement='top-end'
               popover={
                 <>
                   <span className='pb-3 text-lg border-b border-grayBox'>Chi tiết khuyến mãi</span>
                   <div className='flex items-center justify-between py-3 border-b border-grayBox'>
                     <span>Tổng tiền hàng</span>
-                    <span>₫0</span>
+                    <span>₫{formatCurrency(paymentAmount('total'))}</span>
                   </div>
                   <div className='flex items-center justify-between py-3 border-b border-grayBox'>
                     <span>Giảm giá sản phẩm</span>
-                    <span>-₫100.000</span>
+                    <span>-₫{formatCurrency(paymentAmount('save'))}</span>
                   </div>
                   <div className='py-3'>
                     <div className='flex items-center justify-between mb-2'>
                       <span>Tiết kiệm</span>
-                      <span>-₫100.000</span>
+                      <span className='text-third'>-₫{formatCurrency(paymentAmount('save'))}</span>
                     </div>
                     <div className='flex items-center justify-between'>
                       <span>Tổng số tiền</span>
-                      <span>₫100.000</span>
+                      <span>₫{formatCurrency(paymentAmount('payment'))}</span>
                     </div>
                     <span className='block mt-2 text-sm text-end text-slate-400'>Số tiền cuối cùng thanh toán</span>
                   </div>
@@ -297,19 +317,43 @@ const Cart = () => {
             >
               <div className='flex flex-col gap-1 mb-4 lg:gap-2 lg:mb-0'>
                 <div className='flex items-center gap-3'>
-                  <span>Tổng thanh toán (0 sản phẩm):</span>
-                  <span className='text-xl lg:text-2xl text-third'>₫0</span>
+                  <span>Tổng thanh toán ({purchaseChecked.length} sản phẩm):</span>
+                  <span className='text-xl font-medium lg:text-2xl text-third'>
+                    ₫{formatCurrency(paymentAmount('payment'))}
+                  </span>
                   <PiCaretUpBold color='#2c3e50' />
                 </div>
                 <div className='lg:flex items-center justify-end gap-6 text-[15px] text-primary'>
                   <span>Tiết kiệm</span>
-                  <span className='ml-5'>₫0</span>
+                  <span className='ml-5'>₫{formatCurrency(paymentAmount('save'))}</span>
                 </div>
               </div>
             </Popover>
-            <Button className='px-10 py-2 text-sm uppercase lg:px-16 lg:py-3 lg:text-base'>Mua ngay</Button>
+            <Button
+              className='px-10 py-2 text-sm uppercase lg:px-16 lg:py-3 lg:text-base'
+              onClick={handleBuyPurchases}
+              disabled={buyPurchasesMutation.isLoading}
+            >
+              Mua ngay
+            </Button>
           </div>
         </div>
+      </div>
+    </div>
+  ) : (
+    <div className='flex items-center justify-center py-5'>
+      <div className='flex flex-col items-center'>
+        <div className='rounded-full w-36 h-36'>
+          <img
+            src='https://img.freepik.com/premium-vector/shopping-cart-with-cross-mark-wireless-paymant-icon-shopping-bag-failure-paymant-sign-online-shopping-vector_662353-912.jpg?w=740'
+            alt='cart-empty'
+            className='object-cover w-full h-full'
+          />
+        </div>
+        <span className='text-slate-400'>Giỏ hàng của bạn còn trống</span>
+        <Button to={path.HOME} className='px-8 py-2 mt-4 mb-6'>
+          Mua ngay
+        </Button>
       </div>
     </div>
   )

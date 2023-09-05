@@ -11,9 +11,9 @@ const Checkbox = ({ checked, children, ...rest }: Props) => {
       <div className='flex items-center gap-x-2'>
         <div
           className={classNames(
-            'flex items-center justify-center w-5 h-5 transition-all duration-200 ease-linear bg-white border rounded-md cursor-pointer border-third',
+            'flex items-center justify-center w-5 h-5 transition-all duration-200 ease-linear border rounded-md cursor-pointer border-primary',
             {
-              'bg-third': checked,
+              'bg-primary': checked,
               'bg-white': !checked
             }
           )}

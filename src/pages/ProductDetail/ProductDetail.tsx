@@ -44,10 +44,10 @@ const ProductDetail = () => {
     keepPreviousData: true
   })
   const addToCartMutation = useMutation({
-    mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.addToCart(body)
+    mutationFn: purchaseApi.addToCart
   })
   const buyNowMutation = useMutation({
-    mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.buyPurchase([body])
+    mutationFn: purchaseApi.buyPurchase
   })
 
   const currentImages = useMemo(() => (product ? product.images.slice(...indexImages) : []), [indexImages, product])
@@ -103,14 +103,14 @@ const ProductDetail = () => {
   }
 
   const handleBuyNow = () => {
-    buyNowMutation.mutate(
-      { product_id: product?._id as string, buy_count: buyCount },
-      {
-        onSuccess: (data) => {
-          toast.success(data.data.message, { autoClose: 1000 })
-        }
+    buyNowMutation.mutate([{ product_id: product?._id as string, buy_count: buyCount }], {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ['purchases', { status: purchasesStatus.INCART }]
+        })
+        toast.success(data.data.message, { autoClose: 1000 })
       }
-    )
+    })
   }
 
   if (!product) return null

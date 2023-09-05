@@ -48,8 +48,8 @@ const MainHeader = () => {
   const { data: purchaseInCart } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.INCART }],
     queryFn: () => purchaseApi.getPurchaseList({ status: purchasesStatus.INCART as PurchaseListStatus }),
-    enabled: isLoggedIn,
-    staleTime: 10000
+    staleTime: 10000,
+    enabled: isLoggedIn
   })
 
   const handleLogout = () => {
