@@ -10,6 +10,7 @@ import { MainLayout } from './layouts/MainLayout'
 import { LoginPage } from './pages/LoginPage'
 import { ProductDetail } from './pages/ProductDetail'
 import { Cart } from './pages/Cart'
+import { CartLayout } from './layouts/CartLayout'
 
 const { HOME, LOGIN, REGISTER, PROFILE, CART, PRODUCT_DETAIL } = path
 
@@ -51,10 +52,6 @@ const useRoute = () => {
           element: <MainLayout />,
           children: [
             {
-              path: CART,
-              element: <Cart />
-            },
-            {
               element: <UserLayout />,
               children: [
                 {
@@ -62,6 +59,15 @@ const useRoute = () => {
                   element: <Profile />
                 }
               ]
+            }
+          ]
+        },
+        {
+          element: <CartLayout />,
+          children: [
+            {
+              path: CART,
+              element: <Cart />
             }
           ]
         }
