@@ -2,16 +2,17 @@ import Swal from 'sweetalert2'
 import purchaseApi from '~/apis/purchase.api'
 import icons from '~/utils/icons'
 import delivery from '../../assets/free-delivery.png'
+import { usePurchase } from '~/contexts/purchase.context'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { toast } from 'react-toastify'
 import { QuantityController } from '~/components/QuantityController'
 import { purchasesStatus } from '~/constants/purchase'
-import { Purchase, PurchaseListStatus } from '~/types/purchase.type'
+import { PurchaseListStatus } from '~/types/purchase.type'
 import { produce } from 'immer'
 import { Popover } from '~/components/Popover'
 import { path } from '~/constants/path'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { keyBy } from 'lodash'
 import { formatCurrency, generateNameId, handleDiscount } from '~/utils/utils'
 import { Checkbox } from '~/components/Checkbox'
@@ -19,15 +20,19 @@ import { Button } from '~/components/Button'
 
 const { PiCaretUpBold } = icons
 
-interface ExtendedPurchase extends Purchase {
-  checked: boolean
-  disabled: boolean
-}
-
 const Cart = () => {
-  const [extendedPurchase, setExtendedPurchase] = useState<ExtendedPurchase[]>([])
-  const isAllChecked = extendedPurchase.every((purchase) => purchase.checked === true)
-  const purchaseChecked = extendedPurchase.filter((purchase) => purchase.checked)
+  const location = useLocation()
+  const purchaseId = (
+    location.state as {
+      purchase_id: string
+    }
+  )?.purchase_id
+  const { extendedPurchase, setExtendedPurchase } = usePurchase()
+  const isAllChecked = useMemo(
+    () => extendedPurchase.every((purchase) => purchase.checked === true),
+    [extendedPurchase]
+  )
+  const purchaseChecked = useMemo(() => extendedPurchase.filter((purchase) => purchase.checked), [extendedPurchase])
 
   const { data, refetch } = useQuery({
     queryKey: ['purchases', purchasesStatus.INCART],
@@ -49,18 +54,26 @@ const Cart = () => {
   const purchaseInCart = data?.data.data
 
   useEffect(() => {
+    return () => {
+      window.history.replaceState(null, '')
+    }
+  }, [])
+  useEffect(() => {
     setExtendedPurchase((prev) => {
       const extendedPurchaseObj = keyBy(prev, '_id')
       return purchaseInCart
-        ? purchaseInCart.map((purchase) => ({
-            ...purchase,
-            checked: Boolean(extendedPurchaseObj[purchase._id]?.checked),
-            disabled: false
-          }))
+        ? purchaseInCart.map((purchase) => {
+            const isIncludePurchase = purchase._id === purchaseId
+            return {
+              ...purchase,
+              checked: isIncludePurchase || Boolean(extendedPurchaseObj[purchase._id]?.checked),
+              disabled: false
+            }
+          })
         : []
     })
     // Boolean(extendedPurchase.filter((item) => item._id === purchase._id)[0]?.checked)
-  }, [purchaseInCart])
+  }, [purchaseId, purchaseInCart, setExtendedPurchase])
 
   const handleCheckedProduct = (indexPurchase: number, e: React.ChangeEvent<HTMLInputElement>) => {
     // Dùng immer

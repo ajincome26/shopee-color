@@ -19,7 +19,7 @@ const InputSearch = <TFieldValues extends FieldValues = FieldValues>({
       type={type || 'text'}
       {...register(name)}
       {...rest}
-      className={`${className} w-full transition border border-transparent rounded-md placeholder:text-sm`}
+      className={`${className} w-full transition border rounded-md placeholder:text-sm`}
       autoComplete='on'
     />
   )

@@ -91,7 +91,7 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
                 value={order}
                 onChange={(e) => handleNavigatePrice(e.target.value as Exclude<ProductListParams['order'], undefined>)}
               >
-                <option value='' className='bg-white text-secondary'>
+                <option value='' className='bg-white text-secondary' disabled>
                   Giá
                 </option>
                 <option value={orderConst.ASC} className='bg-white text-secondary'>

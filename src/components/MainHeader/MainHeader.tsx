@@ -61,7 +61,7 @@ const MainHeader = () => {
 
           <form onSubmit={handleSubmit(handleSearch)} className='relative w-full'>
             <InputSearch
-              className='py-3 pl-4 pr-16 text-grayDark placeholder:uppercase bg-grayField hover:border-white focus:border-white focus:bg-white'
+              className='py-3 pl-4 pr-16 border-transparent text-grayDark placeholder:uppercase bg-grayField hover:border-white focus:border-white focus:bg-white'
               name='searchValue'
               placeholder='iPhone 14 Pro Max'
               register={register}
@@ -95,9 +95,11 @@ const MainHeader = () => {
           >
             <div className='relative cursor-pointer'>
               <AiOutlineShoppingCart size={28} />
-              <div className='absolute flex items-center justify-center px-[6px] text-sm bg-white rounded-full -top-2 text-third -right-3'>
-                {purchaseInCart ? purchaseInCart.data.data.length : ''}
-              </div>
+              {purchaseInCart && purchaseInCart.data.data.length !== 0 && (
+                <div className='absolute flex items-center justify-center px-[6px] text-sm bg-white rounded-full -top-2 text-third -right-3'>
+                  {purchaseInCart.data.data.length}
+                </div>
+              )}
             </div>
           </Popover>
         </div>

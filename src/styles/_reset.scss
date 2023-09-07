@@ -36,6 +36,11 @@ select {
   font: inherit;
   outline: none;
 }
+option:checked {
+  background-color: #0891b2;
+  color: white;
+  font-style: italic;
+}
 p,
 h1,
 h2,

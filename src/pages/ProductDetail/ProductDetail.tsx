@@ -15,18 +15,19 @@ import { ProductItem } from '../ProductList/components/ProductItem'
 import { Popover } from '~/components/Popover'
 import { path } from '~/constants/path'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, handleDiscount, handleRating } from '~/utils/utils'
-import { createSearchParams, Link, useParams } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate, useParams } from 'react-router-dom'
 
 const { PiCaretRightBold, PiCaretLeftBold, AiOutlineQuestionCircle, FaCartPlus, AiFillHeart, AiOutlineHeart } = icons
 
 const ProductDetail = () => {
-  const imageRef = useRef<HTMLImageElement>(null)
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { nameId } = useParams()
+  const imageRef = useRef<HTMLImageElement>(null)
   const [toggleHeart, setToggleHeart] = useState(false)
   const [indexImages, setIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
   const [buyCount, setBuyCount] = useState(1)
-  const queryClient = useQueryClient()
 
   const id = getIdFromNameId(nameId as string)
   const { data } = useQuery({
@@ -45,9 +46,6 @@ const ProductDetail = () => {
   })
   const addToCartMutation = useMutation({
     mutationFn: purchaseApi.addToCart
-  })
-  const buyNowMutation = useMutation({
-    mutationFn: purchaseApi.buyPurchase
   })
 
   const currentImages = useMemo(() => (product ? product.images.slice(...indexImages) : []), [indexImages, product])
@@ -87,7 +85,6 @@ const ProductDetail = () => {
   const handleQuantity = (value: number) => {
     setBuyCount(value)
   }
-
   const handleAddToCart = () => {
     addToCartMutation.mutate(
       { product_id: product?._id as string, buy_count: buyCount },
@@ -101,14 +98,12 @@ const ProductDetail = () => {
       }
     )
   }
-
-  const handleBuyNow = () => {
-    buyNowMutation.mutate([{ product_id: product?._id as string, buy_count: buyCount }], {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries({
-          queryKey: ['purchases', { status: purchasesStatus.INCART }]
-        })
-        toast.success(data.data.message, { autoClose: 1000 })
+  const handleBuyNow = async () => {
+    const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: buyCount })
+    const purchase = res.data.data
+    navigate(path.CART, {
+      state: {
+        purchase_id: purchase._id
       }
     })
   }

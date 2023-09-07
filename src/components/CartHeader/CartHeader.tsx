@@ -42,7 +42,7 @@ const CartHeader = () => {
           </div>
           <form onSubmit={handleSubmit(handleSearch)} className='relative w-full md:w-1/2'>
             <InputSearch
-              className='py-3 pl-4 pr-16 border-[2px] bg-white border-[#9cc6d0] text-grayDark placeholder:uppercase focus:border-third rounded-none'
+              className='py-3 pl-4 pr-16 border-[2px] bg-white border-blue-400 text-grayDark placeholder:uppercase focus:border-third rounded-none'
               name='searchValue'
               placeholder='Free Ship Đơn từ 0đ'
               register={register}
