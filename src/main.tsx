@@ -12,7 +12,8 @@ import { PurchaseProvider } from './contexts/purchase.context'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      retry: 0
     }
   }
 })

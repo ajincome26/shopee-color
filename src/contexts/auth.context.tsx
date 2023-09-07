@@ -7,12 +7,14 @@ interface AuthProviderType {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
   userInfo: User | null
   setUserInfo: React.Dispatch<React.SetStateAction<User | null>>
+  resetAuth: () => void
 }
 const initialContext: AuthProviderType = {
   isLoggedIn: Boolean(getAccessToken()),
   setIsLoggedIn: () => null,
   userInfo: getUserInfoFromStorage(),
-  setUserInfo: () => null
+  setUserInfo: () => null,
+  resetAuth: () => null
 }
 
 const AuthContext = createContext<AuthProviderType>(initialContext)
@@ -24,8 +26,14 @@ const useAuth = () => {
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(initialContext.isLoggedIn)
   const [userInfo, setUserInfo] = useState(initialContext.userInfo)
+  const resetAuth = () => {
+    setIsLoggedIn(false)
+    setUserInfo(null)
+  }
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userInfo, setUserInfo }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userInfo, setUserInfo, resetAuth }}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 

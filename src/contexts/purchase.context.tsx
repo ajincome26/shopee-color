@@ -4,10 +4,12 @@ import { ExtendedPurchase } from '~/types/purchase.type'
 interface PurchaseProviderType {
   extendedPurchase: ExtendedPurchase[]
   setExtendedPurchase: React.Dispatch<React.SetStateAction<ExtendedPurchase[]>>
+  resetPurchase: () => void
 }
 const initialContext: PurchaseProviderType = {
   extendedPurchase: [],
-  setExtendedPurchase: () => null
+  setExtendedPurchase: () => null,
+  resetPurchase: () => null
 }
 
 const PurchaseContext = createContext<PurchaseProviderType>(initialContext)
@@ -18,8 +20,13 @@ const usePurchase = () => {
 }
 const PurchaseProvider = ({ children }: { children: React.ReactNode }) => {
   const [extendedPurchase, setExtendedPurchase] = useState(initialContext.extendedPurchase)
+  const resetPurchase = () => {
+    setExtendedPurchase([])
+  }
   return (
-    <PurchaseContext.Provider value={{ extendedPurchase, setExtendedPurchase }}>{children}</PurchaseContext.Provider>
+    <PurchaseContext.Provider value={{ extendedPurchase, setExtendedPurchase, resetPurchase }}>
+      {children}
+    </PurchaseContext.Provider>
   )
 }
 

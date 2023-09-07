@@ -45,6 +45,9 @@ instance.interceptors.response.use(
       const message = data.message || error.message
       toast.error(message, { autoClose: 2000 })
     }
+    if (error.response?.status === HttpStatusCode.Unauthorized) {
+      clearLocalStorage()
+    }
     return Promise.reject(error)
   }
 )
