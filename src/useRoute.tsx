@@ -2,28 +2,32 @@ import { UserLayout } from './layouts/UserLayout'
 import { useAuth } from './contexts/auth.context'
 import { RegisterPage } from './pages/RegisterPage'
 import { RegisterLayout } from './layouts/RegisterLayout'
-import { Profile } from './pages/Profile'
+import { Purchase } from './pages/User/pages/Purchase'
+import { Profile } from './pages/User/pages/Profile'
 import { ProductList } from './pages/ProductList'
+import { ProductDetail } from './pages/ProductDetail'
 import { path } from './constants/path'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { MainLayout } from './layouts/MainLayout'
 import { LoginPage } from './pages/LoginPage'
-import { ProductDetail } from './pages/ProductDetail'
-import { Cart } from './pages/Cart'
+import { ChangePassword } from './pages/User/pages/ChangePassword'
 import { CartLayout } from './layouts/CartLayout'
+import { Cart } from './pages/Cart'
 
-const { HOME, LOGIN, REGISTER, PROFILE, CART, PRODUCT_DETAIL } = path
+const { HOME, LOGIN, REGISTER, PROFILE, CART, PRODUCT_DETAIL, CHANGE_PASSWORD, PURCHASE } = path
+
+// eslint-disable-next-line react-refresh/only-export-components
+function ProtectedRoute() {
+  const { isLoggedIn } = useAuth()
+  return isLoggedIn ? <Outlet /> : <Navigate to={LOGIN} />
+}
+// eslint-disable-next-line react-refresh/only-export-components
+function RejectedRoute() {
+  const { isLoggedIn } = useAuth()
+  return !isLoggedIn ? <Outlet /> : <Navigate to={HOME} />
+}
 
 const useRoute = () => {
-  const { isLoggedIn } = useAuth()
-
-  function ProtectedRoute() {
-    return isLoggedIn ? <Outlet /> : <Navigate to={LOGIN} />
-  }
-  function RejectedRoute() {
-    return !isLoggedIn ? <Outlet /> : <Navigate to={HOME} />
-  }
-
   const element = useRoutes([
     {
       element: <RejectedRoute />,
@@ -57,6 +61,14 @@ const useRoute = () => {
                 {
                   path: PROFILE,
                   element: <Profile />
+                },
+                {
+                  path: CHANGE_PASSWORD,
+                  element: <ChangePassword />
+                },
+                {
+                  path: PURCHASE,
+                  element: <Purchase />
                 }
               ]
             }

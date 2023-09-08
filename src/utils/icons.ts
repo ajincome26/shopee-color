@@ -15,10 +15,12 @@ import {
 import { TbWorld } from 'react-icons/tb'
 import { PiCaretDownBold, PiCaretUpBold, PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi'
 import { HiOutlineSearch } from 'react-icons/hi'
-import { BsListUl, BsThreeDots } from 'react-icons/bs'
+import { BsListUl, BsThreeDots, BsShieldLock } from 'react-icons/bs'
 import { LiaFilterSolid } from 'react-icons/lia'
-import { RiSubtractLine } from 'react-icons/ri'
+import { RiSubtractLine, RiTodoLine } from 'react-icons/ri'
 import { FaCartPlus } from 'react-icons/fa'
+import { CiEdit } from 'react-icons/ci'
+import { FaRegUser } from 'react-icons/fa'
 
 export default {
   AiFillInstagram,
@@ -42,8 +44,12 @@ export default {
   HiOutlineSearch,
   BsListUl,
   BsThreeDots,
+  BsShieldLock,
   LiaFilterSolid,
   BiPlus,
   RiSubtractLine,
-  FaCartPlus
+  RiTodoLine,
+  FaCartPlus,
+  CiEdit,
+  FaRegUser
 }
