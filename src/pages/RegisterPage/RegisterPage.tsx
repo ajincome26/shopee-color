@@ -69,11 +69,18 @@ const RegisterPage = () => {
         <h2 className='mb-2 text-xl font-semibold text-secondary'>Đăng Ký</h2>
         <Field>
           <Label htmlFor='email'>Email Address</Label>
-          <Input name='email' register={register} placeholder='Enter your email' errorMessage={errors.email?.message} />
+          <Input
+            className='border-transparent'
+            name='email'
+            register={register}
+            placeholder='Enter your email'
+            errorMessage={errors.email?.message}
+          />
         </Field>
         <Field>
           <Label htmlFor='password'>Password</Label>
           <InputPassword
+            className='border-transparent'
             name='password'
             register={register}
             placeholder='Enter your password'
@@ -83,6 +90,7 @@ const RegisterPage = () => {
         <Field>
           <Label htmlFor='cpassword'>Confirm Password</Label>
           <InputPassword
+            className='border-transparent'
             name='cpassword'
             register={register}
             placeholder='Confirm password'

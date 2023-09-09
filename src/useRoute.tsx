@@ -1,4 +1,4 @@
-import { UserLayout } from './layouts/UserLayout'
+import { UserLayout } from './pages/User/layout/UserLayout'
 import { useAuth } from './contexts/auth.context'
 import { RegisterPage } from './pages/RegisterPage'
 import { RegisterLayout } from './layouts/RegisterLayout'

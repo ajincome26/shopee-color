@@ -64,11 +64,18 @@ const LoginPage = () => {
         <h2 className='mb-2 text-xl font-semibold text-secondary'>Đăng nhập</h2>
         <Field>
           <Label htmlFor='email'>Email Address</Label>
-          <Input name='email' register={register} placeholder='Enter your email' errorMessage={errors.email?.message} />
+          <Input
+            className='border-transparent'
+            name='email'
+            register={register}
+            placeholder='Enter your email'
+            errorMessage={errors.email?.message}
+          />
         </Field>
         <Field>
           <Label htmlFor='password'>Password</Label>
           <InputPassword
+            className='border-transparent'
             name='password'
             register={register}
             placeholder='Enter your password'

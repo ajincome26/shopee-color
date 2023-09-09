@@ -29,16 +29,16 @@ const UserLayout = () => {
   return (
     <div className='bg-gray text-secondary'>
       <div className='container'>
-        <div className='flex gap-5 py-5'>
+        <div className='flex flex-col gap-5 md:py-5 md:flex-row'>
           <div className='basis-1/5'>
             <div className='flex items-center gap-3 py-5 mb-5 border-b border-b-grayBox'>
-              <div className='w-[50px] h-[50px] shrink-0'>
+              <Link to={path.PROFILE} className='w-[50px] h-[50px] shrink-0'>
                 <img
                   src='https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg'
                   alt='avatar'
                   className='object-cover w-full h-full rounded-full shadow-sm'
                 />
-              </div>
+              </Link>
               <div className='flex flex-col gap-2'>
                 <h3 className='font-semibold line-clamp-1'>nvprime@gmail.com</h3>
                 <Link to={path.PROFILE} className='flex items-center gap-1 cursor-pointer'>
@@ -47,7 +47,7 @@ const UserLayout = () => {
                 </Link>
               </div>
             </div>
-            <div className='flex flex-col gap-5 px-4'>
+            <div className='flex flex-col gap-5 lg:px-4'>
               {dataTitles.map((item) => (
                 <div key={item.id} className='flex items-center gap-2 cursor-pointer'>
                   <span>{item.icon}</span>
@@ -58,7 +58,7 @@ const UserLayout = () => {
               ))}
             </div>
           </div>
-          <div className='p-[18px] bg-white basis-4/5 shadow-lg'>
+          <div className='mb-8 bg-white shadow-lg md:mb-0 basis-4/5'>
             <Outlet />
           </div>
         </div>

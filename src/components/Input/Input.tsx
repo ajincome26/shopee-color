@@ -8,6 +8,7 @@ export interface InputProps<TFieldValues extends FieldValues> extends InputHTMLA
 }
 
 const Input = <TFieldValues extends FieldValues = FieldValues>({
+  className,
   type,
   name,
   children,
@@ -22,7 +23,7 @@ const Input = <TFieldValues extends FieldValues = FieldValues>({
         type={type || 'text'}
         {...register(name)}
         {...props}
-        className={`mb-[6px] border border-transparent rounded-lg py-3 bg-grayField hover:border-primary focus:border-primary transition w-full focus:bg-white ${
+        className={`${className} mb-[6px] border rounded-lg py-3 bg-grayField hover:border-primary focus:border-primary transition w-full focus:bg-white ${
           children ? 'pl-4 pr-10' : 'px-4'
         }`}
         autoComplete='on'
