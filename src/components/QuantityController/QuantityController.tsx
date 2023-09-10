@@ -39,7 +39,7 @@ const QuantityController = ({ value = 1, max, onIncrease, onDecrease, onType, on
         <RiSubtractLine />
       </button>
       <InputNumber
-        className='w-16 h-8 text-center rounded-none focus:border-primary'
+        className='w-16 h-8 text-center rounded-none focus:border-primary border-transparent'
         onChange={handleChange}
         onBlur={handleBlur}
         value={value}

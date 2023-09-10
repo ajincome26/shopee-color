@@ -20,7 +20,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
   return (
     <input
       value={value || localValue}
-      className={`${className} transition border border-transparent rounded-md placeholder:text-sm`}
+      className={`${className} transition border rounded-md placeholder:text-sm`}
       autoComplete='on'
       onChange={handleChange}
       ref={ref}

@@ -1,6 +1,7 @@
 import { InputPassword } from '~/components/Input'
 import { HeaderOutlet } from '../../components/HeaderOutlet'
 import { useForm } from 'react-hook-form'
+import { Button } from '~/components/Button'
 
 const ChangePassword = () => {
   const { register } = useForm()
@@ -46,9 +47,9 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        <button className='relative px-10 py-3 text-white bg-primary w-fit lg:left-[calc(40%+12px)] hover:opacity-80 transition mt-2 mb-8 md:mb-5'>
+        <Button className='relative px-10 py-3 text-white bg-primary w-fit lg:left-[calc(40%+12px)] hover:opacity-80 transition mt-2 md:mt-0 mb-8 md:mb-5 rounded-none bg-none hover:bg-none hover:bg-opacity-80'>
           Lưu
-        </button>
+        </Button>
       </form>
     </div>
   )
