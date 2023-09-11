@@ -7,6 +7,7 @@ import { purchasesStatus } from '~/constants/purchase'
 import { Popover } from '../Popover'
 import { path } from '~/constants/path'
 import { Link } from 'react-router-dom'
+import { defaultURL, getURLAvatar } from '~/utils/utils'
 
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram } = icons
 
@@ -22,6 +23,7 @@ const NavHeader = () => {
       toast.success('Đăng xuất thành công', { autoClose: 1000 })
     }
   })
+  if (!userInfo?.avatar) return null
   const handleLogout = () => {
     logoutMutation.mutate()
   }
@@ -87,12 +89,12 @@ const NavHeader = () => {
             <div className='flex items-center gap-2 cursor-pointer'>
               <div className='w-6 h-6 overflow-hidden rounded-full'>
                 <img
-                  src='https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg'
+                  src={userInfo.avatar !== defaultURL ? getURLAvatar(userInfo?.avatar) : defaultURL}
                   alt='avatar'
                   className='object-cover w-full h-full'
                 />
               </div>
-              <span className='transition hover:text-gray'>{userInfo?.email}</span>
+              <span className='transition hover:text-gray'>{userInfo?.name || userInfo?.email}</span>
             </div>
           </Popover>
         ) : (

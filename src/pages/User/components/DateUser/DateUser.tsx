@@ -16,8 +16,13 @@ const DateUser = ({ errorMessage, onChange, value }: Props) => {
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value, name } = e.target
-    const newDate = { ...date, [name]: Number(value) }
+    const { value: valueSelect, name } = e.target
+    const newDate = {
+      day: value?.getDate() || date.day,
+      month: value?.getMonth() || date.month,
+      year: value?.getFullYear() || date.year,
+      [name]: Number(valueSelect)
+    }
     setDate(newDate)
     onChange && onChange(new Date(newDate.year, newDate.month, newDate.day))
   }

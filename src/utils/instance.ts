@@ -42,7 +42,7 @@ instance.interceptors.response.use(
     if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data: any = error.response?.data
-      const message = data.message || error.message
+      const message = data?.message || error.message
       toast.error(message, { autoClose: 2000 })
     }
     if (error.response?.status === HttpStatusCode.Unauthorized) {

@@ -5,6 +5,7 @@ import { v4 } from 'uuid'
 import slugify from 'slugify'
 
 const { AiOutlineStar, AiFillStar } = icons
+export const defaultURL = 'https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg'
 
 export function isAxiosUnprocessableEntityError<TFormError>(error: unknown): error is AxiosError<TFormError> {
   return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
@@ -106,6 +107,10 @@ const handleDiscount = (beforePrice: number, price: number) => {
   return Math.round(percent)
 }
 
+const getURLAvatar = (imageName?: string) => {
+  return `https://api-ecom.duthanhduoc.com/images/${imageName}`
+}
+
 export {
   handleStar,
   handleRating,
@@ -113,5 +118,6 @@ export {
   handleSold,
   handleDiscount,
   formatCurrency,
-  formatNumberToSocialStyle
+  formatNumberToSocialStyle,
+  getURLAvatar
 }

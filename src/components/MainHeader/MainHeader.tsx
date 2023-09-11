@@ -63,7 +63,7 @@ const MainHeader = () => {
             <InputSearch
               className='py-3 pl-4 pr-16 border-transparent text-grayDark placeholder:uppercase bg-grayField hover:border-white focus:border-white focus:bg-white'
               name='searchValue'
-              placeholder='iPhone 14 Pro Max'
+              placeholder='Free Ship cho đơn từ 0đ'
               register={register}
             />
             <Button type='submit' className='absolute px-[14px] py-[10px] top-[4px] right-[4px] md:w-auto'>
