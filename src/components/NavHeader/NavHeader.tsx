@@ -23,7 +23,6 @@ const NavHeader = () => {
       toast.success('Đăng xuất thành công', { autoClose: 1000 })
     }
   })
-  if (!userInfo?.avatar) return null
   const handleLogout = () => {
     logoutMutation.mutate()
   }
@@ -89,7 +88,7 @@ const NavHeader = () => {
             <div className='flex items-center gap-2 cursor-pointer'>
               <div className='w-6 h-6 overflow-hidden rounded-full'>
                 <img
-                  src={userInfo.avatar !== defaultURL ? getURLAvatar(userInfo?.avatar) : defaultURL}
+                  src={userInfo && userInfo.avatar !== defaultURL ? getURLAvatar(userInfo?.avatar) : defaultURL}
                   alt='avatar'
                   className='object-cover w-full h-full'
                 />

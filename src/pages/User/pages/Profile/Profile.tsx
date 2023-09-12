@@ -54,6 +54,7 @@ const Profile = () => {
     }
   })
 
+  // Show info
   useEffect(() => {
     if (profile) {
       setValue('name', profile.name)
@@ -109,7 +110,7 @@ const Profile = () => {
 
   if (!profile) return null
   return (
-    <div className='md:p-[18px]'>
+    <div className='md:p-[18px] shadow-lg'>
       <HeaderOutlet title='Hồ sơ của tôi' />
       <form onSubmit={handleSubmit(handleSubmitProfile)} className='flex flex-col-reverse lg:gap-10 lg:flex-row'>
         <div className='basis-2/3'>

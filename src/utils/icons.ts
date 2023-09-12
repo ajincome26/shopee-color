@@ -21,6 +21,7 @@ import { RiSubtractLine, RiTodoLine } from 'react-icons/ri'
 import { FaCartPlus } from 'react-icons/fa'
 import { CiEdit } from 'react-icons/ci'
 import { FaRegUser } from 'react-icons/fa'
+import { SiSensu } from 'react-icons/si'
 
 export default {
   AiFillInstagram,
@@ -51,5 +52,6 @@ export default {
   RiTodoLine,
   FaCartPlus,
   CiEdit,
-  FaRegUser
+  FaRegUser,
+  SiSensu
 }

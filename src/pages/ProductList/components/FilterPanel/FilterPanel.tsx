@@ -69,10 +69,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
 
   useEffect(() => {
     if (!(price_max && price_min)) {
-      reset({
-        minValue: '',
-        maxValue: ''
-      })
+      reset()
     }
   }, [price_max, price_min, reset])
 
@@ -130,7 +127,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
               render={({ field: { onChange, value, ref } }) => {
                 return (
                   <InputNumber
-                    className='border-transparent w-full px-2 py-1 text-sm bg-white placeholder:normal-case focus:border-secondary focus:border'
+                    className='w-full px-2 py-1 text-sm bg-white border-transparent placeholder:normal-case focus:border-secondary focus:border'
                     placeholder='₫ Từ'
                     onChange={(e) => {
                       onChange(e)
@@ -149,7 +146,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
               render={({ field: { onChange, value, ref } }) => {
                 return (
                   <InputNumber
-                    className='w-full border-transparent px-2 py-1 text-sm bg-white placeholder:normal-case focus:border-secondary focus:border'
+                    className='w-full px-2 py-1 text-sm bg-white border-transparent placeholder:normal-case focus:border-secondary focus:border'
                     placeholder='₫ Đến'
                     onChange={(e) => {
                       onChange(e)

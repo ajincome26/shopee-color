@@ -1,50 +1,77 @@
-import { NavLink } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import classNames from 'classnames'
+import { createSearchParams, NavLink } from 'react-router-dom'
+import purchaseApi from '~/apis/purchase.api'
 import { path } from '~/constants/path'
-import { PurchaseOutlet } from './PurchaseOutlet'
+import { purchasesStatus } from '~/constants/purchase'
+import { useQueryParams } from '~/hooks/useQueryParams'
+import { PurchaseListStatus } from '~/types/purchase.type'
+import { PurchaseOutlet } from '../../components/PurchaseOutlet'
 
 const dataCatePurchase = [
   {
     id: 1,
-    title: 'Tất cả'
+    title: 'Tất cả',
+    status: purchasesStatus.ALL
   },
   {
     id: 2,
-    title: 'Chờ xác nhận'
+    title: 'Chờ xác nhận',
+    status: purchasesStatus.WAIT
   },
   {
     id: 3,
-    title: 'Chờ lấy hàng'
+    title: 'Chờ lấy hàng',
+    status: purchasesStatus.PICKING
   },
   {
     id: 4,
-    title: 'Đang giao'
+    title: 'Đang giao',
+    status: purchasesStatus.SHIPPING
   },
   {
     id: 5,
-    title: 'Đã giao'
+    title: 'Đã giao',
+    status: purchasesStatus.DELIVERED
   },
   {
     id: 6,
-    title: 'Đã hủy'
+    title: 'Đã hủy',
+    status: purchasesStatus.REJECTED
   }
 ]
 
 const Purchase = () => {
+  const queryParams: { status?: string } = useQueryParams()
+  const status = Number(queryParams.status)
+  const { data } = useQuery({
+    queryKey: ['purchases', status],
+    queryFn: () => purchaseApi.getPurchaseList({ status: status as PurchaseListStatus })
+  })
+  const purchases = data?.data.data
   return (
-    <div className='flex flex-col bg-white'>
-      <div className='grid grid-cols-6'>
+    <div className='flex flex-col'>
+      <div className='grid grid-cols-6 shadow-lg'>
         {dataCatePurchase.map((item) => (
           <NavLink
-            to={`${path.PURCHASE}?status=${item.id}`}
+            to={{
+              pathname: path.PURCHASE,
+              search: createSearchParams({
+                status: String(item.status)
+              }).toString()
+            }}
             key={item.id}
-            className='flex items-center justify-center py-4 cursor-pointer px-7'
+            className={classNames('flex items-center justify-center py-4 cursor-pointer px-7 border-b-[2px]', {
+              'border-b-primary text-third': status === item.status,
+              'border-b-transparent': status !== item.status
+            })}
           >
             {item.title}
           </NavLink>
         ))}
       </div>
-      <div>
-        <PurchaseOutlet />
+      <div className='w-full h-full bg-gray'>
+        <PurchaseOutlet data={purchases || []} />
       </div>
     </div>
   )

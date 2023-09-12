@@ -209,7 +209,7 @@ const Cart = () => {
                       <div className='flex items-center gap-2'>
                         <Link
                           to={generateNameId(purchase.product.name, purchase.product._id)}
-                          className='w-20 h-20 overflow-hidden rounded shadow cursor-pointer shrink-0'
+                          className='w-20 h-20 overflow-hidden transition rounded shadow cursor-pointer hover:opacity-90 shrink-0'
                         >
                           <img
                             src={purchase.product.image}
@@ -221,7 +221,7 @@ const Cart = () => {
                           <Link
                             to={generateNameId(purchase.product.name, purchase.product._id)}
                             title={purchase.product.name}
-                            className='cursor-pointer hover:opacity-90 line-clamp-2'
+                            className='transition cursor-pointer hover:text-primary line-clamp-2'
                           >
                             {purchase.product.name}
                           </Link>

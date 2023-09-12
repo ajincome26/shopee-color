@@ -29,7 +29,6 @@ const dataTitles = [
 
 const UserLayout = () => {
   const { userInfo } = useAuth()
-  if (!userInfo?.avatar) return null
   return (
     <div className='bg-gray text-secondary'>
       <div className='container'>
@@ -38,7 +37,7 @@ const UserLayout = () => {
             <div className='flex items-center gap-3 py-5 mb-5 border-b border-b-grayBox'>
               <Link to={path.PROFILE} className='w-[50px] h-[50px] shrink-0'>
                 <img
-                  src={userInfo.avatar !== defaultURL ? getURLAvatar(userInfo?.avatar) : defaultURL}
+                  src={userInfo && userInfo.avatar !== defaultURL ? getURLAvatar(userInfo?.avatar) : defaultURL}
                   alt='avatar'
                   className='object-cover w-full h-full rounded-full shadow-sm'
                 />
@@ -62,7 +61,7 @@ const UserLayout = () => {
               ))}
             </div>
           </div>
-          <div className='mb-8 bg-white shadow-lg md:mb-0 basis-4/5'>
+          <div className='mb-8 bg-white basis-4/5 h-fit md:mb-0'>
             <Outlet />
           </div>
         </div>

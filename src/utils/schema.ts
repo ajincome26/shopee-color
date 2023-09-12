@@ -44,9 +44,12 @@ export const userSchema = yup.object({
   address: yup.string().max(160, 'Không được vượt quá 160 ký tự'),
   date_of_birth: yup.date().max(new Date(), 'Hãy chọn ngày sinh ở quá khứ'),
   avatar: yup.string().max(1000, 'Không được vượt quá 1000 ký tự'),
-  password: schema.fields['password'],
-  npassword: schema.fields['password'],
-  cpassword: schema.fields['cpassword']
+  password: schema.fields['password'] as yup.StringSchema<string, yup.AnyObject, undefined, ''>,
+  new_password: schema.fields['password'] as yup.StringSchema<string, yup.AnyObject, undefined, ''>,
+  cpassword: yup
+    .string()
+    .required('Xác nhận mật khẩu là bắt buộc')
+    .oneOf([yup.ref('new_password')], 'Mật khẩu không khớp, hãy thử lại')
 })
 
 export const registerSchema = schema.omit(['minValue', 'maxValue', 'searchValue'])
