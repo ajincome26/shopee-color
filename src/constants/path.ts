@@ -8,5 +8,6 @@ export const path = {
   USER: '/user',
   PROFILE: '/user/profile',
   CHANGE_PASSWORD: '/user/change-password',
-  PURCHASE: '/user/purchase'
+  PURCHASE: '/user/purchase',
+  NOT_FOUND: '*'
 }

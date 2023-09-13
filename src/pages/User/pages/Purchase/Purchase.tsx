@@ -50,28 +50,34 @@ const Purchase = () => {
   })
   const purchases = data?.data.data
   return (
-    <div className='flex flex-col'>
-      <div className='grid grid-cols-6 shadow-lg'>
-        {dataCatePurchase.map((item) => (
-          <NavLink
-            to={{
-              pathname: path.PURCHASE,
-              search: createSearchParams({
-                status: String(item.status)
-              }).toString()
-            }}
-            key={item.id}
-            className={classNames('flex items-center justify-center py-4 cursor-pointer px-7 border-b-[2px]', {
-              'border-b-primary text-third': status === item.status,
-              'border-b-transparent': status !== item.status
-            })}
-          >
-            {item.title}
-          </NavLink>
-        ))}
-      </div>
-      <div className='w-full h-full bg-gray'>
-        <PurchaseOutlet data={purchases || []} />
+    <div>
+      <div className='overflow-x-auto'>
+        <div className='min-w-[700px]'>
+          <div className='flex flex-col'>
+            <div className='grid grid-cols-6 shadow-lg'>
+              {dataCatePurchase.map((item) => (
+                <NavLink
+                  to={{
+                    pathname: path.PURCHASE,
+                    search: createSearchParams({
+                      status: String(item.status)
+                    }).toString()
+                  }}
+                  key={item.id}
+                  className={classNames('flex items-center justify-center py-4 cursor-pointer px-7 border-b-[2px]', {
+                    'border-b-primary text-third': status === item.status,
+                    'border-b-transparent': status !== item.status
+                  })}
+                >
+                  {item.title}
+                </NavLink>
+              ))}
+            </div>
+            <div className='w-full h-full bg-gray'>
+              <PurchaseOutlet data={purchases || []} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

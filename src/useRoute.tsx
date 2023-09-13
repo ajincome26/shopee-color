@@ -1,20 +1,27 @@
 import { UserLayout } from './pages/User/layout/UserLayout'
 import { useAuth } from './contexts/auth.context'
-import { RegisterPage } from './pages/RegisterPage'
 import { RegisterLayout } from './layouts/RegisterLayout'
-import { Purchase } from './pages/User/pages/Purchase'
-import { Profile } from './pages/User/pages/Profile'
-import { ProductList } from './pages/ProductList'
-import { ProductDetail } from './pages/ProductDetail'
 import { path } from './constants/path'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { MainLayout } from './layouts/MainLayout'
-import { LoginPage } from './pages/LoginPage'
-import { ChangePassword } from './pages/User/pages/ChangePassword'
+import { lazy, Suspense } from 'react'
 import { CartLayout } from './layouts/CartLayout'
-import { Cart } from './pages/Cart'
 
-const { HOME, LOGIN, REGISTER, PROFILE, CART, PRODUCT_DETAIL, CHANGE_PASSWORD, PURCHASE } = path
+export const LoginPage = lazy(async () => ({ default: (await import('./pages/LoginPage')).LoginPage }))
+export const RegisterPage = lazy(async () => ({ default: (await import('./pages/RegisterPage')).RegisterPage }))
+export const Cart = lazy(async () => ({ default: (await import('./pages/Cart')).Cart }))
+export const Profile = lazy(async () => ({ default: (await import('./pages/User/pages/Profile')).Profile }))
+export const ChangePassword = lazy(async () => ({
+  default: (await import('./pages/User/pages/ChangePassword')).ChangePassword
+}))
+export const Purchase = lazy(async () => ({
+  default: (await import('./pages/User/pages/Purchase')).Purchase
+}))
+export const ProductList = lazy(async () => ({ default: (await import('./pages/ProductList')).ProductList }))
+export const ProductDetail = lazy(async () => ({ default: (await import('./pages/ProductDetail')).ProductDetail }))
+export const NotFound = lazy(async () => ({ default: (await import('./pages/NotFound')).NotFound }))
+
+const { HOME, LOGIN, REGISTER, PROFILE, CART, PRODUCT_DETAIL, CHANGE_PASSWORD, PURCHASE, NOT_FOUND } = path
 
 // eslint-disable-next-line react-refresh/only-export-components
 function ProtectedRoute() {
@@ -34,7 +41,11 @@ const useRoute = () => {
       children: [
         {
           // Muốn vào được đây thì phải chưa đăng nhập, không sẽ trở về Home
-          element: <RegisterLayout />,
+          element: (
+            <Suspense>
+              <RegisterLayout />
+            </Suspense>
+          ),
           children: [
             {
               path: REGISTER,
@@ -53,7 +64,11 @@ const useRoute = () => {
       children: [
         {
           // Muốn vào được đây thì phải đăng nhập rồi, không sẽ trở về Login
-          element: <MainLayout />,
+          element: (
+            <Suspense>
+              <MainLayout />
+            </Suspense>
+          ),
           children: [
             {
               element: <UserLayout />,
@@ -79,7 +94,11 @@ const useRoute = () => {
           children: [
             {
               path: CART,
-              element: <Cart />
+              element: (
+                <Suspense>
+                  <Cart />
+                </Suspense>
+              )
             }
           ]
         }
@@ -87,15 +106,28 @@ const useRoute = () => {
     },
     // Authen không ảnh hưởng
     {
-      element: <MainLayout />,
+      element: (
+        <Suspense>
+          <MainLayout />
+        </Suspense>
+      ),
       children: [
         { index: true, path: HOME, element: <ProductList /> },
         { path: PRODUCT_DETAIL, element: <ProductDetail /> }
       ]
+    },
+    {
+      element: (
+        <Suspense>
+          <NotFound />
+        </Suspense>
+      ),
+      path: NOT_FOUND
     }
   ])
   return element
 }
 
 // Nếu ProtectedRoute là cha của MainLayout và ProductList (path: '/') thì khi 'isLoggedIn = false', nó sẽ to='/login' tìm và thấy không có thằng nào match với to='/'. => Lỗi
+// eslint-disable-next-line react-refresh/only-export-components
 export default useRoute

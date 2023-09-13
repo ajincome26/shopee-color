@@ -33,7 +33,7 @@ const UserLayout = () => {
     <div className='bg-gray text-secondary'>
       <div className='container'>
         <div className='flex flex-col gap-5 md:py-5 md:flex-row'>
-          <div className='basis-1/5'>
+          <div className='md:basis-3/12 lg:basis-1/5 shrink-0'>
             <div className='flex items-center gap-3 py-5 mb-5 border-b border-b-grayBox'>
               <Link to={path.PROFILE} className='w-[50px] h-[50px] shrink-0'>
                 <img
@@ -61,7 +61,8 @@ const UserLayout = () => {
               ))}
             </div>
           </div>
-          <div className='mb-8 bg-white basis-4/5 h-fit md:mb-0'>
+
+          <div className='mb-8 overflow-auto bg-white md:basis-9/12 lg:basis-4/5 h-fit md:mb-0'>
             <Outlet />
           </div>
         </div>

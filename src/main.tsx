@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './contexts/auth.context'
 import './styles/index.scss'
 import { PurchaseProvider } from './contexts/purchase.context'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 // Create a client
 const queryClient = new QueryClient({
@@ -24,7 +25,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <PurchaseProvider>
-            <App />
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
           </PurchaseProvider>
         </AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />

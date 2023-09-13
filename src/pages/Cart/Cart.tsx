@@ -199,6 +199,7 @@ const Cart = () => {
                 <span className='text-center basis-1/5'>Thao tác</span>
               </div>
             </div>
+            {/* render purchases */}
             <div className='flex flex-col gap-3 my-4 px-5 py-5 text-[15px] bg-white text-secondary shadow-sm rounded-sm'>
               {extendedPurchase.map((purchase) => {
                 const indexPurchase = extendedPurchase.findIndex((item) => item._id === purchase._id)

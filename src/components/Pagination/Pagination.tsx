@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { createSearchParams, Link } from 'react-router-dom'
 import { path } from '~/constants/path'
-import { QueryParamsConfig } from '~/pages/ProductList/ProductList'
+import { QueryParamsConfig } from '~/hooks/useQueryConfig'
 import icons from '~/utils/icons'
 
 interface Props {

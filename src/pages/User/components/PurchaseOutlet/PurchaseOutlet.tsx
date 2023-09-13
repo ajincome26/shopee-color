@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Purchase } from '~/types/purchase.type'
 import icons from '~/utils/icons'
-import { formatCurrency } from '~/utils/utils'
+import { formatCurrency, generateNameId } from '~/utils/utils'
 
 const { SiSensu } = icons
 interface Props {
@@ -17,7 +17,7 @@ const PurchaseOutlet = ({ data }: Props) => {
             <div className='flex items-center justify-between pb-4 mb-4 border-b border-b-grayBox'>
               <div className='flex items-center gap-3 basis-1/2'>
                 <Link
-                  to={'/'}
+                  to={generateNameId(item.product.name, item.product._id)}
                   title={item.product.name}
                   className='w-20 h-20 overflow-hidden transition border rounded shrink-0 border-slate-300 hover:opacity-90'
                 >
@@ -25,13 +25,13 @@ const PurchaseOutlet = ({ data }: Props) => {
                 </Link>
                 <div className='flex flex-col gap-1'>
                   <Link
-                    to={'/'}
+                    to={generateNameId(item.product.name, item.product._id)}
                     title={item.product.name}
                     className='transition cursor-pointer hover:text-primary line-clamp-2'
                   >
                     {item.product.name}
                   </Link>
-                  <span>x{item.buy_count}</span>
+                  <span className='text-sm'>x{item.buy_count}</span>
                 </div>
               </div>
               <div className='basis-1/2'>
