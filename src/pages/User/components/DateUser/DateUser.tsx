@@ -1,4 +1,4 @@
-import { range } from 'lodash'
+import range from 'lodash/range'
 import { useState } from 'react'
 import { PiCaretDownBold } from 'react-icons/pi'
 
