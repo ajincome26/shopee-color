@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useSearchProduct } from '~/hooks/useSearchProduct'
 import { path } from '~/constants/path'
 import { NavHeader } from '../NavHeader'
@@ -7,6 +8,7 @@ import { HiOutlineSearch } from 'react-icons/hi'
 import { Button } from '../Button'
 
 const CartHeader = () => {
+  const { t } = useTranslation('cart')
   const { handleSearch, register, handleSubmit } = useSearchProduct()
   return (
     <>
@@ -38,7 +40,9 @@ const CartHeader = () => {
                 ></path>
               </svg>
             </Link>
-            <span className='relative pl-4 border-l bottom-1 border-l-primary text-primary md:text-xl'>Giỏ hàng</span>
+            <span className='relative pl-4 border-l bottom-1 border-l-primary text-primary md:text-xl'>
+              {t('cart')}
+            </span>
           </div>
           <form onSubmit={handleSubmit(handleSearch)} className='relative w-full md:w-1/2'>
             <InputSearch

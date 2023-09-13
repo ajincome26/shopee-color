@@ -8,10 +8,14 @@ import { Popover } from '../Popover'
 import { path } from '~/constants/path'
 import { Link } from 'react-router-dom'
 import { defaultURL, getURLAvatar } from '~/utils/utils'
+import { useTranslation } from 'react-i18next'
+import { locales } from '~/i18n/i18n'
 
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram } = icons
 
 const NavHeader = () => {
+  const { i18n } = useTranslation()
+  const currentLanguage = locales[i18n.language as keyof typeof locales]
   const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useAuth()
   const queryClient = useQueryClient()
   const logoutMutation = useMutation({
@@ -25,6 +29,10 @@ const NavHeader = () => {
   })
   const handleLogout = () => {
     logoutMutation.mutate()
+  }
+
+  const handleChangeLaguage = (language: 'en' | 'vi') => {
+    i18n.changeLanguage(language)
   }
   return (
     <div className='flex items-center justify-end text-sm leading-6 md:justify-between'>
@@ -50,13 +58,23 @@ const NavHeader = () => {
           hoverClass='hover:text-gray'
           popover={
             <>
-              <span className='px-3 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>Tiếng Việt</span>
-              <span className='px-3 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>English</span>
+              <span
+                className='px-3 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
+                onClick={() => handleChangeLaguage('vi')}
+              >
+                Tiếng Việt
+              </span>
+              <span
+                className='px-3 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
+                onClick={() => handleChangeLaguage('en')}
+              >
+                English
+              </span>
             </>
           }
         >
           <TbWorld size={18} />
-          <span>Tiếng Việt</span>
+          <span>{currentLanguage}</span>
           <PiCaretDownBold />
         </Popover>
 

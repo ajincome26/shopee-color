@@ -8,6 +8,7 @@ import { AuthProvider } from './contexts/auth.context'
 import './styles/index.scss'
 import { PurchaseProvider } from './contexts/purchase.context'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import './i18n/i18n'
 
 // Create a client
 const queryClient = new QueryClient({

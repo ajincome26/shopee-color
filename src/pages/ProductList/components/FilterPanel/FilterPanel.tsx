@@ -14,6 +14,7 @@ import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { Category } from '~/types/category.type'
 import { Button } from '~/components/Button'
 import { QueryParamsConfig } from '~/hooks/useQueryConfig'
+import { useTranslation } from 'react-i18next'
 
 const { BsListUl, LiaFilterSolid, AiFillCaretRight } = icons
 
@@ -25,6 +26,7 @@ interface Props {
 }
 
 const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
+  const { t } = useTranslation('home')
   const navigate = useNavigate()
   const { category, price_max, price_min } = queryParamsConfig
   const {
@@ -83,7 +85,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
         })}
       >
         <BsListUl />
-        <h2>Tất cả danh mục</h2>
+        <h2>{t('filter panel.all categories')}</h2>
       </Link>
       <div className='flex flex-col gap-4 p-4'>
         {categories.map((item) => (
@@ -115,7 +117,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
         })}
       >
         <LiaFilterSolid />
-        <h2>Bộ lọc tìm kiếm</h2>
+        <h2>{t('filter panel.filter search')}</h2>
       </Link>
       <div className='flex flex-col gap-3 py-4 border-b md:px-4 border-b-grayBox'>
         <h3>Khoảng giá</h3>
