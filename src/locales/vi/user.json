@@ -1,0 +1,35 @@
+{
+  "user": {
+    "edit profile": "Sửa hồ sơ",
+    "my account": "Tài khoản của tôi",
+    "change password": "Đổi mật khẩu",
+    "my purchase": "Đơn mua"
+  },
+  "profile": {
+    "my profile": "Hồ sơ của tôi",
+    "protect account": "Quản lý thông tin hồ sơ để bảo mật tài khoản",
+    "name": "Tên",
+    "phone": "Số điện thoại",
+    "address": "Địa chỉ",
+    "date of birth": "Ngày sinh",
+    "save": "Lưu",
+    "select img": "Chọn ảnh",
+    "size": "Dụng lượng file tối đa 1 MB",
+    "extension": "Định dạng:.JPEG, .PNG"
+  },
+  "password": {
+    "change password": "Đổi mật khẩu",
+    "old password": "Mật khẩu cũ",
+    "new password": "Mật khẩu mới",
+    "confilm password": "Nhập lại mật khẩu mới"
+  },
+  "purchase": {
+    "all": "Tất cả",
+    "wait confilm": "Chờ xác nhận",
+    "wait picking": "Chờ lấy hàng",
+    "shipping": "Đang giao",
+    "completed": "Đã giao",
+    "cancelled": "Đã hủy",
+    "order total": "Thành tiền"
+  }
+}

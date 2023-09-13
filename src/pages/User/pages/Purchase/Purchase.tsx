@@ -7,41 +7,42 @@ import { purchasesStatus } from '~/constants/purchase'
 import { useQueryParams } from '~/hooks/useQueryParams'
 import { PurchaseListStatus } from '~/types/purchase.type'
 import { PurchaseOutlet } from '../../components/PurchaseOutlet'
-
-const dataCatePurchase = [
-  {
-    id: 1,
-    title: 'Tất cả',
-    status: purchasesStatus.ALL
-  },
-  {
-    id: 2,
-    title: 'Chờ xác nhận',
-    status: purchasesStatus.WAIT
-  },
-  {
-    id: 3,
-    title: 'Chờ lấy hàng',
-    status: purchasesStatus.PICKING
-  },
-  {
-    id: 4,
-    title: 'Đang giao',
-    status: purchasesStatus.SHIPPING
-  },
-  {
-    id: 5,
-    title: 'Đã giao',
-    status: purchasesStatus.DELIVERED
-  },
-  {
-    id: 6,
-    title: 'Đã hủy',
-    status: purchasesStatus.REJECTED
-  }
-]
+import { useTranslation } from 'react-i18next'
 
 const Purchase = () => {
+  const { t } = useTranslation('user')
+  const dataCatePurchase = [
+    {
+      id: 1,
+      title: t('purchase.all'),
+      status: purchasesStatus.ALL
+    },
+    {
+      id: 2,
+      title: t('purchase.wait confilm'),
+      status: purchasesStatus.WAIT
+    },
+    {
+      id: 3,
+      title: t('purchase.wait picking'),
+      status: purchasesStatus.PICKING
+    },
+    {
+      id: 4,
+      title: t('purchase.shipping'),
+      status: purchasesStatus.SHIPPING
+    },
+    {
+      id: 5,
+      title: t('purchase.completed'),
+      status: purchasesStatus.DELIVERED
+    },
+    {
+      id: 6,
+      title: t('purchase.cancelled'),
+      status: purchasesStatus.REJECTED
+    }
+  ]
   const queryParams: { status?: string } = useQueryParams()
   const status = Number(queryParams.status)
   const { data } = useQuery({

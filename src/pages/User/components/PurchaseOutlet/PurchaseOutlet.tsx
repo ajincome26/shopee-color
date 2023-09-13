@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Purchase } from '~/types/purchase.type'
 import icons from '~/utils/icons'
 import { formatCurrency, generateNameId } from '~/utils/utils'
+import { useTranslation } from 'react-i18next'
 
 const { SiSensu } = icons
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const PurchaseOutlet = ({ data }: Props) => {
+  const { t } = useTranslation('user')
   return (
     <>
       {data.map((item) => (
@@ -43,7 +45,7 @@ const PurchaseOutlet = ({ data }: Props) => {
             </div>
             <div className='flex items-center self-end gap-3'>
               <SiSensu color='#0891b2' size={22} />
-              <span>Thành tiền:</span>
+              <span>{t('purchase.order total')}:</span>
               <span className='text-2xl text-primary'>₫{formatCurrency(item.price * item.buy_count)}</span>
             </div>
           </div>

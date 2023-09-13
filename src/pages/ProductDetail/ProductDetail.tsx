@@ -16,10 +16,12 @@ import { Popover } from '~/components/Popover'
 import { path } from '~/constants/path'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, handleDiscount, handleRating } from '~/utils/utils'
 import { createSearchParams, Link, useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const { PiCaretRightBold, PiCaretLeftBold, AiOutlineQuestionCircle, FaCartPlus, AiFillHeart, AiOutlineHeart } = icons
 
 const ProductDetail = () => {
+  const { t } = useTranslation('detail')
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { nameId } = useParams()
@@ -179,12 +181,12 @@ const ProductDetail = () => {
                   </div>
                   <div className='flex items-center gap-2 px-4 mr-4 md:mr-0 border-x border-third'>
                     <span className='font-medium border-b border-third'>{formatNumberToSocialStyle(sold)}</span>
-                    <span className='text-grayDark'>Đã bán</span>
+                    <span className='text-grayDark'>{t('detail.sold')}</span>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
                   <span className='font-medium border-b border-third'>{formatNumberToSocialStyle(view)}</span>
-                  <span className='text-grayDark'>Lượt xem</span>
+                  <span className='text-grayDark'>{t('detail.view')}</span>
                 </div>
               </div>
               <div className='flex flex-col gap-5 px-4 py-3 mt-2 bg-gray'>
@@ -200,7 +202,7 @@ const ProductDetail = () => {
                   </div>
                   <div className='px-3 py-1 text-sm text-white rounded bg-primary'>
                     <span className='mr-2'>{handleDiscount(price_before_discount, price)}%</span>
-                    <span>{price_before_discount < price ? 'TĂNG' : 'GIẢM'}</span>
+                    <span>{price_before_discount < price ? 'TĂNG' : `${t('detail.off')}`}</span>
                   </div>
                 </div>
                 <div className='flex items-center gap-3'>
@@ -209,7 +211,7 @@ const ProductDetail = () => {
                   </div>
                   <div className='flex flex-col gap-1'>
                     <div className='flex items-center gap-2'>
-                      <span className='text-third'>Gì cũng giảm</span>
+                      <span className='text-third'>{t('detail.everything is reduced')}</span>
                       <Popover
                         className='flex flex-col bg-white rounded-sm border border-grayDark w-[470px] text-secondary p-6'
                         isFloatingArrow={false}
@@ -228,26 +230,26 @@ const ProductDetail = () => {
                         <AiOutlineQuestionCircle />
                       </Popover>
                     </div>
-                    <span className='text-sm'>Giá tốt nhất so với các sản phẩm cùng loại</span>
+                    <span className='text-sm'>{t('detail.best price')}</span>
                   </div>
                 </div>
               </div>
               <div className='flex flex-col gap-5 py-5 md:gap-8 md:px-4'>
                 <div className='flex flex-col gap-4 md:gap-5 sm:flex-row'>
-                  <span className='text-[17px] text-slate-600 shrink-0'>Vận chuyển</span>
+                  <span className='text-[17px] text-slate-600 shrink-0'>{t('detail.ship')}</span>
                   <div className='flex gap-3'>
                     <div className='flex-shrink-0 w-6 h-6'>
                       <img src={freeshiping} alt='free-ship' className='object-cover w-full h-full' />
                     </div>
                     <div className='flex flex-col gap-2'>
-                      <span>Miễn phí vận chuyển</span>
-                      <span className='text-slate-500'>Miễn phí vận chuyển cho đơn hàng từ ₫50.000</span>
+                      <span>{t('detail.free ship')}</span>
+                      <span className='text-slate-500'>{t('detail.free shipping')}</span>
                     </div>
                   </div>
                 </div>
                 <div className='flex flex-col gap-3 md:gap-5 sm:flex-row sm:items-center sm:gap-8'>
                   <div className='flex flex-col items-start gap-3 md:gap-[2.4rem] sm:flex-row xl:items-center'>
-                    <span className='text-[17px] shrink-0 text-slate-600'>Số lượng</span>
+                    <span className='text-[17px] shrink-0 text-slate-600'>{t('detail.quantity')}</span>
                     <div className='flex items-center gap-4 2xl:gap-5 sm:flex-col sm:items-start xl:flex-row xl:items-center'>
                       <QuantityController
                         max={quantity}
@@ -256,7 +258,9 @@ const ProductDetail = () => {
                         onDecrease={handleQuantity}
                         onType={handleQuantity}
                       />
-                      <span className='text-sm text-slate-500'>{quantity} sản phẩm có sẵn</span>
+                      <span className='text-sm text-slate-500'>
+                        {quantity} {t('detail.pieces available')}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -266,13 +270,13 @@ const ProductDetail = () => {
                     onClick={handleAddToCart}
                   >
                     <FaCartPlus size={20} />
-                    Thêm vào giỏ hàng
+                    {t('detail.add to cart')}
                   </button>
                   <button
                     className='py-3 text-white transition px-7 bg-primary hover:opacity-80'
                     onClick={handleBuyNow}
                   >
-                    Mua ngay
+                    {t('detail.buy now')}
                   </button>
                 </div>
                 <div
@@ -285,7 +289,7 @@ const ProductDetail = () => {
                     <AiOutlineHeart size={24} color='#f14666' />
                   )}
                   <span>
-                    Đã thích (
+                    {t('detail.favorite')} (
                     {toggleHeart
                       ? Number(formatNumberToSocialStyle(Number(String(sold).slice(0, 3)))) + 1
                       : Number(formatNumberToSocialStyle(Number(String(sold).slice(0, 3))))}
@@ -297,7 +301,7 @@ const ProductDetail = () => {
           </div>
 
           <div className='p-4 bg-white rounded-sm text-secondary'>
-            <div className='p-4 mb-5 text-lg bg-gray'>Mô tả sản phẩm</div>
+            <div className='p-4 mb-5 text-lg bg-gray'>{t('detail.product desc')}</div>
             <div
               className='text-sm leading-loose'
               dangerouslySetInnerHTML={{
@@ -307,7 +311,7 @@ const ProductDetail = () => {
           </div>
 
           <div className='mt-5 text-secondary'>
-            <h2 className='text-[20px] mb-4'>Sản phẩm liên quan</h2>
+            <h2 className='text-[20px] mb-4'>{t('detail.related products')}</h2>
             <div className='grid gap-3 xl:gap-4 min-[412px]:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'>
               {products &&
                 products.data.data.products

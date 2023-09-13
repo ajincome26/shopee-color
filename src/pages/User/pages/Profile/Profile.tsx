@@ -14,6 +14,7 @@ import { defaultURL, getURLAvatar, isAxiosUnprocessableEntityError } from '~/uti
 import { DateUser } from '../../components/DateUser'
 import { Button } from '~/components/Button'
 import { ResponseError } from '~/types/utils.type'
+import { useTranslation } from 'react-i18next'
 
 type FormProfile = Pick<UserSchema, 'name' | 'phone' | 'address' | 'date_of_birth' | 'avatar'>
 type FormProfileError = Omit<FormProfile, 'date_of_birth'> & {
@@ -22,6 +23,7 @@ type FormProfileError = Omit<FormProfile, 'date_of_birth'> & {
 const profileSchema = userSchema.pick(['name', 'phone', 'address', 'date_of_birth', 'avatar'])
 
 const Profile = () => {
+  const { t } = useTranslation('user')
   const { setUserInfo } = useAuth()
   const inputFileRef = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File>()
@@ -111,7 +113,7 @@ const Profile = () => {
   if (!profile) return null
   return (
     <div className='md:p-[18px] shadow-lg'>
-      <HeaderOutlet title='Hồ sơ của tôi' />
+      <HeaderOutlet title={t('profile.my profile')} />
       <form onSubmit={handleSubmit(handleSubmitProfile)} className='flex flex-col-reverse lg:gap-10 lg:flex-row'>
         <div className='basis-2/3'>
           <div className='flex flex-col gap-3 px-2 lg:px-0'>
@@ -120,12 +122,14 @@ const Profile = () => {
               <span className='lg:w-4/5'>{profile.email}</span>
             </div>
             <div className='flex flex-col gap-2 lg:gap-5 lg:flex-row'>
-              <span className='relative lg:font-medium font-semibold lg:text-right lg:w-1/5 lg:top-[9px]'>Tên</span>
+              <span className='relative lg:font-medium font-semibold lg:text-right lg:w-1/5 lg:top-[9px]'>
+                {t('profile.name')}
+              </span>
               <div className='lg:w-4/5'>
                 <Input
                   name='name'
                   register={register}
-                  placeholder='Tên'
+                  placeholder={t('profile.name')}
                   errorMessage={errors.name?.message}
                   className='px-4 py-[9px] transition border-grayBox placeholder:text-sm rounded-none bg-white'
                 />
@@ -134,7 +138,7 @@ const Profile = () => {
             <div>
               <div className='flex flex-col gap-2 lg:gap-5 lg:flex-row'>
                 <span className='relative lg:font-medium font-semibold lg:text-right lg:w-1/5 lg:top-[9px]'>
-                  Số điện thoại
+                  {t('profile.phone')}
                 </span>
                 <div className='lg:w-4/5'>
                   <Controller
@@ -144,7 +148,7 @@ const Profile = () => {
                       return (
                         <InputNumber
                           className='px-4 py-[9px] transition border-grayBox hover:border-primary focus:border-primary placeholder:text-sm mb-0 rounded-none bg-white w-full'
-                          placeholder='Số điện thoại'
+                          placeholder={t('profile.phone')}
                           onChange={onChange}
                           value={value}
                           ref={ref}
@@ -159,12 +163,14 @@ const Profile = () => {
               </div>
             </div>
             <div className='flex flex-col gap-2 lg:gap-5 lg:flex-row'>
-              <span className='relative lg:font-medium font-semibold lg:text-right lg:w-1/5 lg:top-[9px]'>Địa chỉ</span>
+              <span className='relative lg:font-medium font-semibold lg:text-right lg:w-1/5 lg:top-[9px]'>
+                {t('profile.address')}
+              </span>
               <div className='lg:w-4/5'>
                 <Input
                   name='address'
                   register={register}
-                  placeholder='Địa chỉ'
+                  placeholder={t('profile.address')}
                   errorMessage={errors.address?.message}
                   className='px-4 py-[9px] transition border-grayBox placeholder:text-sm rounded-none bg-white'
                 />
@@ -188,7 +194,7 @@ const Profile = () => {
               type='submit'
               className='relative px-10 py-3 text-white bg-primary w-fit lg:left-[calc(20%+16px)] transition mt-2 mb-8 md:mb-4 rounded-none bg-none hover:bg-none hover:bg-opacity-80'
             >
-              Lưu
+              {t('profile.save')}
             </Button>
           </div>
         </div>
@@ -209,7 +215,7 @@ const Profile = () => {
               className='flex items-center justify-center h-10 transition bg-transparent border cursor-pointer w-28 text-third border-grayBox hover:bg-slate-100'
               onClick={handleUpload}
             >
-              Chọn ảnh
+              {t('profile.select img')}
               <input
                 type='file'
                 className='hidden'
@@ -219,8 +225,8 @@ const Profile = () => {
               />
             </button>
             <div className='flex flex-col text-sm text-slate-400'>
-              <span>Dụng lượng file tối đa 1 MB</span>
-              <span>Định dạng:.JPEG, .PNG</span>
+              <span>{t('profile.size')}</span>
+              <span>{t('profile.extension')}</span>
             </div>
           </div>
         </div>

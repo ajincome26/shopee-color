@@ -1,3 +1,29 @@
 {
-  "cart": "Cart"
+  "cart box": {
+    "recently added products": "Recently Added Products",
+    "more products in cart": "More Products In Cart",
+    "view my shopping cart": "View My Shopping Cart"
+  },
+  "cart": {
+    "shopping cart": "Shopping Cart",
+    "placeholder": "Free shipping for orders from 0 VND",
+    "product": "Product",
+    "unit price": "Unit Price",
+    "quantity": "Quantity",
+    "total price": "Total Price",
+    "actions": "Actions",
+    "off": "OFF",
+    "updated": "Updated",
+    "delete": "Delete",
+    "select all": "Select All",
+    "total": "Total",
+    "items": "items",
+    "saved": "Saved",
+    "check out": "Check Out",
+    "discount detail": "Discount Detail",
+    "subtotal": "Subtotal",
+    "product discount": "Product Discount",
+    "total amount": "Total Amount",
+    "final price shown at checkout": "Final price shown at checkout"
+  }
 }

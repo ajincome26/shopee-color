@@ -14,10 +14,12 @@ import { Link } from 'react-router-dom'
 import { InputSearch } from '../Input'
 import { CartBox } from '../CartBox'
 import { Button } from '../Button'
+import { useTranslation } from 'react-i18next'
 
 const { HiOutlineSearch, AiOutlineShoppingCart } = icons
 
 const MainHeader = () => {
+  const { t } = useTranslation('home')
   const { isLoggedIn } = useAuth()
   const queryParamsConfig = useQueryConfig()
   const { handleSearch, register, handleSubmit, reset } = useSearchProduct()
@@ -63,7 +65,7 @@ const MainHeader = () => {
             <InputSearch
               className='py-3 pl-4 pr-16 border-transparent text-grayDark placeholder:uppercase bg-grayField hover:border-white focus:border-white focus:bg-white'
               name='searchValue'
-              placeholder='Free Ship cho đơn từ 0đ'
+              placeholder={t('main header.placeholder')}
               register={register}
             />
             <Button type='submit' className='absolute px-[14px] py-[10px] top-[4px] right-[4px] md:w-auto'>

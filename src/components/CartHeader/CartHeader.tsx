@@ -41,14 +41,14 @@ const CartHeader = () => {
               </svg>
             </Link>
             <span className='relative pl-4 border-l bottom-1 border-l-primary text-primary md:text-xl'>
-              {t('cart')}
+              {t('cart.shopping cart')}
             </span>
           </div>
           <form onSubmit={handleSubmit(handleSearch)} className='relative w-full md:w-1/2'>
             <InputSearch
               className='py-3 pl-4 pr-16 border-[2px] bg-white border-blue-400 text-grayDark placeholder:uppercase focus:border-third rounded-none'
               name='searchValue'
-              placeholder='Free Ship Đơn từ 0đ'
+              placeholder={t('cart.placeholder')}
               register={register}
             />
             <Button type='submit' className='absolute top-0 right-0 h-full px-4 rounded-none'>

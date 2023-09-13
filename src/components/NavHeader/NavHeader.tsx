@@ -14,7 +14,7 @@ import { locales } from '~/i18n/i18n'
 const { TbWorld, PiCaretDownBold, BiLogoFacebookCircle, AiFillInstagram } = icons
 
 const NavHeader = () => {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation('home')
   const currentLanguage = locales[i18n.language as keyof typeof locales]
   const { isLoggedIn, setIsLoggedIn, userInfo, setUserInfo } = useAuth()
   const queryClient = useQueryClient()
@@ -38,11 +38,11 @@ const NavHeader = () => {
     <div className='flex items-center justify-end text-sm leading-6 md:justify-between'>
       <div className='items-center hidden gap-2 cursor-pointer md:flex lg:gap-3'>
         <Link to='https://play.google.com/store/apps'>
-          <span className='transition hover:text-gray'>Tải ứng dụng</span>
+          <span className='transition hover:text-gray'>{t('nav header.download')}</span>
         </Link>
         <div className='h-[18px] w-[1px] bg-grayField'></div>
         <div className='flex items-center gap-2'>
-          <span className='transition hover:text-gray'>Kết nối</span>
+          <span className='transition hover:text-gray'>{t('nav header.follow us on')}</span>
           <Link to='https://www.facebook.com/ajincome.7'>
             <BiLogoFacebookCircle size={18} />
           </Link>
@@ -89,16 +89,19 @@ const NavHeader = () => {
                   to={path.PROFILE}
                   className='w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
                 >
-                  Tài khoản của tôi
+                  {t('nav header.my account')}
                 </Link>
-                <Link to={path.HOME} className='w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'>
-                  Đơn mua
+                <Link
+                  to={path.PURCHASE}
+                  className='w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
+                >
+                  {t('nav header.my purchase')}
                 </Link>
                 <button
                   className='flex items-start w-full px-4 py-2 cursor-pointer hover:text-primary hover:bg-slate-50'
                   onClick={handleLogout}
                 >
-                  Đăng xuất
+                  {t('nav header.logout')}
                 </button>
               </>
             }

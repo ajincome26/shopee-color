@@ -1,12 +1,14 @@
 import { Product } from '~/types/product.type'
 import { Link } from 'react-router-dom'
 import { formatCurrency, formatNumberToSocialStyle, generateNameId, handleDiscount, handleRating } from '~/utils/utils'
+import { useTranslation } from 'react-i18next'
 
 interface ProductProps {
   product: Product
 }
 
 const ProductItem = ({ product }: ProductProps) => {
+  const { t } = useTranslation('home')
   const { _id, image, name, price_before_discount, price, sold, rating } = product
   return (
     <Link
@@ -18,7 +20,9 @@ const ProductItem = ({ product }: ProductProps) => {
         <div className='absolute right-0 top-0 w-0 h-0 border-overlay-fourth-70 border-x-[25px] border-t-[40px] border-b-[15px] border-b-transparent'></div>
         <div className='absolute top-[6px] right-0 flex flex-col text-xs w-[50px] justify-center items-center'>
           <span className='font-semibold text-secondary'>{handleDiscount(price_before_discount, price)}%</span>
-          <span className='tracking-wider text-white'>{price_before_discount < price ? 'TĂNG' : 'GIẢM'}</span>
+          <span className='tracking-wider text-white'>
+            {price_before_discount < price ? 'TĂNG' : `${t('product item.off')}`}
+          </span>
         </div>
       </div>
       <div className='p-2'>
@@ -33,7 +37,9 @@ const ProductItem = ({ product }: ProductProps) => {
         </div>
         <div className='flex items-center gap-4 mt-2 md:justify-between'>
           <div className='flex items-center gap-[2px]'>{handleRating(rating, 12)}</div>
-          <span className='text-sm md:text-xs xl:text-sm'>Đã bán {formatNumberToSocialStyle(sold)}</span>
+          <span className='text-sm md:text-xs xl:text-sm'>
+            {t('product item.sold')} {formatNumberToSocialStyle(sold)}
+          </span>
         </div>
       </div>
     </Link>

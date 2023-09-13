@@ -1,6 +1,7 @@
 import range from 'lodash/range'
 import { useState } from 'react'
 import { PiCaretDownBold } from 'react-icons/pi'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   errorMessage?: string
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const DateUser = ({ errorMessage, onChange, value }: Props) => {
+  const { t } = useTranslation('user')
   const [date, setDate] = useState({
     day: value?.getDate() || 1,
     month: value?.getMonth() || 0, // tháng 1
@@ -29,7 +31,7 @@ const DateUser = ({ errorMessage, onChange, value }: Props) => {
   return (
     <div>
       <div className='flex flex-col gap-2 lg:gap-5 lg:items-center lg:flex-row'>
-        <span className='font-semibold lg:font-medium lg:text-right lg:w-1/5'>Ngày sinh</span>
+        <span className='font-semibold lg:font-medium lg:text-right lg:w-1/5'>{t('profile.date of birth')}</span>
         <div className='grid grid-cols-3 gap-4 lg:w-4/5'>
           <div className='relative group'>
             <select

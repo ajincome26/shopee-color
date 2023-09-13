@@ -3,6 +3,7 @@ import { path } from '~/constants/path'
 import { Purchase } from '~/types/purchase.type'
 import { formatCurrency, generateNameId } from '~/utils/utils'
 import { Button } from '../Button'
+import { useTranslation } from 'react-i18next'
 
 const MAX_PURCHASES = 5
 
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const CartBox = ({ data }: Props) => {
+  const { t } = useTranslation('cart')
   const navigate = useNavigate()
   if (data.length === 0)
     return (
@@ -27,7 +29,7 @@ const CartBox = ({ data }: Props) => {
     )
   return (
     <div className='text-sm text-secondary'>
-      <h3 className='p-3 text-base'>Sản phẩm mới thêm</h3>
+      <h3 className='p-3 text-base'>{t('cart box.recently added products')}</h3>
       {data.slice(0, MAX_PURCHASES).map((item) => (
         <div
           key={item._id}
@@ -44,10 +46,10 @@ const CartBox = ({ data }: Props) => {
       ))}
       <div className='flex items-center justify-between p-3'>
         <div className='text-slate-400'>
-          {data.length > MAX_PURCHASES ? data.length - MAX_PURCHASES : ''} Thêm Hàng Vào Giỏ
+          {data.length > MAX_PURCHASES ? data.length - MAX_PURCHASES : ''} {t('cart box.more products in cart')}
         </div>
         <Button to={path.CART} className='right-0 flex px-4 py-2 md:w-auto md:mx-0'>
-          Xem Giỏ Hàng
+          {t('cart box.view my shopping cart')}
         </Button>
       </div>
     </div>

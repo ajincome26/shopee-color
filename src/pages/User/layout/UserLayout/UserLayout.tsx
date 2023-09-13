@@ -3,32 +3,33 @@ import { path } from '~/constants/path'
 import { useAuth } from '~/contexts/auth.context'
 import icons from '~/utils/icons'
 import { defaultURL, getURLAvatar } from '~/utils/utils'
+import { useTranslation } from 'react-i18next'
 
 const { CiEdit, FaRegUser, BsShieldLock, RiTodoLine } = icons
 
-const dataTitles = [
-  {
-    id: 1,
-    icon: <FaRegUser color='#0891b2' size={18} />,
-    title: 'Tài khoản của tôi',
-    to: path.PROFILE
-  },
-  {
-    id: 2,
-    icon: <BsShieldLock color='#0891b2' size={18} />,
-    title: 'Đổi mật khẩu',
-    to: path.CHANGE_PASSWORD
-  },
-  {
-    id: 3,
-    icon: <RiTodoLine color='#0891b2' size={18} />,
-    title: 'Đơn mua',
-    to: path.PURCHASE
-  }
-]
-
 const UserLayout = () => {
+  const { t } = useTranslation('user')
   const { userInfo } = useAuth()
+  const dataTitles = [
+    {
+      id: 1,
+      icon: <FaRegUser color='#0891b2' size={18} />,
+      title: t('user.my account'),
+      to: path.PROFILE
+    },
+    {
+      id: 2,
+      icon: <BsShieldLock color='#0891b2' size={18} />,
+      title: t('user.change password'),
+      to: path.CHANGE_PASSWORD
+    },
+    {
+      id: 3,
+      icon: <RiTodoLine color='#0891b2' size={18} />,
+      title: t('user.my purchase'),
+      to: path.PURCHASE
+    }
+  ]
   return (
     <div className='bg-gray text-secondary'>
       <div className='container'>
@@ -46,7 +47,7 @@ const UserLayout = () => {
                 <h3 className='font-semibold line-clamp-1'>{userInfo?.name || userInfo?.email}</h3>
                 <Link to={path.PROFILE} className='flex items-center gap-1 cursor-pointer'>
                   <CiEdit />
-                  <span className='font-medium text-slate-500 hover:text-slate-400'>Sửa hồ sơ</span>
+                  <span className='font-medium text-slate-500 hover:text-slate-400'>{t('user.edit profile')}</span>
                 </Link>
               </div>
             </div>

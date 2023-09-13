@@ -120,7 +120,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
         <h2>{t('filter panel.filter search')}</h2>
       </Link>
       <div className='flex flex-col gap-3 py-4 border-b md:px-4 border-b-grayBox'>
-        <h3>Khoảng giá</h3>
+        <h3>{t('filter panel.price range')}</h3>
         <form onSubmit={handleSubmit(handleFilterPrice)}>
           <div className='flex items-center gap-3'>
             <Controller
@@ -130,7 +130,8 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
                 return (
                   <InputNumber
                     className='w-full px-2 py-1 text-sm bg-white border-transparent placeholder:normal-case focus:border-secondary focus:border'
-                    placeholder='₫ Từ'
+                    // placeholder='₫ Từ'
+                    placeholder={`₫ ${t('filter panel.min')}`}
                     onChange={(e) => {
                       onChange(e)
                       trigger('maxValue')
@@ -149,7 +150,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
                 return (
                   <InputNumber
                     className='w-full px-2 py-1 text-sm bg-white border-transparent placeholder:normal-case focus:border-secondary focus:border'
-                    placeholder='₫ Đến'
+                    placeholder={`₫ ${t('filter panel.max')}`}
                     onChange={(e) => {
                       onChange(e)
                       trigger('minValue')
@@ -163,7 +164,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
           </div>
           <div className='h-5 mt-1 text-sm text-red-500'>{errors.minValue?.message}</div>
           <Button type='submit' className='w-full py-2 mt-1 text-sm uppercase'>
-            Áp dụng
+            {t('filter panel.apply')}
           </Button>
         </form>
       </div>
@@ -171,7 +172,7 @@ const FilterPanel = ({ className, queryParamsConfig, categories }: Props) => {
       <FilterRating queryParamsConfig={queryParamsConfig} />
 
       <div className='md:px-4' onClick={handleRemoveAll}>
-        <Button className='w-full py-2 my-4 text-sm uppercase'>Xóa tất cả</Button>
+        <Button className='w-full py-2 my-4 text-sm uppercase'>{t('filter panel.remove all')}</Button>
       </div>
     </div>
   )

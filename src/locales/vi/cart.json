@@ -1,3 +1,29 @@
 {
-  "cart": "Giỏ hàng"
+  "cart box": {
+    "recently added products": "Sản phẩm mới thêm",
+    "more products in cart": "Thêm vào giỏ hàng",
+    "view my shopping cart": "Xem giỏ hàng"
+  },
+  "cart": {
+    "shopping cart": "Giỏ hàng",
+    "placeholder": "Free ship cho đơn từ 0đ",
+    "product": "Sản phẩm",
+    "unit price": "Đơn giá",
+    "quantity": "Số lượng",
+    "total price": "Số tiền",
+    "actions": "Thao tác",
+    "off": "Giảm",
+    "updated": "Đã cập nhật",
+    "delete": "Xóa",
+    "select all": "Chọn tất cả",
+    "total": "Tổng thanh toán",
+    "items": "sản phẩm",
+    "saved": "Tiết kiệm",
+    "check out": "Mua hàng",
+    "discount detail": "Chi tiết khuyến mãi",
+    "subtotal": "Tổng tiền hàng",
+    "product discount": "Giảm giá sản phẩm",
+    "total amount": "Tổng số tiền",
+    "final price shown at checkout": "Số tiền cuối cùng thanh toán"
+  }
 }

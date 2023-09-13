@@ -2,12 +2,14 @@ import { path } from '~/constants/path'
 import { handleStar } from '~/utils/utils'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { QueryParamsConfig } from '~/hooks/useQueryConfig'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   queryParamsConfig: QueryParamsConfig
 }
 
 const FilterRating = ({ queryParamsConfig }: Props) => {
+  const { t } = useTranslation('home')
   const navigate = useNavigate()
 
   const handleFilterRating = (rate: string) => {
@@ -21,7 +23,7 @@ const FilterRating = ({ queryParamsConfig }: Props) => {
   }
   return (
     <div className='flex flex-col gap-3 py-4 border-b md:px-4 border-b-grayBox'>
-      <h3>Đánh giá</h3>
+      <h3>{t('filter panel.evaluate')}</h3>
       <div className='flex flex-col gap-1 px-5 text-sm lg:text-base lg:px-5 md:px-0'>
         {Array(5)
           .fill(0)
@@ -33,7 +35,7 @@ const FilterRating = ({ queryParamsConfig }: Props) => {
                 onClick={() => handleFilterRating(String(5 - index))}
               >
                 {handleStar(5 - index)}
-                {index === 0 ? '' : 'trở lên'}
+                {index === 0 ? '' : `${t('filter panel.up')}`}
               </div>
             )
           })}

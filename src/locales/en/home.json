@@ -1,6 +1,39 @@
 {
   "filter panel": {
     "all categories": "All Categories",
-    "filter search": "Filter"
+    "filter search": "Search Filter",
+    "watch": "Watch",
+    "t shirt": "T-shirt",
+    "mobile phone": "Mobile Phone",
+    "price range": "Price Range",
+    "evaluate": "Evaluate",
+    "apply": "Apply",
+    "remove all": "Remove All",
+    "min": "Min",
+    "max": "Max",
+    "up": "Up"
+  },
+  "sort option": {
+    "sort by": "Sort by",
+    "popular": "Popular",
+    "latest": "Latest",
+    "top sales": "Top Sales",
+    "price": "Price",
+    "low to high": "Low To High",
+    "high to low": "High To Low"
+  },
+  "nav header": {
+    "download": "Download",
+    "follow us on": "Follow us on",
+    "my account": "My Account",
+    "my purchase": "My Purchase",
+    "logout": "Logout"
+  },
+  "main header": {
+    "placeholder": "Free shipping for orders from 0 VND"
+  },
+  "product item": {
+    "off": "OFF",
+    "sold": "Sold"
   }
 }

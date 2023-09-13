@@ -17,10 +17,12 @@ import keyBy from 'lodash/keyBy'
 import { formatCurrency, generateNameId, handleDiscount } from '~/utils/utils'
 import { Checkbox } from '~/components/Checkbox'
 import { Button } from '~/components/Button'
+import { useTranslation } from 'react-i18next'
 
 const { PiCaretUpBold } = icons
 
 const Cart = () => {
+  const { t } = useTranslation('cart')
   const location = useLocation()
   const purchaseId = (
     location.state as {
@@ -190,13 +192,13 @@ const Cart = () => {
             <div className='flex items-center px-10 py-5 text-[15px] bg-white text-secondary shadow-lg rounded-sm'>
               <div className='flex gap-5 basis-2/5'>
                 <Checkbox checked={isAllChecked} onChange={handleCheckedAll} />
-                <span>Sản phẩm</span>
+                <span>{t('cart.product')}</span>
               </div>
               <div className='flex items-center justify-center basis-3/5'>
-                <span className='text-center basis-2/5'>Đơn giá</span>
-                <span className='text-center basis-1/5'>Số lượng</span>
-                <span className='text-center basis-1/5'>Số tiền</span>
-                <span className='text-center basis-1/5'>Thao tác</span>
+                <span className='text-center basis-2/5'>{t('cart.unit price')}</span>
+                <span className='text-center basis-1/5'>{t('cart.quantity')}</span>
+                <span className='text-center basis-1/5'>{t('cart.total price')}</span>
+                <span className='text-center basis-1/5'>{t('cart.actions')}</span>
               </div>
             </div>
             {/* render purchases */}
@@ -242,12 +244,11 @@ const Cart = () => {
                         </div>
                         <div className='flex items-center justify-center gap-3 text-sm'>
                           <span className='text-third'>
-                            {`${purchase.price_before_discount < purchase.price ? 'Tăng' : 'Giảm'} ${handleDiscount(
-                              purchase.price_before_discount,
-                              purchase.price
-                            )}%`}
+                            {`${
+                              purchase.price_before_discount < purchase.price ? 'Tăng' : `${t('cart.off')}`
+                            } ${handleDiscount(purchase.price_before_discount, purchase.price)}%`}
                           </span>
-                          <span className='px-3 py-1 text-xs text-white bg-primary'>Đã cập nhật</span>
+                          <span className='px-3 py-1 text-xs text-white bg-primary'>{t('cart.updated')}</span>
                         </div>
                       </div>
                       <div className='text-center basis-1/5'>
@@ -280,7 +281,7 @@ const Cart = () => {
                         className='text-center basis-1/5 hover:text-red-700'
                         onClick={() => handleDeletePurchase(purchase._id)}
                       >
-                        Xóa
+                        {t('cart.delete')}
                       </button>
                     </div>
                   </div>
@@ -293,10 +294,10 @@ const Cart = () => {
         <div className='sticky bottom-0 items-center px-10 py-5 bg-white border rounded-sm shadow-2xl border-slate-200 lg:justify-between md:flex text-secondary md:gap-20 lg:gap-0'>
           <div className='flex gap-8 text-[15px] lg:text-base'>
             <Checkbox checked={isAllChecked} onChange={handleCheckedAll}>
-              Chọn tất cả ({purchaseInCart.length})
+              {t('cart.select all')} ({purchaseInCart.length})
             </Checkbox>
             <button className='cursor-pointer hover:text-third' onClick={handleDeletePurchases}>
-              Xóa
+              {t('cart.delete')}
             </button>
           </div>
 
@@ -306,39 +307,43 @@ const Cart = () => {
               placement='top-end'
               popover={
                 <>
-                  <span className='pb-3 text-lg border-b border-grayBox'>Chi tiết khuyến mãi</span>
+                  <span className='pb-3 text-lg border-b border-grayBox'>{t('cart.discount detail')}</span>
                   <div className='flex items-center justify-between py-3 border-b border-grayBox'>
-                    <span>Tổng tiền hàng</span>
+                    <span>{t('cart.subtotal')}</span>
                     <span>₫{formatCurrency(paymentAmount('total'))}</span>
                   </div>
                   <div className='flex items-center justify-between py-3 border-b border-grayBox'>
-                    <span>Giảm giá sản phẩm</span>
+                    <span>{t('cart.product discount')}</span>
                     <span>-₫{formatCurrency(paymentAmount('save'))}</span>
                   </div>
                   <div className='py-3'>
                     <div className='flex items-center justify-between mb-2'>
-                      <span>Tiết kiệm</span>
+                      <span>{t('cart.saved')}</span>
                       <span className='text-third'>-₫{formatCurrency(paymentAmount('save'))}</span>
                     </div>
                     <div className='flex items-center justify-between'>
-                      <span>Tổng số tiền</span>
+                      <span>{t('cart.total amount')}</span>
                       <span>₫{formatCurrency(paymentAmount('payment'))}</span>
                     </div>
-                    <span className='block mt-2 text-sm text-end text-slate-400'>Số tiền cuối cùng thanh toán</span>
+                    <span className='block mt-2 text-sm text-end text-slate-400'>
+                      {t('cart.final price shown at checkout')}
+                    </span>
                   </div>
                 </>
               }
             >
               <div className='flex flex-col gap-1 mb-4 lg:gap-2 lg:mb-0'>
                 <div className='flex items-center gap-3'>
-                  <span>Tổng thanh toán ({purchaseChecked.length} sản phẩm):</span>
+                  <span>
+                    {t('cart.total')} ({purchaseChecked.length} {t('cart.items')}):
+                  </span>
                   <span className='text-xl font-medium lg:text-2xl text-third'>
                     ₫{formatCurrency(paymentAmount('payment'))}
                   </span>
                   <PiCaretUpBold color='#2c3e50' />
                 </div>
-                <div className='lg:flex items-center justify-end gap-6 text-[15px] text-primary'>
-                  <span>Tiết kiệm</span>
+                <div className='lg:flex items-center justify-end gap-[30px] text-[15px] text-primary'>
+                  <span>{t('cart.saved')}</span>
                   <span className='ml-5'>₫{formatCurrency(paymentAmount('save'))}</span>
                 </div>
               </div>
@@ -348,7 +353,7 @@ const Cart = () => {
               onClick={handleBuyPurchases}
               disabled={buyPurchasesMutation.isLoading}
             >
-              Mua ngay
+              {t('cart.check out')}
             </Button>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { order as orderConst, sortBy } from '~/constants/product'
 import omit from 'lodash/omit'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { QueryParamsConfig } from '~/hooks/useQueryConfig'
+import { useTranslation } from 'react-i18next'
 
 const { PiCaretDownBold, PiCaretLeftBold, PiCaretRightBold } = icons
 
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
+  const { t } = useTranslation('home')
   const navigate = useNavigate()
   const page = Number(queryParamsConfig.page)
   const { sort_by = sortBy.CREATED_AT, order = '' } = queryParamsConfig
@@ -52,7 +54,7 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
     <div className={className}>
       <div className='flex items-center flex-wrap sm:flex-col sm:items-start lg:items-center lg:flex-row lg:justify-between bg-[#dde0e5] py-3 text-secondary'>
         <div className='flex flex-col lg:items-center lg:flex-row'>
-          <div className='px-3 pt-3 lg:pt-0'>Sắp xếp theo</div>
+          <div className='px-3 pt-3 lg:pt-0'>{t('sort option.sort by')}</div>
 
           <div className='flex flex-wrap items-center gap-2 p-3'>
             <button
@@ -62,7 +64,7 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
               })}
               onClick={() => handleNavigateSortBy('createdAt')}
             >
-              Mới nhất
+              {t('sort option.latest')}
             </button>
             <button
               className={classNames('h-10 px-4 py-2 rounded-md hover:bg-opacity-80', {
@@ -71,7 +73,7 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
               })}
               onClick={() => handleNavigateSortBy('view')}
             >
-              Phổ biến
+              {t('sort option.popular')}
             </button>
             <button
               className={classNames('h-10 px-4 py-2 rounded-md hover:bg-opacity-80', {
@@ -80,7 +82,7 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
               })}
               onClick={() => handleNavigateSortBy('sold')}
             >
-              Bán chạy
+              {t('sort option.top sales')}
             </button>
             <div className='relative'>
               <select
@@ -92,13 +94,13 @@ const SortListOption = ({ className, queryParamsConfig, pageSize }: Props) => {
                 onChange={(e) => handleNavigatePrice(e.target.value as Exclude<ProductListParams['order'], undefined>)}
               >
                 <option value='' className='bg-white text-secondary' disabled>
-                  Giá
+                  {t('sort option.price')}
                 </option>
                 <option value={orderConst.ASC} className='bg-white text-secondary'>
-                  Giá: Thấp đến cao
+                  {t('sort option.price')}: {t('sort option.low to high')}
                 </option>
                 <option value={orderConst.DESC} className='bg-white text-secondary'>
-                  Giá: Cao đến thấp
+                  {t('sort option.price')}: {t('sort option.high to low')}
                 </option>
               </select>
               <div className='absolute top-1/2 right-4 translate-y-[-50%] cursor-pointer'>
