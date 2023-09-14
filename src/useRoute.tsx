@@ -41,19 +41,23 @@ const useRoute = () => {
       children: [
         {
           // Muốn vào được đây thì phải chưa đăng nhập, không sẽ trở về Home
-          element: (
-            <Suspense>
-              <RegisterLayout />
-            </Suspense>
-          ),
+          element: <RegisterLayout />,
           children: [
             {
               path: REGISTER,
-              element: <RegisterPage />
+              element: (
+                <Suspense>
+                  <RegisterPage />
+                </Suspense>
+              )
             },
             {
               path: LOGIN,
-              element: <LoginPage />
+              element: (
+                <Suspense>
+                  <LoginPage />
+                </Suspense>
+              )
             }
           ]
         }
@@ -64,26 +68,34 @@ const useRoute = () => {
       children: [
         {
           // Muốn vào được đây thì phải đăng nhập rồi, không sẽ trở về Login
-          element: (
-            <Suspense>
-              <MainLayout />
-            </Suspense>
-          ),
+          element: <MainLayout />,
           children: [
             {
               element: <UserLayout />,
               children: [
                 {
                   path: PROFILE,
-                  element: <Profile />
+                  element: (
+                    <Suspense>
+                      <Profile />
+                    </Suspense>
+                  )
                 },
                 {
                   path: CHANGE_PASSWORD,
-                  element: <ChangePassword />
+                  element: (
+                    <Suspense>
+                      <ChangePassword />
+                    </Suspense>
+                  )
                 },
                 {
                   path: PURCHASE,
-                  element: <Purchase />
+                  element: (
+                    <Suspense>
+                      <Purchase />
+                    </Suspense>
+                  )
                 }
               ]
             }
@@ -106,14 +118,25 @@ const useRoute = () => {
     },
     // Authen không ảnh hưởng
     {
-      element: (
-        <Suspense>
-          <MainLayout />
-        </Suspense>
-      ),
+      element: <MainLayout />,
       children: [
-        { index: true, path: HOME, element: <ProductList /> },
-        { path: PRODUCT_DETAIL, element: <ProductDetail /> }
+        {
+          index: true,
+          path: HOME,
+          element: (
+            <Suspense>
+              <ProductList />
+            </Suspense>
+          )
+        },
+        {
+          path: PRODUCT_DETAIL,
+          element: (
+            <Suspense>
+              <ProductDetail />
+            </Suspense>
+          )
+        }
       ]
     },
     {

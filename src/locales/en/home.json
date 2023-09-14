@@ -27,7 +27,9 @@
     "follow us on": "Follow us on",
     "my account": "My Account",
     "my purchase": "My Purchase",
-    "logout": "Logout"
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
   },
   "main header": {
     "placeholder": "Free shipping for orders from 0 VND"
@@ -35,5 +37,16 @@
   "product item": {
     "off": "OFF",
     "sold": "Sold"
+  },
+  "login": {
+    "have account": "Have an account",
+    "email address": "Email Address",
+    "placeholder email": "Enter your email",
+    "password": "Password",
+    "placeholder password": "Enter your password"
+  },
+  "register": {
+    "new to": "New to Shopee",
+    "cpassword": "Confilm Password"
   }
 }

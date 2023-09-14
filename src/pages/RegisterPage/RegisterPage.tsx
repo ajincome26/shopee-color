@@ -14,10 +14,12 @@ import { toast } from 'react-toastify'
 import { useAuth } from '~/contexts/auth.context'
 import { path } from '~/constants/path'
 import authApi from '~/apis/auth.api'
+import { useTranslation } from 'react-i18next'
 
 export type FormRegister = RegisterSchema
 
 const RegisterPage = () => {
+  const { t } = useTranslation('home')
   const { setIsLoggedIn, setUserInfo } = useAuth()
   const navigate = useNavigate()
   const {
@@ -66,46 +68,46 @@ const RegisterPage = () => {
         onSubmit={handleSubmit(handleSignUp)}
         className='flex flex-col w-full md:w-[60%] lg:w-[50%] xl:w-[40%] 2xl:w-[35%] min-h-full p-8 mx-auto bg-white rounded shadow-2xl'
       >
-        <h2 className='mb-2 text-xl font-semibold text-secondary'>Đăng Ký</h2>
+        <h2 className='mb-2 text-xl font-semibold text-secondary'>{t('nav header.register')}</h2>
         <Field>
-          <Label htmlFor='email'>Email Address</Label>
+          <Label htmlFor='email'>{t('login.email address')}</Label>
           <Input
             className='border-transparent'
             name='email'
             register={register}
-            placeholder='Enter your email'
+            placeholder={t('login.placeholder email')}
             errorMessage={errors.email?.message}
           />
         </Field>
         <Field>
-          <Label htmlFor='password'>Password</Label>
+          <Label htmlFor='password'>{t('login.password')}</Label>
           <InputPassword
             className='border-transparent'
             name='password'
             register={register}
-            placeholder='Enter your password'
+            placeholder={t('login.placeholder password')}
             errorMessage={errors.password?.message}
           />
         </Field>
         <Field>
-          <Label htmlFor='cpassword'>Confirm Password</Label>
+          <Label htmlFor='cpassword'>{t('register.cpassword')}</Label>
           <InputPassword
             className='border-transparent'
             name='cpassword'
             register={register}
-            placeholder='Confirm password'
+            placeholder={t('register.cpassword')}
             errorMessage={errors.cpassword?.message}
           />
         </Field>
 
         <Button type='submit' className='px-6 py-3 my-4' isLoading={registerMutation.isLoading}>
-          Đăng ký
+          {t('nav header.register')}
         </Button>
 
         <div className='text-center'>
-          Bạn đã có tài khoản?
+          {t('register.new to')}?
           <Link to={path.LOGIN} className='ml-2 font-medium transition text-primary hover:text-third'>
-            Đăng nhập
+            {t('nav header.login')}
           </Link>
         </div>
       </form>

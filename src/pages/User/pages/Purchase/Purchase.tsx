@@ -44,7 +44,7 @@ const Purchase = () => {
     }
   ]
   const queryParams: { status?: string } = useQueryParams()
-  const status = Number(queryParams.status)
+  const status = Number(queryParams.status) || purchasesStatus.ALL
   const { data } = useQuery({
     queryKey: ['purchases', status],
     queryFn: () => purchaseApi.getPurchaseList({ status: status as PurchaseListStatus })

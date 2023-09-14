@@ -24,7 +24,7 @@ const CartBox = ({ data }: Props) => {
             className='object-cover w-full h-full'
           />
         </div>
-        <span className='text-slate-400'>Chưa có sản phẩm</span>
+        <span className='text-slate-400'>{t('cart box.no products')}</span>
       </div>
     )
   return (

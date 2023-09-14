@@ -27,7 +27,9 @@
     "follow us on": "Kết nối",
     "my account": "Tài khoản của tôi",
     "my purchase": "Đơn mua",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "login": "Đăng nhập",
+    "register": "Đăng ký"
   },
   "main header": {
     "placeholder": "Free ship cho đơn từ 0đ"
@@ -35,5 +37,16 @@
   "product item": {
     "off": "Giảm",
     "sold": "Đã bán"
+  },
+  "login": {
+    "have account": "Bạn chưa có tài khoản",
+    "email address": "Địa chỉ email",
+    "placeholder email": "Nhập email của bạn",
+    "password": "Mật khẩu",
+    "placeholder password": "Nhập mật khẩu của bạn"
+  },
+  "register": {
+    "new to": "Bạn đã có tài khoản",
+    "cpassword": "Nhập lại mật khẩu"
   }
 }

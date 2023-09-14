@@ -120,11 +120,11 @@ const NavHeader = () => {
         ) : (
           <div className='flex items-center gap-2 cursor-pointer lg:gap-3'>
             <Link to={path.REGISTER} className='transition hover:text-gray'>
-              Đăng ký
+              {t('nav header.register')}
             </Link>
             <div className='h-[18px] w-[1px] bg-grayField'></div>
             <Link to={path.LOGIN} className='transition hover:text-gray'>
-              Đăng nhập
+              {t('nav header.login')}
             </Link>
           </div>
         )}
