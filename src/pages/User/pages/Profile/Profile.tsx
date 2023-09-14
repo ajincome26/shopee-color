@@ -15,6 +15,7 @@ import { DateUser } from '../../components/DateUser'
 import { Button } from '~/components/Button'
 import { ResponseError } from '~/types/utils.type'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 type FormProfile = Pick<UserSchema, 'name' | 'phone' | 'address' | 'date_of_birth' | 'avatar'>
 type FormProfileError = Omit<FormProfile, 'date_of_birth'> & {
@@ -113,6 +114,10 @@ const Profile = () => {
   if (!profile) return null
   return (
     <div className='md:p-[18px] shadow-lg'>
+      <Helmet>
+        <title>Hồ sơ | Shopee Color</title>
+        <meta name='description' content='Quản lý thông tin cá nhân của bạn' />
+      </Helmet>
       <HeaderOutlet title={t('profile.my profile')} />
       <form onSubmit={handleSubmit(handleSubmitProfile)} className='flex flex-col-reverse lg:gap-10 lg:flex-row'>
         <div className='basis-2/3'>

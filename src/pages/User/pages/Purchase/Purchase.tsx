@@ -8,6 +8,7 @@ import { useQueryParams } from '~/hooks/useQueryParams'
 import { PurchaseListStatus } from '~/types/purchase.type'
 import { PurchaseOutlet } from '../../components/PurchaseOutlet'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 const Purchase = () => {
   const { t } = useTranslation('user')
@@ -51,32 +52,34 @@ const Purchase = () => {
   })
   const purchases = data?.data.data
   return (
-    <div>
-      <div className='overflow-x-auto'>
-        <div className='min-w-[700px]'>
-          <div className='flex flex-col'>
-            <div className='grid grid-cols-6 shadow-lg'>
-              {dataCatePurchase.map((item) => (
-                <NavLink
-                  to={{
-                    pathname: path.PURCHASE,
-                    search: createSearchParams({
-                      status: String(item.status)
-                    }).toString()
-                  }}
-                  key={item.id}
-                  className={classNames('flex items-center justify-center py-4 cursor-pointer px-7 border-b-[2px]', {
-                    'border-b-primary text-third': status === item.status,
-                    'border-b-transparent': status !== item.status
-                  })}
-                >
-                  {item.title}
-                </NavLink>
-              ))}
-            </div>
-            <div className='w-full h-full bg-gray'>
-              <PurchaseOutlet data={purchases || []} />
-            </div>
+    <div className='overflow-x-auto'>
+      <Helmet>
+        <title>Đơn hàng | Shopee Color</title>
+        <meta name='description' content='Quản lý đơn hàng của bạn với lộ trình chi tiết' />
+      </Helmet>
+      <div className='min-w-[700px]'>
+        <div className='flex flex-col'>
+          <div className='grid grid-cols-6 shadow-lg'>
+            {dataCatePurchase.map((item) => (
+              <NavLink
+                to={{
+                  pathname: path.PURCHASE,
+                  search: createSearchParams({
+                    status: String(item.status)
+                  }).toString()
+                }}
+                key={item.id}
+                className={classNames('flex items-center justify-center py-4 cursor-pointer px-7 border-b-[2px]', {
+                  'border-b-primary text-third': status === item.status,
+                  'border-b-transparent': status !== item.status
+                })}
+              >
+                {item.title}
+              </NavLink>
+            ))}
+          </div>
+          <div className='w-full h-full bg-gray'>
+            <PurchaseOutlet data={purchases || []} />
           </div>
         </div>
       </div>

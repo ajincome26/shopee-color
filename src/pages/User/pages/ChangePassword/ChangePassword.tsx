@@ -12,6 +12,7 @@ import { InputPassword } from '~/components/Input'
 import { HeaderOutlet } from '../../components/HeaderOutlet'
 import { Button } from '~/components/Button'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 type FormPassword = Pick<UserSchema, 'password' | 'new_password' | 'cpassword'>
 const passwordSchema = userSchema.pick(['password', 'new_password', 'cpassword'])
@@ -55,6 +56,10 @@ const ChangePassword = () => {
   }
   return (
     <div className='md:p-[18px] shadow-lg'>
+      <Helmet>
+        <title>Đổi mật khẩu | Shopee Color</title>
+        <meta name='description' content='Thay đổi mật khẩu thường xuyên để bảo mật thông tin của bạn' />
+      </Helmet>
       <HeaderOutlet title={t('password.change password')} />
       <form onSubmit={handleSubmit(handleSubmitForm)} className='flex flex-col gap-3 px-2 mt-4 lg:w-2/3'>
         <div className='flex flex-col gap-2 lg:gap-5 lg:flex-row'>

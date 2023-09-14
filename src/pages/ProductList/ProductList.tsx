@@ -10,6 +10,7 @@ import { Pagination } from '~/components/Pagination'
 import { FilterPanel } from './components/FilterPanel'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import useQueryConfig from '~/hooks/useQueryConfig'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 const ProductList = () => {
   const navigate = useNavigate()
@@ -45,34 +46,40 @@ const ProductList = () => {
   }, [navigate, productsQuery.data?.data.data.products, queryParamsConfig])
 
   return (
-    <div className='bg-gray'>
-      <div className='container items-start gap-3 md:flex'>
-        {productsQuery.data && (
-          <>
-            <FilterPanel
-              className='basis-1/4 2xl:basis-1/5'
-              queryParamsConfig={queryParamsConfig}
-              categories={categoriesQuery.data?.data.data || []}
-            />
-            <div className='basis-3/4 2xl:basis-4/5'>
-              <SortListOption
+    <HelmetProvider>
+      <Helmet>
+        <title>Trang chủ | Shopee Color</title>
+        <meta name='description' content='Trang chủ dự án' />
+      </Helmet>
+      <div className='bg-gray'>
+        <div className='container items-start gap-3 md:flex'>
+          {productsQuery.data && (
+            <>
+              <FilterPanel
+                className='basis-1/4 2xl:basis-1/5'
                 queryParamsConfig={queryParamsConfig}
-                pageSize={productsQuery.data.data.data.pagination.page_size}
+                categories={categoriesQuery.data?.data.data || []}
               />
-              <div className='grid grid-cols-1 min-[412px]:grid-cols-2 gap-3 pb-6 mt-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 text-secondary'>
-                {productsQuery.data.data.data.products.map((item) => (
-                  <ProductItem key={item._id} product={item} />
-                ))}
+              <div className='basis-3/4 2xl:basis-4/5'>
+                <SortListOption
+                  queryParamsConfig={queryParamsConfig}
+                  pageSize={productsQuery.data.data.data.pagination.page_size}
+                />
+                <div className='grid grid-cols-1 min-[412px]:grid-cols-2 gap-3 pb-6 mt-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 text-secondary'>
+                  {productsQuery.data.data.data.products.map((item) => (
+                    <ProductItem key={item._id} product={item} />
+                  ))}
+                </div>
+                <Pagination
+                  queryParamsConfig={queryParamsConfig}
+                  pageSize={productsQuery.data.data.data.pagination.page_size}
+                />
               </div>
-              <Pagination
-                queryParamsConfig={queryParamsConfig}
-                pageSize={productsQuery.data.data.data.pagination.page_size}
-              />
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </HelmetProvider>
   )
 }
 

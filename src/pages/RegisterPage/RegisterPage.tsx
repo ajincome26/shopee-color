@@ -15,6 +15,7 @@ import { useAuth } from '~/contexts/auth.context'
 import { path } from '~/constants/path'
 import authApi from '~/apis/auth.api'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 
 export type FormRegister = RegisterSchema
 
@@ -64,6 +65,10 @@ const RegisterPage = () => {
 
   return (
     <div className='flex items-center justify-center px-5 py-8 xl:min-h-[85vh] bg-primary'>
+      <Helmet>
+        <title>Đăng ký | Shopee Color</title>
+        <meta name='description' content='Đăng ký tài khoản để đăng nhập vào dự án' />
+      </Helmet>
       <form
         onSubmit={handleSubmit(handleSignUp)}
         className='flex flex-col w-full md:w-[60%] lg:w-[50%] xl:w-[40%] 2xl:w-[35%] min-h-full p-8 mx-auto bg-white rounded shadow-2xl'

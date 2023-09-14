@@ -9,6 +9,7 @@ import './styles/index.scss'
 import { PurchaseProvider } from './contexts/purchase.context'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import './i18n/i18n'
+import { HelmetProvider } from 'react-helmet-async'
 
 // Create a client
 const queryClient = new QueryClient({
@@ -23,16 +24,18 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <PurchaseProvider>
-            <ErrorBoundary>
-              <App />
-            </ErrorBoundary>
-          </PurchaseProvider>
-        </AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <PurchaseProvider>
+              <ErrorBoundary>
+                <App />
+              </ErrorBoundary>
+            </PurchaseProvider>
+          </AuthProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </HelmetProvider>
     </BrowserRouter>
   </React.StrictMode>
 )

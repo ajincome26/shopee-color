@@ -89,7 +89,7 @@ const MainHeader = () => {
           </form>
 
           <Popover
-            className='flex items-center justify-center w-[400px] min-h-[270px] bg-white rounded-sm shadow-lg'
+            className='flex items-center justify-center w-[340px] min-[400px]:w-[400px] min-h-[270px] bg-white rounded-sm shadow-lg'
             placement='bottom-end'
             popover={
               <>
